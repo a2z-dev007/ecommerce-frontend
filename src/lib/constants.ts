@@ -1,4 +1,4 @@
-export const API_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000/api/v1';
+export const API_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8000/api/v1';
 export const APP_URL = process.env.NEXT_PUBLIC_APP_URL || 'http://localhost:3000';
 
 export const ROUTES = {
@@ -10,10 +10,11 @@ export const ROUTES = {
   LOGIN: '/auth/login',
   REGISTER: '/auth/register',
   PROFILE: '/profile',
+  DASHBOARD: '/profile/dashboard',
   ORDERS: '/profile/orders',
   ADDRESSES: '/profile/addresses',
   WISHLIST: '/profile/wishlist',
-  
+
   // Admin routes
   ADMIN_DASHBOARD: '/admin/dashboard',
   ADMIN_PRODUCTS: '/admin/products',

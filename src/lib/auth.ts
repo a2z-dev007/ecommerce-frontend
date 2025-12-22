@@ -34,14 +34,14 @@ export const authApi = {
     console.log('📡 Calling login API...');
     const { data } = await api.post('/auth/login', credentials);
     console.log('📨 Raw response:', data);
-    
+
     // Backend wraps response in { success, message, data }
     const authData = data.data;
     console.log('📦 Auth data:', authData);
     console.log('👤 User data:', authData.user);
     console.log('🔑 Has accessToken:', !!authData.accessToken);
     console.log('🔄 Has refreshToken:', !!authData.refreshToken);
-    
+
     if (authData.accessToken) {
       localStorage.setItem('token', authData.accessToken);
       console.log('💾 Token stored');
@@ -50,7 +50,7 @@ export const authApi = {
       localStorage.setItem('refreshToken', authData.refreshToken);
       console.log('💾 Refresh token stored');
     }
-    
+
     // Normalize user data - backend uses firstName/lastName, frontend uses name
     if (authData.user && !authData.user.name && authData.user.firstName) {
       authData.user.name = `${authData.user.firstName} ${authData.user.lastName || ''}`.trim();
@@ -60,7 +60,7 @@ export const authApi = {
       authData.user.id = authData.user._id;
       console.log('✏️ Normalized id:', authData.user.id);
     }
-    
+
     console.log('✅ Returning auth data');
     return authData;
   },
@@ -74,7 +74,7 @@ export const authApi = {
     if (authData.refreshToken) {
       localStorage.setItem('refreshToken', authData.refreshToken);
     }
-    
+
     // Normalize user data
     if (authData.user && !authData.user.name && authData.user.firstName) {
       authData.user.name = `${authData.user.firstName} ${authData.user.lastName || ''}`.trim();
@@ -82,19 +82,20 @@ export const authApi = {
     if (authData.user && authData.user._id) {
       authData.user.id = authData.user._id;
     }
-    
+
     return authData;
   },
 
   logout: async (): Promise<void> => {
     await api.post('/auth/logout');
     localStorage.removeItem('token');
+    localStorage.removeItem('refreshToken');
   },
 
   getCurrentUser: async (): Promise<User> => {
     const { data } = await api.get('/auth/profile');
     const user = data.data;
-    
+
     // Normalize user data
     if (user && !user.name && user.firstName) {
       user.name = `${user.firstName} ${user.lastName || ''}`.trim();
@@ -102,7 +103,7 @@ export const authApi = {
     if (user && user._id) {
       user.id = user._id;
     }
-    
+
     return user;
   },
 

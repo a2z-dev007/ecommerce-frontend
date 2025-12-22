@@ -7,6 +7,7 @@ interface AuthStore {
   setUser: (user: User | null) => void;
   isAuthenticated: boolean;
   isAdmin: boolean;
+  logout: () => void;
 }
 
 export const useAuth = create<AuthStore>()(
@@ -21,6 +22,11 @@ export const useAuth = create<AuthStore>()(
           isAuthenticated: !!user,
           isAdmin: user?.role === 'admin',
         }),
+      logout: () => {
+        localStorage.removeItem('token');
+        localStorage.removeItem('refreshToken');
+        set({ user: null, isAuthenticated: false, isAdmin: false });
+      },
     }),
     {
       name: 'auth-storage',
