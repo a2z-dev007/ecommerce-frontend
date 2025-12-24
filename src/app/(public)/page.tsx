@@ -8,6 +8,7 @@ import { useQuery } from '@tanstack/react-query';
 import { categoriesApi } from '@/features/categories/api';
 import { productsApi } from '@/features/products/api';
 import { Skeleton } from '@/components/ui/skeleton';
+import { formatPrice } from '@/lib/utils';
 
 export default function HomePage() {
   const { data: categories, isLoading: categoriesLoading } = useQuery({
@@ -137,7 +138,7 @@ export default function HomePage() {
                   <h3 className="font-semibold text-lg mb-1 group-hover:text-primary transition-colors">
                     {product.name}
                   </h3>
-                  <p className="text-primary font-bold">${product.price.toLocaleString()}</p>
+                  <p className="text-primary font-bold">{formatPrice(product.price)}</p>
                 </Link>
               ))
             )}
