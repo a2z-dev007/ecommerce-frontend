@@ -76,13 +76,17 @@ export const productsAdminApi = {
     return data.data;
   },
 
-  create: async (productData: any) => {
-    const { data } = await api.post('/products', productData);
+  create: async (productData: FormData) => {
+    const { data } = await api.post('/products', productData, {
+      headers: { 'Content-Type': 'multipart/form-data' },
+    });
     return data.data;
   },
 
-  update: async (id: string, productData: any) => {
-    const { data } = await api.put(`/products/${id}`, productData);
+  update: async (id: string, productData: FormData) => {
+    const { data } = await api.put(`/products/${id}`, productData, {
+      headers: { 'Content-Type': 'multipart/form-data' },
+    });
     return data.data;
   },
 

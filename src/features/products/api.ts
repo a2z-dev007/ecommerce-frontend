@@ -9,28 +9,28 @@ export const productsApi = {
 
   getProduct: async (slug: string): Promise<Product> => {
     const { data } = await api.get(`/products/${slug}`);
-    return data;
+    return data.data;
   },
 
   getFeaturedProducts: async (): Promise<Product[]> => {
     const { data } = await api.get('/products/featured');
-    return data;
+    return data.data;
   },
 
   searchProducts: async (query: string): Promise<Product[]> => {
     const { data } = await api.get('/products/search', { params: { q: query } });
-    return data;
+    return data.data;
   },
 
   // Admin endpoints
   createProduct: async (productData: Partial<Product>): Promise<Product> => {
     const { data } = await api.post('/admin/products', productData);
-    return data;
+    return data.data;
   },
 
   updateProduct: async (id: string, productData: Partial<Product>): Promise<Product> => {
     const { data } = await api.put(`/admin/products/${id}`, productData);
-    return data;
+    return data.data;
   },
 
   deleteProduct: async (id: string): Promise<void> => {

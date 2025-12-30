@@ -60,6 +60,8 @@ export function ProductModal({ isOpen, onClose, product }: ProductModalProps) {
 
     const { mutate: createProduct, isPending: isCreating } = useCreateProduct();
     const { mutate: updateProduct, isPending: isUpdating } = useUpdateProduct();
+    const [selectedFiles, setSelectedFiles] = useState<File[]>([]);
+    const [previewUrls, setPreviewUrls] = useState<string[]>([]);
 
     const form = useForm<ProductFormValues>({
         resolver: zodResolver(productSchema),
@@ -102,26 +104,54 @@ export function ProductModal({ isOpen, onClose, product }: ProductModalProps) {
     }, [product, form]);
 
     const onSubmit = (values: ProductFormValues) => {
-        // Generate slug from name if creating
-        const slug = values.name.toLowerCase().replace(/ /g, '-').replace(/[^\w-]+/g, '');
-        const data = { ...values, slug };
+        // Construct FormData for multipart submission
+        const formData = new FormData();
+
+        // Append basic fields
+        Object.entries(values).forEach(([key, value]) => {
+            formData.append(key, String(value));
+        });
+
+        // Append files
+        selectedFiles.forEach((file) => {
+            formData.append('files', file);
+        });
 
         if (isEditing) {
             updateProduct(
-                { id: product._id, data },
+                { id: product._id, data: formData },
                 {
                     onSuccess: () => {
                         onClose();
+                        setSelectedFiles([]);
+                        setPreviewUrls([]);
                     },
                 }
             );
         } else {
-            createProduct(data, {
+            createProduct(formData, {
                 onSuccess: () => {
                     onClose();
+                    setSelectedFiles([]);
+                    setPreviewUrls([]);
                 },
             });
         }
+    };
+
+    const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+        if (e.target.files) {
+            const files = Array.from(e.target.files);
+            setSelectedFiles((prev) => [...prev, ...files]);
+
+            const urls = files.map((file) => URL.createObjectURL(file));
+            setPreviewUrls((prev) => [...prev, ...urls]);
+        }
+    };
+
+    const removeFile = (index: number) => {
+        setSelectedFiles((prev) => prev.filter((_, i) => i !== index));
+        setPreviewUrls((prev) => prev.filter((_, i) => i !== index));
     };
 
     const isLoading = isCreating || isUpdating;
@@ -238,6 +268,50 @@ export function ProductModal({ isOpen, onClose, product }: ProductModalProps) {
                                     </FormItem>
                                 )}
                             />
+                        </div>
+
+                        <div className="space-y-2">
+                            <FormLabel>Product Images</FormLabel>
+                            <div className="grid grid-cols-4 gap-4">
+                                {product?.images?.map((url: string, index: number) => (
+                                    <div key={`existing-${index}`} className="relative aspect-square rounded-md overflow-hidden border">
+                                        <Image
+                                            src={url.startsWith('http') ? url : `http://localhost:8000/${url}`}
+                                            alt={`Existing image ${index}`}
+                                            fill
+                                            className="object-cover"
+                                        />
+                                    </div>
+                                ))}
+                                {previewUrls.map((url, index) => (
+                                    <div key={`new-${index}`} className="relative aspect-square rounded-md overflow-hidden border">
+                                        <Image
+                                            src={url}
+                                            alt={`New preview ${index}`}
+                                            fill
+                                            className="object-cover"
+                                        />
+                                        <button
+                                            type="button"
+                                            onClick={() => removeFile(index)}
+                                            className="absolute top-1 right-1 bg-red-500 text-white rounded-full p-1 shadow-md hover:bg-red-600 transition-colors"
+                                        >
+                                            <X className="h-3 w-3" />
+                                        </button>
+                                    </div>
+                                ))}
+                                <label className="flex flex-col items-center justify-center aspect-square rounded-md border-2 border-dashed border-muted-foreground/25 hover:border-primary/50 cursor-pointer transition-colors">
+                                    <Plus className="h-6 w-6 text-muted-foreground" />
+                                    <span className="text-xs text-muted-foreground mt-1">Add Image</span>
+                                    <input
+                                        type="file"
+                                        multiple
+                                        accept="image/*"
+                                        onChange={handleFileChange}
+                                        className="hidden"
+                                    />
+                                </label>
+                            </div>
                         </div>
 
                         <div className="flex items-center gap-8 pt-2">
