@@ -24,8 +24,8 @@ export default function HomePage() {
   return (
     <div className="flex flex-col">
       {/* Hero Section */}
-      <section className="relative overflow-hidden bg-gradient-to-br from-primary/20 via-background to-secondary/10 py-24 md:py-40">
-        <div className="container relative z-10">
+      <section className="relative overflow-hidden bg-gradient-to-br from-primary/20 via-background to-secondary/10 py-20 md:py-32 lg:py-40">
+        <div className="container relative z-10 px-4 md:px-6">
           <div className="mx-auto max-w-4xl text-center">
             <h1 className="text-5xl font-extrabold tracking-tight sm:text-7xl mb-8 bg-clip-text text-transparent bg-gradient-to-r from-primary to-primary/60">
               Elevate Your Lifestyle
@@ -55,8 +55,8 @@ export default function HomePage() {
       </section>
 
       {/* Featured Categories */}
-      <section className="py-24">
-        <div className="container">
+      <section className="py-16 md:py-24 lg:py-32">
+        <div className="container px-4 md:px-6">
           <div className="flex items-end justify-between mb-12">
             <div>
               <h2 className="text-3xl font-bold tracking-tight mb-2">Shop by Category</h2>
@@ -67,7 +67,7 @@ export default function HomePage() {
             </Link>
           </div>
 
-          <div className="grid grid-cols-2 lg:grid-cols-4 gap-6">
+          <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 md:gap-6 lg:gap-8">
             {categoriesLoading ? (
               Array.from({ length: 4 }).map((_, i) => (
                 <Skeleton key={i} className="aspect-[4/3] rounded-2xl" />
@@ -98,8 +98,8 @@ export default function HomePage() {
       </section>
 
       {/* Featured Products */}
-      <section className="py-24 bg-muted/30">
-        <div className="container">
+      <section className="py-16 md:py-24 lg:py-32 bg-muted/30">
+        <div className="container px-4 md:px-6">
           <div className="flex items-end justify-between mb-12">
             <div>
               <h2 className="text-3xl font-bold tracking-tight mb-2">Featured Products</h2>
@@ -110,7 +110,7 @@ export default function HomePage() {
             </Link>
           </div>
 
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 md:gap-8">
             {productsLoading ? (
               Array.from({ length: 4 }).map((_, i) => (
                 <div key={i} className="space-y-4">
@@ -147,9 +147,9 @@ export default function HomePage() {
       </section>
 
       {/* Features with more style */}
-      <section className="py-24 border-t">
-        <div className="container">
-          <div className="grid md:grid-cols-4 gap-12">
+      <section className="py-16 md:py-24 lg:py-32 border-t">
+        <div className="container px-4 md:px-6">
+          <div className="grid md:grid-cols-4 gap-8 md:gap-12">
             <div className="flex flex-col items-center text-center group">
               <div className="w-16 h-16 rounded-2xl bg-primary/10 flex items-center justify-center mb-6 group-hover:scale-110 group-hover:bg-primary group-hover:text-white transition-all duration-300">
                 <Truck className="h-8 w-8" />

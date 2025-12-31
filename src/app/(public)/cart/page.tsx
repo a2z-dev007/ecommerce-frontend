@@ -13,7 +13,7 @@ export default function CartPage() {
 
   if (items.length === 0) {
     return (
-      <div className="container py-16 text-center">
+      <div className="container py-16 md:py-24 text-center">
         <h1 className="text-3xl font-bold mb-4">Your Cart is Empty</h1>
         <p className="text-muted-foreground mb-8">Add some products to get started</p>
         <Link href={ROUTES.PRODUCTS}>
@@ -24,16 +24,16 @@ export default function CartPage() {
   }
 
   return (
-    <div className="container py-8">
-      <h1 className="text-3xl font-bold mb-8">Shopping Cart</h1>
+    <div className="container py-10 md:py-16">
+      <h1 className="text-3xl font-bold mb-8 md:mb-12">Shopping Cart</h1>
 
-      <div className="grid lg:grid-cols-3 gap-8">
-        <div className="lg:col-span-2 space-y-4">
+      <div className="grid lg:grid-cols-3 gap-8 md:gap-12">
+        <div className="lg:col-span-2 space-y-4 md:space-y-6">
           {items.map((item) => (
             <Card key={item.productId}>
-              <CardContent className="p-4">
+              <CardContent className="p-4 md:p-6">
                 <div className="flex gap-4">
-                  <div className="w-24 h-24 bg-muted rounded-lg overflow-hidden flex-shrink-0">
+                  <div className="w-24 h-24 md:w-28 md:h-28 bg-muted rounded-lg overflow-hidden flex-shrink-0">
                     {item.product.images?.[0] && (
                       <img
                         src={item.product.images[0]}
