@@ -1,186 +1,145 @@
-'use client';
 
-import Link from 'next/link';
-import { Button } from '@/components/ui/button';
-import { ArrowRight, ShoppingBag, Zap, Shield, Truck } from 'lucide-react';
-import { ROUTES } from '@/lib/constants';
-import { useQuery } from '@tanstack/react-query';
-import { categoriesApi } from '@/features/categories/api';
-import { productsApi } from '@/features/products/api';
-import { Skeleton } from '@/components/ui/skeleton';
-import { formatPrice } from '@/lib/utils';
+import React from 'react';
+import { motion, AnimatePresence } from 'framer-motion';
+import {
+  Menu, X, ChevronRight, Play, Star, MapPin,
+  Briefcase, Shield, Zap, Laptop, Globe, User,
+  ArrowRight, Check, Plus, Minus
+} from 'lucide-react';
+import Navbar from '@/components/home/Navbar';
+import Hero from '@/components/home/Hero';
+import GalleryIntro from '@/components/home/GalleryIntro';
+import Features from '@/components/home/Features';
+import DesignedToMove from '@/components/home/DesignedToMove';
+import InAction from '@/components/home/InAction';
+import WhyChoose from '@/components/home/WhyChoose';
+import Stats from '@/components/home/Stats';
+import WearableSection from '@/components/home/WearableSection';
+import GalleryThree from '@/components/home/GalleryThree';
+import OfficeAnywhere from '@/components/home/OfficeAnywhere';
+import Testimonials from '@/components/home/Testimonials';
+import TechSpecs from '@/components/home/TechSpecs';
+import RealMoments from '@/components/home/RealMoments';
+import Pricing from '@/components/home/Pricing';
+import FAQ from '@/components/home/FAQ';
+import SectionDivider from '@/components/common/SectionDivider';
+import { Footer } from '@/components/layout/footer';
+import { ASSETS } from '@/constants/assets';
+import PrimaryButton from '@/components/common/PrimaryButton';
 
-export default function HomePage() {
-  const { data: categories, isLoading: categoriesLoading } = useQuery({
-    queryKey: ['categories'],
-    queryFn: () => categoriesApi.getCategories({ limit: 4 }),
-  });
 
-  const { data: featuredProducts, isLoading: productsLoading } = useQuery({
-    queryKey: ['featured-products'],
-    queryFn: () => productsApi.getFeaturedProducts(),
-  });
-
+const HomePage: React.FC = () => {
   return (
-    <div className="flex flex-col">
-      {/* Hero Section */}
-      <section className="relative overflow-hidden bg-gradient-to-br from-primary/20 via-background to-secondary/10 py-24 md:py-40">
-        <div className="container relative z-10">
-          <div className="mx-auto max-w-4xl text-center">
-            <h1 className="text-5xl font-extrabold tracking-tight sm:text-7xl mb-8 bg-clip-text text-transparent bg-gradient-to-r from-primary to-primary/60">
-              Elevate Your Lifestyle
-            </h1>
-            <p className="text-xl text-muted-foreground mb-10 max-w-2xl mx-auto leading-relaxed">
-              Experience the future of shopping with our curated collection of premium products.
-              Quality meets innovation in every item we offer.
-            </p>
-            <div className="flex flex-col sm:flex-row gap-5 justify-center">
-              <Link href={ROUTES.PRODUCTS}>
-                <Button size="lg" className="h-14 px-8 text-lg rounded-full shadow-lg hover:shadow-primary/20 transition-all">
-                  Shop Collection <ArrowRight className="ml-2 h-5 w-5" />
-                </Button>
-              </Link>
-              <Link href="/categories">
-                <Button size="lg" variant="outline" className="h-14 px-8 text-lg rounded-full border-2">
-                  Explore Categories
-                </Button>
-              </Link>
-            </div>
-          </div>
+    <div className="min-h-screen flex flex-col font-sans bg-brand-beige">
+      <Navbar />
+      <main className="flex-grow">
+        <Hero />
+        <SectionDivider />
+        <GalleryIntro />
+        <SectionDivider />
+        <Features />
+        <DesignedToMove />
+        <InAction />
+        <SectionDivider />
+        <WhyChoose />
+        <SectionDivider />
+        <Stats />
+        <SectionDivider />
+        <WearableSection />
+        <SectionDivider />
+        <GalleryThree />
+        <SectionDivider />
+        <OfficeAnywhere />
+        <SectionDivider />
+        <Testimonials />
+        <SectionDivider />
+        <TechSpecs />
+        <SectionDivider />
+        <RealMoments />
+        <SectionDivider />
+        <Pricing />
+        <SectionDivider />
+        <FAQ />
+        <SectionDivider />
+
+        {/* Large Product Reveal */}
+        <div className="w-full h-[60vh] md:h-screen relative overflow-hidden">
+          <img src={ASSETS.TICKERS.MAIN2} className="w-full h-full object-cover" alt="Detail View" />
+          <div className="absolute inset-0 bg-black/10"></div>
         </div>
 
-        {/* Abstract shapes for premium feel */}
-        <div className="absolute top-0 right-0 -translate-y-1/2 translate-x-1/2 w-[600px] h-[600px] bg-primary/5 rounded-full blur-3xl" />
-        <div className="absolute bottom-0 left-0 translate-y-1/2 -translate-x-1/2 w-[500px] h-[500px] bg-secondary/5 rounded-full blur-3xl" />
-      </section>
+        {/* Other Products Section */}
+        <section className="py-24 md:py-32 bg-transparent px-6 relative overflow-hidden">
+          <div className="max-w-7xl mx-auto flex flex-col items-center">
+            {/* Header */}
+            <div className="text-center flex flex-col items-center mb-16">
+              <div className="inline-flex items-center gap-2 bg-[#D4CEC4]/40 px-4 py-2 rounded-lg mb-8">
+                <Globe className="w-3.5 h-3.5 text-[#8B7E6F]" />
+                <span className="text-[11px] font-medium tracking-widest uppercase text-[#8B7E6F]">
+                  Our Products
+                </span>
+              </div>
 
-      {/* Featured Categories */}
-      <section className="py-24">
-        <div className="container">
-          <div className="flex items-end justify-between mb-12">
-            <div>
-              <h2 className="text-3xl font-bold tracking-tight mb-2">Shop by Category</h2>
-              <p className="text-muted-foreground">Find exactly what you're looking for</p>
+              <h2 className="text-[clamp(2.5rem,7vw,5.5rem)] leading-[1] font-semibold mb-6 tracking-tight">
+                <span className="text-[#6B4A2D]">Our Other </span>
+                <span className="text-[#B8AFA1]">Products</span>
+              </h2>
+
+              <p className="text-[#B8AFA1] text-sm md:text-base max-w-2xl mx-auto leading-relaxed mb-10">
+                Explore more thoughtfully designed products crafted to complement your everyday carry and work style.
+              </p>
+
+              <PrimaryButton>View products</PrimaryButton>
             </div>
-            <Link href="/categories" className="text-primary font-medium hover:underline flex items-center gap-1">
-              View All <ArrowRight className="h-4 w-4" />
-            </Link>
-          </div>
 
-          <div className="grid grid-cols-2 lg:grid-cols-4 gap-6">
-            {categoriesLoading ? (
-              Array.from({ length: 4 }).map((_, i) => (
-                <Skeleton key={i} className="aspect-[4/3] rounded-2xl" />
-              ))
-            ) : (
-              categories?.data.map((category) => (
-                <Link
-                  key={category.id}
-                  href={`/products?category=${category.slug}`}
-                  className="group relative aspect-[4/3] rounded-2xl overflow-hidden bg-muted transition-all hover:scale-[1.02]"
-                >
-                  <div
-                    className="absolute inset-0 bg-cover bg-center transition-transform duration-500 group-hover:scale-110"
-                    style={{ backgroundImage: `url(${category.image || 'https://images.unsplash.com/photo-1523275335684-37898b6baf30?w=800&q=80'})` }}
-                  />
-                  <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent" />
-                  <div className="absolute bottom-6 left-6 text-white">
-                    <h3 className="text-xl font-bold mb-1">{category.name}</h3>
-                    <p className="text-sm text-white/70 opacity-0 group-hover:opacity-100 transition-opacity">
-                      Browse Collection
-                    </p>
-                  </div>
-                </Link>
-              ))
-            )}
-          </div>
-        </div>
-      </section>
-
-      {/* Featured Products */}
-      <section className="py-24 bg-muted/30">
-        <div className="container">
-          <div className="flex items-end justify-between mb-12">
-            <div>
-              <h2 className="text-3xl font-bold tracking-tight mb-2">Featured Products</h2>
-              <p className="text-muted-foreground">Carefully selected for their quality and design</p>
-            </div>
-            <Link href={ROUTES.PRODUCTS} className="text-primary font-medium hover:underline flex items-center gap-1">
-              Shop All Products <ArrowRight className="h-4 w-4" />
-            </Link>
-          </div>
-
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
-            {productsLoading ? (
-              Array.from({ length: 4 }).map((_, i) => (
-                <div key={i} className="space-y-4">
-                  <Skeleton className="aspect-square rounded-2xl" />
-                  <Skeleton className="h-4 w-2/3" />
-                  <Skeleton className="h-4 w-1/3" />
-                </div>
-              ))
-            ) : (
-              featuredProducts?.map((product) => (
-                <Link key={product.id} href={`/product/${product.slug}`} className="group">
-                  <div className="relative aspect-square rounded-2xl overflow-hidden bg-white mb-4 shadow-sm group-hover:shadow-xl transition-all duration-300">
+            {/* Product Grid */}
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-10 w-full">
+              {[
+                {
+                  title: "Kangpack New Edition",
+                  date: "Mar 12, 2025",
+                  tag: "Launch Event",
+                  img: ASSETS.TICKERS.MAIN
+                },
+                {
+                  title: "New Brown Bag",
+                  date: "Apr 1, 2024",
+                  tag: "Classic",
+                  img: ASSETS.TICKERS.FIRST
+                },
+                {
+                  title: "Portable Bag",
+                  date: "Sep 14, 2024",
+                  tag: "Photography",
+                  img: ASSETS.TICKERS.IMG_354A7762
+                }
+              ].map((product, i) => (
+                <div key={i} className="group cursor-pointer">
+                  <div className="relative overflow-hidden rounded-[20px] mb-6 aspect-[1.4/1]">
                     <img
-                      src={product.images[0]}
-                      alt={product.name}
-                      className="object-cover w-full h-full transition-transform duration-500 group-hover:scale-105"
+                      src={product.img}
+                      className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
+                      alt={product.title}
                     />
-                    <Button
-                      size="icon"
-                      className="absolute bottom-4 right-4 rounded-full opacity-0 group-hover:opacity-100 transition-all translate-y-2 group-hover:translate-y-0"
-                    >
-                      <ShoppingBag className="h-5 w-5" />
-                    </Button>
                   </div>
-                  <h3 className="font-semibold text-lg mb-1 group-hover:text-primary transition-colors">
-                    {product.name}
-                  </h3>
-                  <p className="text-primary font-bold">{formatPrice(product.price)}</p>
-                </Link>
-              ))
-            )}
-          </div>
-        </div>
-      </section>
-
-      {/* Features with more style */}
-      <section className="py-24 border-t">
-        <div className="container">
-          <div className="grid md:grid-cols-4 gap-12">
-            <div className="flex flex-col items-center text-center group">
-              <div className="w-16 h-16 rounded-2xl bg-primary/10 flex items-center justify-center mb-6 group-hover:scale-110 group-hover:bg-primary group-hover:text-white transition-all duration-300">
-                <Truck className="h-8 w-8" />
-              </div>
-              <h3 className="text-lg font-bold mb-2">Global Shipping</h3>
-              <p className="text-sm text-muted-foreground">Fast & reliable delivery to your doorstep</p>
-            </div>
-            <div className="flex flex-col items-center text-center group">
-              <div className="w-16 h-16 rounded-2xl bg-primary/10 flex items-center justify-center mb-6 group-hover:scale-110 group-hover:bg-primary group-hover:text-white transition-all duration-300">
-                <Shield className="h-8 w-8" />
-              </div>
-              <h3 className="text-lg font-bold mb-2">Secure Checkout</h3>
-              <p className="text-sm text-muted-foreground">Your data is protected with 256-bit encryption</p>
-            </div>
-            <div className="flex flex-col items-center text-center group">
-              <div className="w-16 h-16 rounded-2xl bg-primary/10 flex items-center justify-center mb-6 group-hover:scale-110 group-hover:bg-primary group-hover:text-white transition-all duration-300">
-                <Zap className="h-8 w-8" />
-              </div>
-              <h3 className="text-lg font-bold mb-2">Instant Support</h3>
-              <p className="text-sm text-muted-foreground">24/7 dedicated customer service team</p>
-            </div>
-            <div className="flex flex-col items-center text-center group">
-              <div className="w-16 h-16 rounded-2xl bg-primary/10 flex items-center justify-center mb-6 group-hover:scale-110 group-hover:bg-primary group-hover:text-white transition-all duration-300">
-                <ArrowRight className="h-8 w-8" />
-              </div>
-              <h3 className="text-lg font-bold mb-2">Hassle-free Returns</h3>
-              <p className="text-sm text-muted-foreground">30-day money back guarantee policy</p>
+                  <div className="flex justify-between items-start">
+                    <div>
+                      <h3 className="text-[17px] font-bold text-[#2D241E] mb-1">{product.title}</h3>
+                      <p className="text-[#B8AFA1] text-[13px]">{product.date}</p>
+                    </div>
+                    <span className="text-[10px] font-bold uppercase tracking-wider bg-[#EAE5DC] text-[#6B4A2D] px-4 py-2 rounded-full">
+                      {product.tag}
+                    </span>
+                  </div>
+                </div>
+              ))}
             </div>
           </div>
-        </div>
-      </section>
+        </section>
+      </main>
+      {/* <Footer /> */}
     </div>
   );
-}
+};
+
+export default HomePage;

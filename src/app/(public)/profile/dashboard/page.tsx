@@ -21,7 +21,7 @@ export default function DashboardPage() {
             <div className="max-w-6xl mx-auto space-y-8">
                 <div>
                     <h1 className="text-3xl font-bold tracking-tight mb-2">Welcome back, {user?.name || user?.firstName}!</h1>
-                    <p className="text-muted-foreground">Here's an overview of your account activity.</p>
+                    <p className="text-muted-foreground">Here&apos;s an overview of your account activity.</p>
                 </div>
 
                 {/* Stats Grid */}
@@ -56,7 +56,7 @@ export default function DashboardPage() {
                                         </Button>
                                     </Link>
                                 </div>
-                                <CardDescription>You haven't placed any orders recently.</CardDescription>
+                                <CardDescription>You haven&apos;t placed any orders recently.</CardDescription>
                             </CardHeader>
                             <CardContent>
                                 <div className="flex flex-col items-center justify-center py-12 text-center border-2 border-dashed rounded-xl">
@@ -64,7 +64,7 @@ export default function DashboardPage() {
                                         <ShoppingBag className="h-8 w-8" />
                                     </div>
                                     <h3 className="text-lg font-semibold mb-2">No orders found</h3>
-                                    <p className="text-sm text-muted-foreground mb-6">Looks like you haven't made any purchases yet.</p>
+                                    <p className="text-sm text-muted-foreground mb-6">Looks like you haven&apos;t made any purchases yet.</p>
                                     <Link href={ROUTES.PRODUCTS}>
                                         <Button className="rounded-full shadow-lg">Start Shopping</Button>
                                     </Link>

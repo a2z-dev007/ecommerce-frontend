@@ -9,15 +9,16 @@ import { formatPrice } from '@/lib/utils';
 import { ShoppingCart, Heart } from 'lucide-react';
 import { useCart } from '@/hooks/use-cart';
 import { toast } from 'sonner';
-import { useState } from 'react';
+import { useState, use } from 'react';
 
-export default function ProductDetailPage({ params }: { params: { slug: string } }) {
+export default function ProductDetailPage({ params }: { params: Promise<{ slug: string }> }) {
+  const { slug } = use(params);
   const [quantity, setQuantity] = useState(1);
   const { addItem } = useCart();
 
   const { data: product, isLoading } = useQuery({
-    queryKey: [QUERY_KEYS.PRODUCT, params.slug],
-    queryFn: () => productsApi.getProduct(params.slug),
+    queryKey: [QUERY_KEYS.PRODUCT, slug],
+    queryFn: () => productsApi.getProduct(slug),
   });
 
   const handleAddToCart = () => {
