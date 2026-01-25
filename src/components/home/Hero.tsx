@@ -59,7 +59,7 @@ const Hero: React.FC = () => {
   const textOpacity = useTransform(scrollY, [0, 300], [1, 0.5]);
 
   // Product bag: Stays more fixed (moves very slowly) - TRUE PARALLAX
-  const bagParallax = useTransform(scrollY, [0, 1000], [0, -50]);
+  const bagParallax = useTransform(scrollY, [0, 1000], [0, 300]);
 
   return (
     <section
@@ -81,7 +81,7 @@ const Hero: React.FC = () => {
       </motion.div>
 
       {/* Top Text: "A wearable workstation" (Centered above everything) */}
-      <div className="absolute top-[18%] md:top-[22%] z-30 w-full text-center">
+      <div className="absolute top-[18%] md:top-[15%] z-30 w-full text-center">
         <motion.p
           initial={{ opacity: 0, y: -10 }}
           animate={{ opacity: 1, y: 0 }}
@@ -139,7 +139,7 @@ const Hero: React.FC = () => {
             <motion.img
               src="/assets/bag.png"
               alt="Kangpack Product"
-              className="w-[95%] md:w-[85%] lg:w-[90%] xl:w-[95%] h-auto object-contain drop-shadow-[0_60px_80px_rgba(0,0,0,0.6)]"
+              className="w-[98%] md:w-[88%] lg:w-[93%] xl:w-[98%] h-auto object-contain drop-shadow-[0_60px_80px_rgba(0,0,0,0.6)]"
               style={{
                 rotateX: bagRotateX,
                 rotateY: bagRotateY,
