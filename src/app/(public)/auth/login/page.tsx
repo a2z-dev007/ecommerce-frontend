@@ -20,7 +20,7 @@ export default function LoginPage() {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    
+
     if (!email || !password) {
       toast.error('Please enter email and password');
       return;
@@ -31,7 +31,7 @@ export default function LoginPage() {
     try {
       // Call login API
       const response = await api.post('/auth/login', { email, password });
-      
+
       // Extract data from response
       const { data } = response.data;
       const { user, accessToken, refreshToken } = data;
@@ -111,7 +111,7 @@ export default function LoginPage() {
             </Button>
 
             <div className="text-center text-sm">
-              <span className="text-muted-foreground">Don't have an account? </span>
+              <span className="text-muted-foreground">Don&apos;t have an account? </span>
               <Link href="/auth/register" className="text-primary hover:underline">
                 Sign up
               </Link>
