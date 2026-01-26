@@ -59,7 +59,7 @@ const Hero: React.FC = () => {
   const textOpacity = useTransform(scrollY, [0, 300], [1, 0.5]);
 
   // Product bag: Stays more fixed (moves very slowly) - TRUE PARALLAX
-  const bagParallax = useTransform(scrollY, [0, 1000], [0, 300]);
+  const bagParallax = useTransform(scrollY, [0, 1000], [0, 350]);
 
   return (
     <section
