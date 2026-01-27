@@ -16,7 +16,6 @@ const GalleryThree: React.FC = () => {
     const { isOpen, images: lightboxImages, currentIndex, openLightbox, closeLightbox, setIndex } = useLightbox();
 
     // Scroll progress for the pinned section
-    // This creates the "freeze" effect - section stays in viewport while scrolling
     const { scrollYProgress } = useScroll({
         target: containerRef,
         offset: ["start start", "end start"]
@@ -41,24 +40,28 @@ const GalleryThree: React.FC = () => {
         ["#b7ad9f", "#b7ad9f", "#b7ad9f", "#6B4A2D"]
     );
 
-    // Image 1 (Front) - Appears first, slower animation
+    // Image 1 (Front) - Appears first with 3D perspective
     const image1Opacity = useTransform(scrollYProgress, [0, 0.1, 0.35], [0, 0, 1]);
-    const image1Scale = useTransform(scrollYProgress, [0, 0.1, 0.35], [0.85, 0.85, 1]);
-    const image1Y = useTransform(scrollYProgress, [0, 0.1, 0.35], [100, 100, 0]);
-    const image1Rotate = useTransform(scrollYProgress, [0.1, 0.35], [-3, 0]);
+    const image1Scale = useTransform(scrollYProgress, [0, 0.1, 0.35], [0.8, 0.8, 1]);
+    const image1Y = useTransform(scrollYProgress, [0, 0.1, 0.35], [120, 120, 0]);
+    const image1RotateX = useTransform(scrollYProgress, [0.1, 0.35], [25, 0]); // 3D tilt
+    const image1RotateY = useTransform(scrollYProgress, [0.1, 0.35], [-8, 0]); // 3D rotation
 
-    // Image 2 (Back) - Appears second, slides from right with tilt, slower
+    // Image 2 (Back) - Appears second with 3D perspective and slide
     const image2Opacity = useTransform(scrollYProgress, [0, 0.3, 0.6], [0, 0, 1]);
-    const image2Scale = useTransform(scrollYProgress, [0, 0.3, 0.6], [0.85, 0.85, 1]);
-    const image2Y = useTransform(scrollYProgress, [0, 0.3, 0.6], [100, 100, 0]);
-    const image2X = useTransform(scrollYProgress, [0.3, 0.6], [150, 0]);
-    const image2Rotate = useTransform(scrollYProgress, [0.3, 0.6], [6, 0]);
+    const image2Scale = useTransform(scrollYProgress, [0, 0.3, 0.6], [0.8, 0.8, 1]);
+    const image2Y = useTransform(scrollYProgress, [0, 0.3, 0.6], [120, 120, 0]);
+    const image2X = useTransform(scrollYProgress, [0.3, 0.6], [100, 0]);
+    const image2RotateX = useTransform(scrollYProgress, [0.3, 0.6], [20, 0]); // 3D tilt
+    const image2RotateY = useTransform(scrollYProgress, [0.3, 0.6], [10, 0]); // 3D rotation
 
-    // Image 3 (Sideways) - Appears last, slides from right, most prominent, slower
+    // Image 3 (Sideways) - Appears last with 3D perspective
     const image3Opacity = useTransform(scrollYProgress, [0, 0.55, 0.85], [0, 0, 1]);
-    const image3Scale = useTransform(scrollYProgress, [0, 0.55, 0.85], [0.85, 0.85, 1]);
-    const image3Y = useTransform(scrollYProgress, [0, 0.55, 0.85], [100, 100, 0]);
-    const image3X = useTransform(scrollYProgress, [0.55, 0.85], [180, 0]);
+    const image3Scale = useTransform(scrollYProgress, [0, 0.55, 0.85], [0.8, 0.8, 1]);
+    const image3Y = useTransform(scrollYProgress, [0, 0.55, 0.85], [120, 120, 0]);
+    const image3X = useTransform(scrollYProgress, [0.55, 0.85], [100, 0]);
+    const image3RotateX = useTransform(scrollYProgress, [0.55, 0.85], [20, 0]); // 3D tilt
+    const image3RotateY = useTransform(scrollYProgress, [0.55, 0.85], [12, 0]); // 3D rotation
 
     return (
         // Wrapper with extra height to create scroll distance for pinning effect
@@ -90,21 +93,19 @@ const GalleryThree: React.FC = () => {
                             </p>
                         </div>
 
-                        {/* Images Grid - Cinematic Scroll-Driven Animation */}
-                        <div className="relative flex items-center justify-center max-w-6xl mx-auto h-[350px] md:h-[450px]">
-                            {/* Image 1 - Front (Left) - Smallest, Appears First */}
+                        {/* Images Grid - Cinematic 3D Scroll Animation */}
+                        <div className="relative flex items-center justify-center max-w-6xl mx-auto h-[350px] md:h-[450px]" style={{ perspective: '1200px' }}>
+                            {/* Image 1 - Front (Left) - Smallest, Appears First with 3D Tilt */}
                             <motion.div
                                 style={{
                                     opacity: image1Opacity,
                                     scale: image1Scale,
                                     y: image1Y,
-                                    rotate: image1Rotate,
+                                    rotateX: image1RotateX,
+                                    rotateY: image1RotateY,
+                                    transformStyle: 'preserve-3d',
                                 }}
-                                className="absolute left-[8%] md:left-[12%] w-[30%] md:w-[320px] h-[70%] md:h-[320px] rounded-2xl md:rounded-3xl overflow-hidden shadow-[0_20px_60px_rgba(0,0,0,0.15)] z-10 cursor-pointer will-change-transform"
-                                whileHover={{ 
-                                    scale: 1.05,
-                                    transition: { type: "spring", stiffness: 300, damping: 20 }
-                                }}
+                                className="absolute left-[5%] md:left-[15%] w-[32%] md:w-[340px] h-[75%] md:h-[340px] rounded-2xl md:rounded-3xl overflow-hidden shadow-[0_25px_70px_rgba(0,0,0,0.2)] z-10 cursor-pointer will-change-transform"
                                 onClick={() => openLightbox(images, 0)}
                             >
                                 <img
@@ -114,20 +115,18 @@ const GalleryThree: React.FC = () => {
                                 />
                             </motion.div>
 
-                            {/* Image 2 - Back (Center-Left) - Medium, Appears Second, Overlaps Image 1 */}
+                            {/* Image 2 - Back (Center) - Medium, Appears Second, Overlaps Image 1 */}
                             <motion.div
                                 style={{
                                     opacity: image2Opacity,
                                     scale: image2Scale,
                                     y: image2Y,
                                     x: image2X,
-                                    rotate: image2Rotate,
+                                    rotateX: image2RotateX,
+                                    rotateY: image2RotateY,
+                                    transformStyle: 'preserve-3d',
                                 }}
-                                className="absolute left-[28%] md:left-[32%] w-[38%] md:w-[400px] h-[80%] md:h-[360px] rounded-2xl md:rounded-3xl overflow-hidden shadow-[0_30px_80px_rgba(0,0,0,0.2)] z-20 cursor-pointer will-change-transform"
-                                whileHover={{ 
-                                    scale: 1.05,
-                                    transition: { type: "spring", stiffness: 300, damping: 20 }
-                                }}
+                                className="absolute left-[25%] md:left-[32%] w-[40%] md:w-[420px] h-[82%] md:h-[370px] rounded-2xl md:rounded-3xl overflow-hidden shadow-[0_30px_80px_rgba(0,0,0,0.25)] z-20 cursor-pointer will-change-transform"
                                 onClick={() => openLightbox(images, 1)}
                             >
                                 <img
@@ -137,19 +136,18 @@ const GalleryThree: React.FC = () => {
                                 />
                             </motion.div>
 
-                            {/* Image 3 - Sideways (Center-Right) - Largest, Appears Last, Overlaps Image 2 */}
+                            {/* Image 3 - Sideways (Right) - Largest, Appears Last, Overlaps Image 2 */}
                             <motion.div
                                 style={{
                                     opacity: image3Opacity,
                                     scale: image3Scale,
                                     y: image3Y,
                                     x: image3X,
+                                    rotateX: image3RotateX,
+                                    rotateY: image3RotateY,
+                                    transformStyle: 'preserve-3d',
                                 }}
-                                className="absolute left-[48%] md:left-[50%] w-[44%] md:w-[460px] h-[90%] md:h-[400px] rounded-2xl md:rounded-3xl overflow-hidden shadow-[0_35px_90px_rgba(0,0,0,0.25)] z-30 cursor-pointer will-change-transform"
-                                whileHover={{ 
-                                    scale: 1.05,
-                                    transition: { type: "spring", stiffness: 300, damping: 20 }
-                                }}
+                                className="absolute left-[45%] md:left-[48%] w-[48%] md:w-[480px] h-[92%] md:h-[410px] rounded-2xl md:rounded-3xl overflow-hidden shadow-[0_35px_90px_rgba(0,0,0,0.3)] z-30 cursor-pointer will-change-transform"
                                 onClick={() => openLightbox(images, 2)}
                             >
                                 <img
