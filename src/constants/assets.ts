@@ -7,9 +7,9 @@ export const ASSETS = {
         PRODUCT: '/assets/hero/Product Image.png',
     },
     FRONT_BACK_SIDEWAYS: {
-        IMAGE_1: '/assets/front-back-sideways/image 1.png',
+        IMAGE_1: '/assets/front-back-sideways/image 3.png',
         IMAGE_2: '/assets/front-back-sideways/image 2.png',
-        IMAGE_3: '/assets/front-back-sideways/image 3.png',
+        IMAGE_3: '/assets/front-back-sideways/image 1.png',
     },
     TICKERS: {
         MAIN: '/assets/tickers/main.jpeg',

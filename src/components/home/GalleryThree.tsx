@@ -24,48 +24,53 @@ const GalleryThree: React.FC = () => {
     // Text color animations - progressive color change synchronized with image reveals
     const frontColor = useTransform(
         scrollYProgress,
-        [0, 0.2, 0.35],
+        [0, 0.15, 0.30],
         ["#b7ad9f", "#b7ad9f", "#6B4A2D"]
     );
     
     const backColor = useTransform(
         scrollYProgress,
-        [0, 0.35, 0.5, 0.65],
+        [0, 0.3, 0.45, 0.6],
         ["#b7ad9f", "#b7ad9f", "#b7ad9f", "#6B4A2D"]
     );
     
     const sidewaysColor = useTransform(
         scrollYProgress,
-        [0, 0.65, 0.8, 1],
+        [0, 0.6, 0.75, 0.85],
         ["#b7ad9f", "#b7ad9f", "#b7ad9f", "#6B4A2D"]
     );
 
-    // Image 1 (Front) - Appears first with 3D perspective
-    const image1Opacity = useTransform(scrollYProgress, [0, 0.1, 0.35], [0, 0, 1]);
-    const image1Scale = useTransform(scrollYProgress, [0, 0.1, 0.35], [0.8, 0.8, 1]);
-    const image1Y = useTransform(scrollYProgress, [0, 0.1, 0.35], [120, 120, 0]);
-    const image1RotateX = useTransform(scrollYProgress, [0.1, 0.35], [25, 0]); // 3D tilt
-    const image1RotateY = useTransform(scrollYProgress, [0.1, 0.35], [-8, 0]); // 3D rotation
+    // Image 1 (Front) - Starts CENTER, then moves LEFT when Image 2 appears
+    const image1Opacity = useTransform(scrollYProgress, [0, 0.05, 0.25], [0, 0, 1]);
+    const image1Scale = useTransform(scrollYProgress, [0, 0.05, 0.25], [0.75, 0.75, 1]);
+    const image1Y = useTransform(scrollYProgress, [0, 0.05, 0.25], [120, 120, 0]);
+    const image1X = useTransform(scrollYProgress, [0.30, 0.5], [-120, -450]); // Moves further LEFT
+    const image1RotateX = useTransform(scrollYProgress, [0.05, 0.25], [0, 0]);
+    const image1RotateY = useTransform(scrollYProgress, [0.05, 0.25, 0.4], [0, 20, 30]); // Tilts left
+    const image1RotateZ = useTransform(scrollYProgress, [0.25, 0.4], [0, 0]); // Rotates left
 
-    // Image 2 (Back) - Appears second with 3D perspective and slide
-    const image2Opacity = useTransform(scrollYProgress, [0, 0.3, 0.6], [0, 0, 1]);
-    const image2Scale = useTransform(scrollYProgress, [0, 0.3, 0.6], [0.8, 0.8, 1]);
-    const image2Y = useTransform(scrollYProgress, [0, 0.3, 0.6], [120, 120, 0]);
-    const image2X = useTransform(scrollYProgress, [0.3, 0.6], [100, 0]);
-    const image2RotateX = useTransform(scrollYProgress, [0.3, 0.6], [20, 0]); // 3D tilt
-    const image2RotateY = useTransform(scrollYProgress, [0.3, 0.6], [10, 0]); // 3D rotation
+    // Image 2 (Back) - Appears CENTER-RIGHT, pushes Image 1 to the left
+    const image2Opacity = useTransform(scrollYProgress, [0, 0.3, 0.5], [0, 0, 1]);
+    const image2Scale = useTransform(scrollYProgress, [0, 0.3, 0.5], [0.75, 0.85, 1]);
+    const image2Y = useTransform(scrollYProgress, [0, 0.3, 0.5], [120, 120, 0]);
+    const image2X = useTransform(scrollYProgress, [0.3, 0.5, 0.65], [100, 0, -250]); // Moves LEFT for image 3
+    const image2RotateX = useTransform(scrollYProgress, [0.3, 0.5], [0, 0]);
+    const image2RotateY = useTransform(scrollYProgress, [0.3, 0.5, 0.65], [0, 20, 30]); // Tilts left
+    const image2RotateZ = useTransform(scrollYProgress, [0.5, 0.65], [0, 0]); // Rotates left
 
-    // Image 3 (Sideways) - Appears last with 3D perspective
-    const image3Opacity = useTransform(scrollYProgress, [0, 0.55, 0.85], [0, 0, 1]);
-    const image3Scale = useTransform(scrollYProgress, [0, 0.55, 0.85], [0.8, 0.8, 1]);
-    const image3Y = useTransform(scrollYProgress, [0, 0.55, 0.85], [120, 120, 0]);
-    const image3X = useTransform(scrollYProgress, [0.55, 0.85], [100, 0]);
-    const image3RotateX = useTransform(scrollYProgress, [0.55, 0.85], [20, 0]); // 3D tilt
-    const image3RotateY = useTransform(scrollYProgress, [0.55, 0.85], [12, 0]); // 3D rotation
+    // Image 3 (Sideways) - Appears CENTER-RIGHT, pushes others aside
+    const image3Opacity = useTransform(scrollYProgress, [0, 0.55, 0.75], [0, 0, 1]);
+    const image3Scale = useTransform(scrollYProgress, [0, 0.55, 0.75], [0.75, 0.75, 1]);
+    const image3Y = useTransform(scrollYProgress, [0, 0.55, 0.75], [120, 120, 0]);
+    const image3X = useTransform(scrollYProgress, [0.55, 0.75], [120, -50]); // Stays slightly right of center
+    const image3RotateX = useTransform(scrollYProgress, [0.55, 0.75], [0, 0]);
+    const image3RotateY = useTransform(scrollYProgress, [0.55, 0.75], [15, 25]); // Slight right tilt
+    const image3RotateZ = useTransform(scrollYProgress, [0.55, 0.75], [0, 0]); // Rotates right
 
     return (
         // Wrapper with extra height to create scroll distance for pinning effect
-        <div ref={containerRef} className="relative" style={{ height: '300vh' }}>
+        // Increased to 400vh for longer hold time at the end
+        <div ref={containerRef} className="relative" style={{ height: '400vh' }}>
             {/* Sticky container that stays fixed while scrolling */}
             <div className="sticky top-0 h-screen flex items-center justify-center overflow-hidden">
                 <section className="w-full py-20 md:py-32 px-6">
@@ -93,19 +98,21 @@ const GalleryThree: React.FC = () => {
                             </p>
                         </div>
 
-                        {/* Images Grid - Cinematic 3D Scroll Animation */}
-                        <div className="relative flex items-center justify-center max-w-6xl mx-auto h-[350px] md:h-[450px]" style={{ perspective: '1200px' }}>
-                            {/* Image 1 - Front (Left) - Smallest, Appears First with 3D Tilt */}
+                        {/* Images Grid - Cinematic 3D Choreographed Animation */}
+                        <div className="relative flex items-center justify-center max-w-6xl mx-auto h-[350px] md:h-[450px]" style={{ perspective: '1500px' }}>
+                            {/* Image 1 - Front - Starts CENTER, moves LEFT when Image 2 appears */}
                             <motion.div
                                 style={{
                                     opacity: image1Opacity,
                                     scale: image1Scale,
                                     y: image1Y,
+                                    x: image1X,
                                     rotateX: image1RotateX,
                                     rotateY: image1RotateY,
+                                    rotateZ: image1RotateZ,
                                     transformStyle: 'preserve-3d',
                                 }}
-                                className="absolute left-[5%] md:left-[15%] w-[32%] md:w-[340px] h-[75%] md:h-[340px] rounded-2xl md:rounded-3xl overflow-hidden shadow-[0_25px_70px_rgba(0,0,0,0.2)] z-10 cursor-pointer will-change-transform"
+                                className="absolute left-1/2 -translate-x-1/2 w-[32%] md:w-[500px] h-[75%] md:h-[340px] rounded-2xl md:rounded-3xl overflow-hidden shadow-[0_25px_70px_rgba(0,0,0,0.2)] z-10 cursor-pointer will-change-transform"
                                 onClick={() => openLightbox(images, 0)}
                             >
                                 <img
@@ -115,7 +122,7 @@ const GalleryThree: React.FC = () => {
                                 />
                             </motion.div>
 
-                            {/* Image 2 - Back (Center) - Medium, Appears Second, Overlaps Image 1 */}
+                            {/* Image 2 - Back - Appears CENTER-RIGHT, pushes Image 1 left */}
                             <motion.div
                                 style={{
                                     opacity: image2Opacity,
@@ -124,9 +131,10 @@ const GalleryThree: React.FC = () => {
                                     x: image2X,
                                     rotateX: image2RotateX,
                                     rotateY: image2RotateY,
+                                    rotateZ: image2RotateZ,
                                     transformStyle: 'preserve-3d',
                                 }}
-                                className="absolute left-[25%] md:left-[32%] w-[40%] md:w-[420px] h-[82%] md:h-[370px] rounded-2xl md:rounded-3xl overflow-hidden shadow-[0_30px_80px_rgba(0,0,0,0.25)] z-20 cursor-pointer will-change-transform"
+                                className="absolute left-1/2 -translate-x-1/2 w-[40%] md:w-[520px] h-[82%] md:h-[370px] rounded-2xl md:rounded-3xl overflow-hidden shadow-[0_30px_80px_rgba(0,0,0,0.25)] z-20 cursor-pointer will-change-transform"
                                 onClick={() => openLightbox(images, 1)}
                             >
                                 <img
@@ -136,7 +144,7 @@ const GalleryThree: React.FC = () => {
                                 />
                             </motion.div>
 
-                            {/* Image 3 - Sideways (Right) - Largest, Appears Last, Overlaps Image 2 */}
+                            {/* Image 3 - Sideways - Appears CENTER-RIGHT, pushes others aside */}
                             <motion.div
                                 style={{
                                     opacity: image3Opacity,
@@ -145,9 +153,10 @@ const GalleryThree: React.FC = () => {
                                     x: image3X,
                                     rotateX: image3RotateX,
                                     rotateY: image3RotateY,
+                                    rotateZ: image3RotateZ,
                                     transformStyle: 'preserve-3d',
                                 }}
-                                className="absolute left-[45%] md:left-[48%] w-[48%] md:w-[480px] h-[92%] md:h-[410px] rounded-2xl md:rounded-3xl overflow-hidden shadow-[0_35px_90px_rgba(0,0,0,0.3)] z-30 cursor-pointer will-change-transform"
+                                className="absolute left-1/2 -translate-x-1/2 w-[48%] md:w-[500px] h-[92%] md:h-[410px] rounded-2xl md:rounded-3xl overflow-hidden shadow-[0_35px_90px_rgba(0,0,0,0.3)] z-30 cursor-pointer will-change-transform"
                                 onClick={() => openLightbox(images, 2)}
                             >
                                 <img
