@@ -5,7 +5,7 @@ import { toast } from 'sonner';
 
 // Dashboard Queries
 export const useDashboardStats = () => {
-  return useQuery({
+ return useQuery({
     queryKey: ['admin', 'dashboard', 'stats'],
     queryFn: adminApi.getDashboardStats,
   });
