@@ -46,7 +46,7 @@ const GalleryThree: React.FC = () => {
     const image1Y = useTransform(scrollYProgress, [0, 0.05, 0.25], [120, 120, 0]);
     const image1X = useTransform(scrollYProgress, [0.30, 0.5], [-120, -450]); // Moves further LEFT
     const image1RotateX = useTransform(scrollYProgress, [0.05, 0.25], [0, 0]);
-    const image1RotateY = useTransform(scrollYProgress, [0.05, 0.25, 0.4], [0, 20, 30]); // Tilts left
+    const image1RotateY = useTransform(scrollYProgress, [0.05, 0.25, 0.4], [0, 0, 30]); // Tilts left
     const image1RotateZ = useTransform(scrollYProgress, [0.25, 0.4], [0, 0]); // Rotates left
 
     // Image 2 (Back) - Appears CENTER-RIGHT, pushes Image 1 to the left
@@ -62,7 +62,7 @@ const GalleryThree: React.FC = () => {
     const image3Opacity = useTransform(scrollYProgress, [0, 0.55, 0.75], [0, 0, 1]);
     const image3Scale = useTransform(scrollYProgress, [0, 0.55, 0.75], [0.75, 0.75, 1]);
     const image3Y = useTransform(scrollYProgress, [0, 0.55, 0.75], [120, 120, 0]);
-    const image3X = useTransform(scrollYProgress, [0.55, 0.75], [120, -50]); // Stays slightly right of center
+    const image3X = useTransform(scrollYProgress, [0.55, 0.75], [120, 0]); // Stays slightly right of center
     const image3RotateX = useTransform(scrollYProgress, [0.55, 0.75], [0, 0]);
     const image3RotateY = useTransform(scrollYProgress, [0.55, 0.75], [15, 25]); // Slight right tilt
     const image3RotateZ = useTransform(scrollYProgress, [0.55, 0.75], [0, 0]); // Rotates right
@@ -156,7 +156,7 @@ const GalleryThree: React.FC = () => {
                                     rotateZ: image3RotateZ,
                                     transformStyle: 'preserve-3d',
                                 }}
-                                className="absolute left-1/2 -translate-x-1/2 w-[48%] md:w-[500px] h-[92%] md:h-[410px] rounded-2xl md:rounded-3xl overflow-hidden shadow-[0_35px_90px_rgba(0,0,0,0.3)] z-30 cursor-pointer will-change-transform"
+                                className="absolute left-1/2 -translate-x-1/2 w-[48%] md:w-[540px] h-[92%] md:h-[410px] rounded-2xl md:rounded-3xl overflow-hidden shadow-[0_35px_90px_rgba(0,0,0,0.3)] z-30 cursor-pointer will-change-transform"
                                 onClick={() => openLightbox(images, 2)}
                             >
                                 <img
