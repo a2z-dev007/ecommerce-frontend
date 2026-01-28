@@ -14,8 +14,11 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: 'Ecommerce Store',
-  description: 'Modern ecommerce platform',
+  title: 'Kangpack- Your Smart Workstation',
+  description: 'A smarter way to work on the move. Kangpack combines comfort, mobility, and smart design for everyday productivity.',
+  icons: {
+    icon: '/assets/favicon.png',
+  },
 };
 
 export default function RootLayout({

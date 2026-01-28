@@ -4,6 +4,7 @@ import { motion } from 'framer-motion';
 import { Image as ImageIcon, ChevronLeft, ChevronRight } from 'lucide-react';
 import { ASSETS } from '@/constants/assets';
 import { Lightbox, useLightbox } from '@/components/ui/Lightbox';
+import { ParallaxImage } from '@/components/common/ScrollSection';
 
 const OfficeAnywhere: React.FC = () => {
     const scrollContainerRef = useRef<HTMLDivElement>(null);
@@ -62,23 +63,38 @@ const OfficeAnywhere: React.FC = () => {
                 {/* Header */}
                 <div className="text-center mb-12 md:mb-16">
                     {/* Badge */}
-                    <div className="inline-flex items-center gap-2 bg-[#D4CEC4] px-4 py-2 rounded-lg mb-6">
+                    <motion.div
+                        initial={{ opacity: 0, scale: 0.8 }}
+                        whileInView={{ opacity: 1, scale: 1 }}
+                        viewport={{ once: false }}
+                        className="inline-flex items-center gap-2 bg-[#D4CEC4] px-4 py-2 rounded-lg mb-6"
+                    >
                         <ImageIcon className="w-3 h-3 brand-primary" />
                         <span className="text-[11px] font-medium tracking-wide brand-primary uppercase">
                             The Experience
                         </span>
-                    </div>
+                    </motion.div>
 
                     {/* Heading */}
-                    <h2 className="text-[clamp(2.5rem,7vw,5rem)] leading-[1.1] mb-4 tracking-tight">
+                    <motion.h2
+                        initial={{ opacity: 0, y: 30 }}
+                        whileInView={{ opacity: 1, y: 0 }}
+                        viewport={{ once: false }}
+                        className="text-[clamp(2.5rem,7vw,5rem)] leading-[1.1] mb-4 tracking-tight"
+                    >
                         <span className="text-[#6B4A2D] font-bold">Your Office </span>
                         <span className="text-[#B8AFA1] font-bold">Anywhere</span>
-                    </h2>
+                    </motion.h2>
 
                     {/* Description */}
-                    <p className="light-text text-sm md:text-base max-w-2xl mx-auto leading-relaxed">
+                    <motion.p
+                        initial={{ opacity: 0 }}
+                        whileInView={{ opacity: 1 }}
+                        viewport={{ once: false }}
+                        className="light-text text-sm md:text-base max-w-2xl mx-auto leading-relaxed"
+                    >
                         Turn any space into productive workspace instantly, comfortably, effortlessly.
-                    </p>
+                    </motion.p>
                 </div>
             </div>
 
@@ -111,7 +127,7 @@ const OfficeAnywhere: React.FC = () => {
                         dragConstraints={dragConstraints}
                         dragElastic={0.1}
                         dragMomentum={true}
-                        className="flex gap-4 md:gap-6 py-4"
+                        className="flex gap-4 md:gap-6 py-4 px-10"
                         style={{
                             width: 'max-content',
                         }}
@@ -119,16 +135,18 @@ const OfficeAnywhere: React.FC = () => {
                         {carouselImages.map((image, index) => (
                             <motion.div
                                 key={index}
+                                initial={{ opacity: 0, x: 50 }}
+                                whileInView={{ opacity: 1, x: 0 }}
+                                viewport={{ once: false }}
+                                transition={{ delay: index * 0.05 }}
                                 className="flex-shrink-0 w-[280px] md:w-[350px] h-[200px] md:h-[240px] rounded-2xl md:rounded-3xl overflow-hidden shadow-[0_10px_40px_rgba(0,0,0,0.12)] hover:shadow-[0_20px_60px_rgba(0,0,0,0.18)] transition-shadow duration-300 cursor-pointer"
                                 whileHover={{ scale: 1.02, y: -5 }}
-                                transition={{ duration: 0.3 }}
                                 onClick={() => openLightbox(carouselImages, index)}
                             >
-                                <img
+                                <ParallaxImage
                                     src={image}
-                                    className="w-full h-full object-cover pointer-events-none"
+                                    className="w-full h-full"
                                     alt={`Office scene ${index + 1}`}
-                                    draggable={false}
                                 />
                             </motion.div>
                         ))}

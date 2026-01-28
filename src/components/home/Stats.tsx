@@ -1,52 +1,98 @@
-
+"use client"
 import React from 'react';
+import SlotCounter from 'react-slot-counter';
+import { motion } from 'framer-motion';
 
 const Stats: React.FC = () => {
+  const statsData = [
+    {
+      value: "3",
+      suffix: "+",
+      label: "Ways to Wear",
+      description: "Backpack • Sling • Workstation"
+    },
+    {
+      value: "95",
+      suffix: "%",
+      label: "Posture Stability",
+      description: "Ergonomic weight balance"
+    },
+    {
+      value: "200",
+      suffix: "%",
+      label: "Satisfied Clients",
+      description: "With a great experience and results."
+    }
+  ];
+
   return (
-    <section className="bg-brand-beige py-24 px-6">
+    <section className="bg-[#F8F5F1] py-16 md:py-32 px-6 overflow-hidden">
       <div className="max-w-7xl mx-auto">
-        {/* <div className="flex flex-col md:flex-row items-center gap-12 mb-20">
-          <div className="flex-shrink-0 flex items-center gap-2">
-            <div className="w-2 h-2 rounded-full bg-brand-brown"></div>
-            <span className="text-[10px] font-bold uppercase tracking-widest text-brand-brown/40">Stats & Facts</span>
-          </div>
-          <h2 className="text-3xl md:text-5xl max-w-4xl">
-            We engineer freedom for modern professionals where <span className="italic">mobility meets real productivity.</span> Every detail is designed to remove friction, boost comfort, and keep you moving without slowing down.
-          </h2>
-        </div> */}
-        <div className="text-center mb-16 md:mb-20">
-          {/* Badge */}
-          <div className="inline-flex items-center gap-2 bg-[#D4CEC4] px-4 py-2 rounded-lg mb-6">
-            <div className="w-1.5 h-1.5 bg-[#6B4A2D] rounded-full"></div>
-            <span className="text-[11px] font-medium tracking-wide brand-primary uppercase">
-              Stats & Facts
-            </span>
+        {/* Header Section */}
+        <div className="flex flex-col lg:flex-row gap-8 lg:gap-20 mb-16 md:mb-24 lg:mb-32">
+          {/* Badge Column */}
+          <div className="w-full lg:w-1/4">
+            <motion.div
+              initial={{ opacity: 0, x: -20 }}
+              whileInView={{ opacity: 1, x: 0 }}
+              viewport={{ once: true }}
+              className="flex items-center gap-3"
+            >
+              <div className="w-2.5 h-2.5 bg-[#6B4A2D] rounded-[2px]" />
+              <span className="text-[11px] font-bold uppercase tracking-widest text-[#6B4A2D]/60 mt-0.5">
+                Stats & Facts
+              </span>
+            </motion.div>
           </div>
 
-          {/* Heading */}
-          <h2 className="text-[clamp(1.5rem,4vw,3.5rem)] leading-[1.1] tracking-tight max-w-5xl mx-auto">
-            <span className="text-[#6B4A2D] font-bold">We engineer freedom for modern professionals where mobility meets real productivity. </span>
-            <span className="text-[#B8AFA1] font-bold">Every detail is designed to remove friction, boost comfort, and keep you moving without slowing down.</span>
-          </h2>
+          {/* Heading Column */}
+          <div className="w-full lg:w-3/4">
+            <motion.h2
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.8 }}
+              className="text-[clamp(1.6rem,4.5vw,3.2rem)] leading-[1.1] tracking-tight text-left max-w-4xl"
+            >
+              <span className="text-[#6B4A2D] font-bold">We engineer freedom for modern professionals where mobility meets real productivity. </span>
+              <span className="text-[#B8AFA1] font-bold">Every detail is designed to remove friction, boost comfort, and keep you moving without slowing down.</span>
+            </motion.h2>
+          </div>
         </div>
 
+        {/* Stats Grid */}
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-x-12 gap-y-16 lg:gap-20">
+          {statsData.map((stat, index) => (
+            <motion.div
+              key={index}
+              initial={{ opacity: 0, y: 30 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ delay: index * 0.1, duration: 0.8 }}
+              className={`group ${index === 2 ? 'sm:col-span-2 lg:col-span-1' : ''}`}
+            >
+              {/* Number and Suffix */}
+              <div className="text-[clamp(3.5rem,12vw,8rem)] lg:text-[clamp(4.5rem,8vw,9.5rem)] font-black text-[#6B4A2D] leading-[0.8] mb-4 md:mb-6 lg:mb-8 flex items-baseline">
+                <SlotCounter
+                  value={stat.value}
+                  duration={2}
+                  animateOnVisible={{ triggerOnce: true, rootMargin: '0px 0px -100px 0px' }}
+                />
+                <span className="ml-[1px] md:ml-[2px]">{stat.suffix}</span>
+              </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-12 text-center md:text-left">
-          <div>
-            <h3 className="text-7xl md:text-9xl text-brand-brown leading-none mb-4">2+</h3>
-            <h4 className="text-xl font-bold mb-2">Ways to Wear</h4>
-            <p className="text-brand-brown/60 text-sm">Backpack • Sling • Workstation</p>
-          </div>
-          <div>
-            <h3 className="text-7xl md:text-9xl text-brand-brown leading-none mb-4">69%</h3>
-            <h4 className="text-xl font-bold mb-2">Posture Stability</h4>
-            <p className="text-brand-brown/60 text-sm">Ergonomic weight balance</p>
-          </div>
-          <div>
-            <h3 className="text-7xl md:text-9xl text-brand-brown leading-none mb-4">146%</h3>
-            <h4 className="text-xl font-bold mb-2">Satisfied Clients</h4>
-            <p className="text-brand-brown/60 text-sm">With a great experience and results.</p>
-          </div>
+              {/* Divider Line */}
+              <div className="w-full h-[1px] bg-[#6B4A2D]/10 mb-6" />
+
+              {/* Label and Description */}
+              <h4 className="text-[18px] md:text-[20px] lg:text-[22px] font-bold text-[#6B4A2D] mb-2 tracking-tight">
+                {stat.label}
+              </h4>
+              <p className="text-[14px] md:text-[15px] lg:text-[16px] text-[#B8AFA1] font-medium leading-relaxed max-w-sm">
+                {stat.description}
+              </p>
+            </motion.div>
+          ))}
         </div>
       </div>
     </section>

@@ -1,5 +1,6 @@
 
 import React from 'react';
+import Link from 'next/link';
 
 const Footer: React.FC = () => {
     return (
@@ -18,8 +19,12 @@ const Footer: React.FC = () => {
                     <div>
                         <h5 className="font-bold text-xs uppercase tracking-widest mb-6">Company</h5>
                         <ul className="space-y-4 text-brand-brown/60 text-sm">
-                            <li><a href="#" className="hover:text-brand-brown">Blog</a></li>
-                            <li><a href="#" className="hover:text-brand-brown">Contact us</a></li>
+                            <li><Link href="/about" className="hover:text-brand-brown">About Us</Link></li>
+                            <li><Link href="#" className="hover:text-brand-brown">Blog</Link></li>
+                            <li><Link href="/contact" className="hover:text-brand-brown">Contact us</Link></li>
+                            <li><Link href="/faqs" className="hover:text-brand-brown">FAQ's</Link></li>
+                            <li><Link href="/auth/login" className="hover:text-brand-brown font-medium">Log In</Link></li>
+                            <li><Link href="/auth/register" className="hover:text-brand-brown font-medium">Sign Up</Link></li>
                         </ul>
                     </div>
                     <div>

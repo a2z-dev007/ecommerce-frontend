@@ -93,7 +93,7 @@ const Hero: React.FC = () => {
       </div>
 
       {/* Monolithic Background Text: ANYWHERE */}
-      <div className="absolute inset-0 z-10 flex items-center justify-center pointer-events-none">
+      <div className="absolute inset-0 z-10 flex items-center justify-center pointer-events-none overflow-hidden">
         <motion.h1
           style={{
             y: textTranslateY,

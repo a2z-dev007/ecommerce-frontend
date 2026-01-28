@@ -98,3 +98,7 @@
 .light-text {
   color: #A39B8B !important;
 }
+
+.vertical-text {
+  writing-mode: vertical-rl;
+}

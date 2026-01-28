@@ -1,56 +1,167 @@
 "use client"
-import React from 'react';
-import { Check, Play } from 'lucide-react';
+import React, { useRef } from 'react';
+import { motion, useScroll, useTransform, AnimatePresence } from 'framer-motion';
+import { Check, ArrowRight, Briefcase, Zap, Shield } from 'lucide-react';
 import { ASSETS } from '@/constants/assets';
-import { Lightbox, useLightbox } from '@/components/ui/Lightbox';
+
+const slides = [
+  {
+    badge: "Why Kangpack",
+    icon: <Briefcase className="w-3.5 h-3.5" />,
+    title1: "Wearable",
+    title2: "Workstation",
+    description: "A smarter way to work on the move. Kangpack combines comfort, mobility, and smart design for everyday productivity.",
+    items: ["Hands Free Working", "Ergonomic Fit", "Quick Access Setup"],
+    image: ASSETS.TICKERS.MAIN
+  },
+  {
+    badge: "Smart Feature",
+    icon: <Zap className="w-3.5 h-3.5" />,
+    title1: "Convertible",
+    title2: "Work Tray",
+    description: "Unfolds in seconds to create a stable workspace wherever you stand, ensuring productivity never stops.",
+    items: ["Fits 13–16\" Laptops", "Anti-Slip Grip Surface", "Adjustable Viewing Angle"],
+    image: ASSETS.TICKERS.IMG_354A7762
+  },
+  {
+    badge: "Build Quality",
+    icon: <Shield className="w-3.5 h-3.5" />,
+    title1: "Built To",
+    title2: "Last",
+    description: "Crafted with premium materials and refined finishes to endure the rigors of daily travel and professional use.",
+    items: ["Precision Stitching", "Shape Retention Design", "Weather-Resistant Surface"],
+    image: ASSETS.TICKERS.IMG_354A7767
+  }
+];
 
 const WearableSection: React.FC = () => {
-  const { isOpen, images, currentIndex, openLightbox, closeLightbox, setIndex } = useLightbox();
+  const containerRef = useRef<HTMLDivElement>(null);
+  const { scrollYProgress } = useScroll({
+    target: containerRef,
+    offset: ["start start", "end end"]
+  });
+
+
+  // Map scroll progress to slide index (0, 1, 2)
+  const activeIndex = useTransform(scrollYProgress, [0, 0.33, 0.66, 1], [0, 0, 1, 2]);
+
+  // State-like derived value for AnimatePresence
+  const [currentSlide, setCurrentSlide] = React.useState(0);
+
+  React.useEffect(() => {
+    return activeIndex.onChange(v => {
+      const index = Math.round(v);
+      if (index !== currentSlide) setCurrentSlide(index);
+    });
+  }, [activeIndex, currentSlide]);
 
   return (
-    <section className="bg-brand-beige py-12 px-6">
-      <div className="max-w-7xl mx-auto flex flex-col md:flex-row gap-6">
-        <div className="flex-1 bg-[#F2EFE9] shadow-lg rounded-[40px] p-12 flex flex-col justify-between items-start min-h-[500px]">
-          <div>
-            <div className="flex items-center w-max gap-2 mb-8 bg-[#D4CEC4] px-4 py-2 rounded-lg">
-              <div className="w-1.5 h-1.5 bg-[#6B4A2D] rounded-full"></div>
-              <span className="text-[11px] font-medium tracking-wide brand-primary uppercase">Why Kangpack</span>
-            </div>
-            <h2 className="text-[clamp(1.5rem,5vw,4.5rem)] leading-[1.1] mb-8 tracking-tight">
-              <span className="text-[#B8AFA1] font-bold block">Wearable</span>
-              <span className="text-[#6B4A2D] font-bold block">Workstation</span>
-            </h2>
-            <p className="light-text mb-12 max-w-sm leading-relaxed">A smarter way to work on the move. Kangpack combines comfort, mobility, and smart design for everyday productivity.</p>
+    <div ref={containerRef} className="relative h-[400vh] lg:h-[300vh] bg-brand-beige">
+      <div className="sticky top-0 h-screen w-full flex items-center justify-center overflow-hidden py-4 md:py-12 px-4 md:px-6">
+        <div className="max-w-7xl mx-auto w-full grid grid-cols-1 lg:grid-cols-2 gap-4 md:gap-6 h-full md:max-h-[800px] py-16 md:py-0">
 
-            <ul className="space-y-4">
-              <li className="flex items-center gap-3 text-sm font-bold uppercase tracking-widest"><div className="w-4 h-4 rounded-full bg-brand-beige flex items-center justify-center"><Check className="w-2 h-2" /></div> Hands Free Working</li>
-              <li className="flex items-center gap-3 text-sm font-bold uppercase tracking-widest"><div className="w-4 h-4 rounded-full bg-brand-beige flex items-center justify-center"><Check className="w-2 h-2" /></div> Ergonomic Fit</li>
-              <li className="flex items-center gap-3 text-sm font-bold uppercase tracking-widest"><div className="w-4 h-4 rounded-full bg-brand-beige flex items-center justify-center"><Check className="w-2 h-2" /></div> Quick Access Setup</li>
-            </ul>
+          {/* Left Content Card */}
+          <div className="relative h-[65%] lg:h-full bg-[#F2EFE9] shadow-2xl rounded-[30px] md:rounded-[40px] flex flex-col justify-between items-start overflow-hidden order-2 lg:order-1">
+            {/* Dot Grid Background Pattern (Persistent) */}
+            <div className="absolute inset-0 opacity-[0.03] pointer-events-none"
+              style={{ backgroundImage: 'radial-gradient(#6B4A2D 1px, transparent 1px)', backgroundSize: '24px 24px' }} />
+
+            <div className="relative z-10 w-full h-full p-6 md:p-12 flex flex-col justify-center">
+              <AnimatePresence mode="wait">
+                <motion.div
+                  key={currentSlide}
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  exit={{ opacity: 0, y: -20 }}
+                  transition={{ duration: 0.4, ease: "easeOut" }}
+                  className="flex-1 flex flex-col justify-center"
+                >
+                  <div className="w-full">
+                    {/* Badge */}
+                    <div className="flex items-center w-max gap-2 mb-4 md:mb-8 bg-[#D4CEC4] px-3 py-1.5 md:px-4 md:py-2 rounded-lg">
+                      <div className="text-[#6B4A2D] scale-75 md:scale-100">{slides[currentSlide].icon}</div>
+                      <span className="text-[9px] md:text-[11px] font-bold tracking-widest brand-primary uppercase">{slides[currentSlide].badge}</span>
+                    </div>
+
+                    {/* Title */}
+                    <h2 className="text-[clamp(1.75rem,5vw,4.5rem)] leading-[0.9] mb-4 md:mb-8 tracking-tighter">
+                      <span className="text-[#6B4A2D] font-black block">{slides[currentSlide].title1}</span>
+                      <span className="text-[#B8AFA1] font-black block">{slides[currentSlide].title2}</span>
+                    </h2>
+
+                    {/* Description */}
+                    <p className="light-text mb-6 md:mb-10 max-w-md leading-relaxed text-[14px] md:text-lg opacity-80">
+                      {slides[currentSlide].description}
+                    </p>
+
+                    {/* Feature Items - Grid on mobile for space */}
+                    <div className="grid grid-cols-1 sm:grid-cols-2 lg:flex lg:flex-wrap gap-2 md:gap-4">
+                      {slides[currentSlide].items.map((item, i) => (
+                        <div key={i} className="flex items-center gap-2 md:gap-3 bg-white/50 backdrop-blur-sm border border-[#6B4A2D]/10 px-3 py-2 md:px-4 md:py-2.5 rounded-xl">
+                          <div className="w-4 h-4 md:w-5 md:h-5 rounded-full bg-brand-brown transition-transform hover:scale-110 flex items-center justify-center">
+                            <Check className="w-2.5 h-2.5 text-white" strokeWidth={4} />
+                          </div>
+                          <span className="text-[10px] md:text-sm font-bold text-[#6B4A2D] uppercase tracking-wider">{item}</span>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                </motion.div>
+              </AnimatePresence>
+
+              {/* Footer and Navigation Indicators (Persistent) */}
+              <div className="relative z-10 w-full flex items-center justify-between mt-6 md:mt-auto pt-4 md:pt-10">
+                <motion.button
+                  whileHover={{ scale: 1.05 }}
+                  whileTap={{ scale: 0.95 }}
+                  className="flex items-center gap-3 md:gap-4 bg-brand-brown text-white py-3 px-6 md:py-4 md:px-8 rounded-full shadow-lg group transition-all"
+                >
+                  <span className="text-xs font-bold uppercase tracking-[0.2em]">Shop Now</span>
+                  <ArrowRight className="w-4 h-4 md:w-5 md:h-5 text-white group-hover:translate-x-1 transition-transform" />
+                </motion.button>
+
+                <div className="flex gap-2">
+                  {slides.map((_, i) => (
+                    <div
+                      key={i}
+                      className={`h-1.5 rounded-full transition-all duration-500 ${i === currentSlide ? 'bg-brand-brown w-8' : 'bg-[#D4CEC4] w-2.5'}`}
+                    />
+                  ))}
+                </div>
+              </div>
+            </div>
           </div>
 
-          <button className="flex items-center gap-3 bg-brand-brown text-white px-6 py-3 rounded-full hover:bg-opacity-90 transition-all shadow-lg mt-12">
-            <div className="w-6 h-6 bg-white/20 rounded-full flex items-center justify-center"><Play className="w-3 h-3 fill-current" /></div>
-            <span className="text-xs font-bold uppercase tracking-wider">Shop Now</span>
-          </button>
-        </div>
+          {/* Right Image Card */}
+          <div className="relative h-[30%] lg:h-full rounded-[30px] md:rounded-[40px] overflow-hidden shadow-2xl bg-[#E8E2DA] order-1 lg:order-2">
+            <AnimatePresence mode="wait">
+              <motion.div
+                key={currentSlide}
+                initial={{ opacity: 0, scale: 1.1 }}
+                animate={{ opacity: 1, scale: 1 }}
+                exit={{ opacity: 0, scale: 0.9 }}
+                transition={{ duration: 0.8 }}
+                className="absolute inset-0 group"
+              >
+                <img
+                  src={slides[currentSlide].image}
+                  alt={slides[currentSlide].title1}
+                  className="w-full h-full object-cover transition-transform duration-[2s] group-hover:scale-110"
+                />
 
-        <div
-          className="flex-1 rounded-[40px] overflow-hidden cursor-pointer group"
-          onClick={() => openLightbox([ASSETS.TICKERS.MAIN], 0)}
-        >
-          <img src={ASSETS.TICKERS.MAIN} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700" alt="Wearable" />
+                {/* Floating Image Badge - Smaller on Mobile */}
+                <div className="absolute bottom-6 right-6 md:bottom-10 md:right-10 z-20 bg-white/20 backdrop-blur-xl border border-white/20 p-3 md:p-4 rounded-2xl shadow-2xl">
+                  <div className="w-6 h-6 md:w-8 md:h-8 rounded-full bg-white flex items-center justify-center">
+                    <ArrowRight className="w-3 h-3 md:w-4 md:h-4 text-brand-brown" />
+                  </div>
+                </div>
+              </motion.div>
+            </AnimatePresence>
+          </div>
         </div>
       </div>
 
-      <Lightbox
-        isOpen={isOpen}
-        images={images}
-        currentIndex={currentIndex}
-        onClose={closeLightbox}
-        onIndexChange={setIndex}
-      />
-    </section>
+    </div>
   );
 };
 

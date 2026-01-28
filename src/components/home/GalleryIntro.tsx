@@ -1,8 +1,8 @@
-
 "use client"
 import { ASSETS } from '@/constants/assets';
 import React from 'react';
 import { Lightbox, useLightbox } from '@/components/ui/Lightbox';
+import { ParallaxImage } from '@/components/common/ScrollSection';
 
 const GalleryIntro: React.FC = () => {
   const images = [
@@ -15,38 +15,35 @@ const GalleryIntro: React.FC = () => {
 
   return (
     <section className="bg-brand-beige py-12 px-6 md:px-16 relative">
-      <div className="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-3 gap-4">
+      <div className="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-3 gap-6">
         <div
-          className="aspect-[16/9] md:aspect-[4/3] overflow-hidden cursor-pointer group"
+          className="aspect-[16/9] md:aspect-[4/3] rounded-2xl overflow-hidden cursor-pointer group shadow-lg"
           onClick={() => openLightbox(images, 0)}
         >
-          <img
+          <ParallaxImage
             src={ASSETS.TICKERS.SECOND}
-            className="w-full h-full object-cover rounded-2xl group-hover:scale-105 transition-transform duration-700"
+            className="w-full h-full"
             alt="Bag Close-up"
-            onError={(e) => (e.currentTarget.src = "https://picsum.photos/seed/kang-detail1/800/600")}
           />
         </div>
         <div
-          className="aspect-[16/9] md:aspect-[4/3] overflow-hidden cursor-pointer group"
+          className="aspect-[16/9] md:aspect-[4/3] rounded-2xl overflow-hidden cursor-pointer group shadow-lg"
           onClick={() => openLightbox(images, 1)}
         >
-          <img
+          <ParallaxImage
             src={ASSETS.TICKERS.MAIN2}
-            className="w-full h-full object-cover rounded-2xl group-hover:scale-105 transition-transform duration-700"
+            className="w-full h-full"
             alt="Harness Close-up"
-            onError={(e) => (e.currentTarget.src = "https://picsum.photos/seed/kang-detail2/800/600")}
           />
         </div>
         <div
-          className="aspect-[16/9] md:aspect-[4/3] overflow-hidden cursor-pointer group"
+          className="aspect-[16/9] md:aspect-[4/3] rounded-2xl overflow-hidden cursor-pointer group shadow-lg"
           onClick={() => openLightbox(images, 2)}
         >
-          <img
+          <ParallaxImage
             src={ASSETS.TICKERS.SIDE}
-            className="w-full h-full object-cover rounded-2xl group-hover:scale-105 transition-transform duration-700"
+            className="w-full h-full"
             alt="Side Close-up"
-            onError={(e) => (e.currentTarget.src = "https://picsum.photos/seed/kang-detail3/800/600")}
           />
         </div>
       </div>

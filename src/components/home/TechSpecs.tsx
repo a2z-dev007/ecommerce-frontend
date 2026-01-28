@@ -1,12 +1,12 @@
 "use client"
 import React from 'react';
+import { motion } from 'framer-motion';
 import { ArrowRight } from 'lucide-react';
 import { ASSETS } from '@/constants/assets';
 import PrimaryButton from '@/components/common/PrimaryButton';
-import { Lightbox, useLightbox } from '@/components/ui/Lightbox';
+import { ParallaxImage } from '@/components/common/ScrollSection';
 
 const TechSpecs: React.FC = () => {
-  const { isOpen, images, currentIndex, openLightbox, closeLightbox, setIndex } = useLightbox();
 
   const specs = [
     { label: "Tray Size (Unfolded)", value: "16\" × 11\" × 0.5\"" },
@@ -30,17 +30,24 @@ const TechSpecs: React.FC = () => {
       <div className="max-w-7xl mx-auto flex flex-col lg:flex-row gap-16 items-start">
         {/* Left Column: Image & Intro */}
         <div className="flex-1 w-full lg:sticky lg:top-24">
-          <div
-            className="rounded-[32px] overflow-hidden shadow-xl mb-10 h-[600px] cursor-pointer group"
-            onClick={() => openLightbox([ASSETS.TICKERS.FIRST], 0)}
+          <motion.div
+            initial={{ opacity: 0, scale: 0.95 }}
+            whileInView={{ opacity: 1, scale: 1 }}
+            viewport={{ once: false }}
+            className="rounded-[32px] overflow-hidden shadow-xl mb-10 h-[600px] group"
           >
-            <img
+            <ParallaxImage
               src={ASSETS.TICKERS.FIRST}
-              className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700"
+              className="w-full h-full"
               alt="Technical Details"
             />
-          </div>
-          <div className="max-w-lg">
+          </motion.div>
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: false }}
+            className="max-w-lg"
+          >
             <h3 className="text-[1.87rem] leading-[1.3] text-[#6B4A2D] font-normal">
               <span className="font-bold">Designed for</span> <span className="text-[#8B7E6F]">work anywhere.</span>
               {" "}Built for <span className="font-bold">comfort</span>, <span className="font-bold">balance</span>, and
@@ -49,30 +56,44 @@ const TechSpecs: React.FC = () => {
             <div className="mt-8">
               <PrimaryButton>Buy Now</PrimaryButton>
             </div>
-          </div>
+          </motion.div>
         </div>
 
         {/* Right Column: Specifications */}
         <div className="flex-1 w-full flex flex-col items-center">
           <div className="mb-12 text-center">
             {/* Badge */}
-            <div className="inline-flex items-center gap-2 bg-[#D4CEC4] px-4 py-2 rounded-lg mb-6">
+            <motion.div
+              initial={{ opacity: 0, scale: 0.8 }}
+              whileInView={{ opacity: 1, scale: 1 }}
+              viewport={{ once: false }}
+              className="inline-flex items-center gap-2 bg-[#D4CEC4] px-4 py-2 rounded-lg mb-6"
+            >
               <div className="w-1.5 h-1.5 bg-[#6B4A2D] rounded-full"></div>
               <span className="text-[11px] font-medium tracking-wide brand-primary uppercase">
                 Technical Detail
               </span>
-            </div>
+            </motion.div>
 
-            <h2 className="text-[clamp(2.5rem,7vw,5.5rem)] leading-[0.95] tracking-tight flex flex-col">
+            <motion.h2
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: false }}
+              className="text-[clamp(2.5rem,7vw,5.5rem)] leading-[0.95] tracking-tight flex flex-col"
+            >
               <span className="text-[#6B4A2D] font-bold">Technical</span>
               <span className="text-[#B8AFA1] font-bold">Specifications</span>
-            </h2>
+            </motion.h2>
           </div>
 
           <div className="w-full space-y-0 text-[13px] md:text-[14px]">
             {specs.map((s, i) => (
-              <div
+              <motion.div
                 key={i}
+                initial={{ opacity: 0, x: 20 }}
+                whileInView={{ opacity: 1, x: 0 }}
+                viewport={{ once: false }}
+                transition={{ delay: i * 0.05 }}
                 className={`flex ${s.fullRow ? 'flex-col py-6' : 'justify-between items-center py-5'} border-b border-[#6B4A2D]/10`}
               >
                 <span className={`text-[#8B7E6F] font-normal ${s.fullRow ? 'mb-4 text-left' : ''}`}>
@@ -86,19 +107,12 @@ const TechSpecs: React.FC = () => {
                 >
                   {s.value}
                 </span>
-              </div>
+              </motion.div>
             ))}
           </div>
         </div>
       </div>
 
-      <Lightbox
-        isOpen={isOpen}
-        images={images}
-        currentIndex={currentIndex}
-        onClose={closeLightbox}
-        onIndexChange={setIndex}
-      />
     </section>
   );
 };

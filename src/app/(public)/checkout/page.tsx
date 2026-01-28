@@ -1,202 +1,456 @@
 'use client';
 
-import { useForm } from 'react-hook-form';
-import { zodResolver } from '@hookform/resolvers/zod';
-import { z } from 'zod';
+import React, { useState, useEffect } from 'react';
+import { useAppDispatch, useAppSelector } from '@/lib/store/hooks';
+import { setStep, setShippingAddress, setPaymentMethod, resetCheckout } from '@/lib/store/features/checkout/checkoutSlice';
+import { clearCart } from '@/lib/store/features/cart/cartSlice';
+import Navbar from '@/components/home/Navbar';
+import { motion, AnimatePresence } from 'framer-motion';
+import { ChevronRight, CreditCard, Truck, User, MapPin, CheckCircle, ArrowLeft, Loader2, ShoppingBag } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { useCart } from '@/hooks/use-cart';
-import { formatPrice } from '@/lib/utils';
-import { useMutation } from '@tanstack/react-query';
-import { ordersApi } from '@/features/orders/api';
-import { toast } from 'sonner';
+import { useAuth } from '@/hooks/use-auth';
 import { useRouter } from 'next/navigation';
-import { ROUTES } from '@/lib/constants';
+import { formatPrice } from '@/lib/utils';
+import { toast } from 'sonner';
 
-const checkoutSchema = z.object({
-  fullName: z.string().min(2, 'Name is required'),
-  email: z.string().email('Invalid email'),
-  phone: z.string().min(10, 'Phone number is required'),
-  addressLine1: z.string().min(5, 'Address is required'),
-  addressLine2: z.string().optional(),
-  city: z.string().min(2, 'City is required'),
-  state: z.string().min(2, 'State is required'),
-  postalCode: z.string().min(4, 'Postal code is required'),
-  country: z.string().min(2, 'Country is required'),
-});
+// --- Sub-components ---
 
-type CheckoutForm = z.infer<typeof checkoutSchema>;
+const StepIndicator = ({ currentStep }: { currentStep: number }) => {
+  const steps = [
+    { id: 1, name: 'Information', icon: User },
+    { id: 2, name: 'Shipping', icon: Truck },
+    { id: 3, name: 'Payment', icon: CreditCard },
+  ];
+
+  return (
+    <div className="flex items-center justify-center space-x-4 md:space-x-8 mb-12">
+      {steps.map((step, idx) => (
+        <React.Fragment key={step.id}>
+          <div className="flex flex-col items-center">
+            <div
+              className={`w-10 h-10 md:w-12 md:h-12 rounded-full flex items-center justify-center transition-all duration-300 ${currentStep >= step.id
+                ? 'bg-[#6B4A2D] text-white shadow-lg'
+                : 'bg-white text-[#6B4A2D]/40 border-2 border-[#6B4A2D]/10'
+                }`}
+            >
+              <step.icon size={20} />
+            </div>
+            <span className={`text-[10px] md:text-xs font-bold uppercase tracking-widest mt-3 transition-colors ${currentStep >= step.id ? 'text-[#6B4A2D]' : 'text-[#6B4A2D]/40'
+              }`}>
+              {step.name}
+            </span>
+          </div>
+          {idx < steps.length - 1 && (
+            <div className={`h-[2px] w-8 md:w-16 transition-colors duration-500 mb-6 ${currentStep > step.id ? 'bg-[#6B4A2D]' : 'bg-[#6B4A2D]/10'
+              }`} />
+          )}
+        </React.Fragment>
+      ))}
+    </div>
+  );
+};
+
+// --- Checkout Main Page ---
 
 export default function CheckoutPage() {
-  const { items, getTotal, clearCart } = useCart();
   const router = useRouter();
+  const dispatch = useAppDispatch();
+  const { currentStep, shippingAddress, paymentMethod, isProcessing, error } = useAppSelector((state) => state.checkout);
+  const cartItems = useAppSelector((state) => state.cart.items);
+  const { isAuthenticated, user } = useAuth();
 
-  const {
-    register,
-    handleSubmit,
-    formState: { errors },
-  } = useForm<CheckoutForm>({
-    resolver: zodResolver(checkoutSchema),
+  const subtotal = cartItems.reduce((sum, item) => sum + item.product.price * item.quantity, 0);
+  const shipping = 0; // Free shipping
+  const total = subtotal + shipping;
+
+  const [formData, setFormData] = useState({
+    email: user?.email || '',
+    fullName: user?.firstName ? `${user.firstName} ${user.lastName || ''}`.trim() : '',
+    phone: '',
+    addressLine1: '',
+    city: '',
+    state: '',
+    postalCode: '',
+    country: 'United States',
   });
 
-  const { mutate: createOrder, isPending } = useMutation({
-    mutationFn: ordersApi.createOrder,
-    onSuccess: () => {
-      clearCart();
-      toast.success('Order placed successfully!');
-      router.push(ROUTES.ORDERS);
-    },
-    onError: () => {
-      toast.error('Failed to place order');
-    },
-  });
+  useEffect(() => {
+    if (cartItems.length === 0 && currentStep !== 4) {
+      router.push('/');
+    }
+  }, [cartItems, currentStep, router]);
 
-  const onSubmit = (data: CheckoutForm) => {
-    createOrder({
-      items: items.map((item) => ({
-        productId: item.productId,
-        quantity: item.quantity,
-      })),
-      shippingAddress: data,
-      paymentMethod: 'card',
-    });
+  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
-  if (items.length === 0) {
-    router.push(ROUTES.CART);
-    return null;
+  const handleInfoSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    dispatch(setShippingAddress(formData as any));
+    dispatch(setStep(2));
+  };
+
+  const handleShippingSubmit = () => {
+    dispatch(setStep(3));
+  };
+
+  const handlePaymentSubmit = async () => {
+    // Simulate payment processing
+    dispatch({ type: 'checkout/setProcessing', payload: true });
+    await new Promise(resolve => setTimeout(resolve, 2000));
+
+    // Success scenario
+    dispatch(clearCart());
+    dispatch(setStep(4)); // Step 4 is Success Page
+    toast.success('Order placed successfully!');
+  };
+
+  if (currentStep === 4) {
+    return (
+      <div className="min-h-screen bg-brand-beige flex flex-col items-center justify-center p-6 bg-[url('/assets/grid.svg')] bg-fixed">
+        <motion.div
+          initial={{ scale: 0.8, opacity: 0 }}
+          animate={{ scale: 1, opacity: 1 }}
+          className="bg-white p-12 rounded-[40px] shadow-2xl text-center max-w-lg w-full"
+        >
+          <div className="w-24 h-24 bg-green-100 text-green-600 rounded-full flex items-center justify-center mx-auto mb-8">
+            <CheckCircle size={48} />
+          </div>
+          <h1 className="text-4xl font-black text-[#6B4A2D] uppercase tracking-tighter mb-4">Order Confirmed!</h1>
+          <p className="text-[#8B7E6F] mb-10 leading-relaxed text-lg">
+            Thank you for your purchase. We've sent a confirmation email to <span className="font-bold text-[#6B4A2D]">{formData.email}</span>.
+          </p>
+          <div className="bg-[#F5F5F0] p-6 rounded-2xl mb-10 text-left border border-[#6B4A2D]/5">
+            <h3 className="font-bold text-[#6B4A2D] uppercase tracking-widest text-xs mb-4">Order Summary</h3>
+            <div className="flex justify-between text-sm text-[#8B7E6F]">
+              <span>Items</span>
+              <span>${subtotal.toFixed(2)}</span>
+            </div>
+            <div className="flex justify-between text-lg font-bold text-[#6B4A2D] mt-2 pt-2 border-t border-dashed border-[#6B4A2D]/20">
+              <span>Total Paid</span>
+              <span>${total.toFixed(2)}</span>
+            </div>
+          </div>
+          <Button
+            onClick={() => {
+              dispatch(resetCheckout());
+              router.push('/');
+            }}
+            className="w-full bg-[#6B4A2D] hover:bg-[#6B4A2D]/90 text-white h-14 rounded-2xl text-lg font-bold uppercase tracking-widest"
+          >
+            Back to Home
+          </Button>
+        </motion.div>
+      </div>
+    );
   }
 
   return (
-    <div className="container py-8">
-      <h1 className="text-3xl font-bold mb-8">Checkout</h1>
+    <div className="min-h-screen bg-brand-beige font-sans flex flex-col">
+      <Navbar solid />
 
-      <div className="grid lg:grid-cols-3 gap-8">
-        <div className="lg:col-span-2">
-          <Card>
-            <CardHeader>
-              <CardTitle>Shipping Information</CardTitle>
-            </CardHeader>
-            <CardContent>
-              <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
-                <div className="grid md:grid-cols-2 gap-4">
-                  <div className="space-y-2">
-                    <Label htmlFor="fullName">Full Name</Label>
-                    <Input id="fullName" {...register('fullName')} />
-                    {errors.fullName && (
-                      <p className="text-sm text-destructive">{errors.fullName.message}</p>
+      <div className="flex-grow pt-32 pb-24 px-6 md:px-12">
+        <div className="max-w-7xl mx-auto">
+          {/* Header */}
+          <div className="mb-12">
+            <button
+              onClick={() => currentStep > 1 ? dispatch(setStep(currentStep - 1)) : router.back()}
+              className="flex items-center gap-2 text-[#6B4A2D]/60 hover:text-[#6B4A2D] font-bold uppercase tracking-widest text-[10px] mb-4 transition-colors"
+            >
+              <ArrowLeft size={16} />
+              Back
+            </button>
+            <h1 className="text-4xl md:text-5xl font-black text-[#6B4A2D] uppercase tracking-tighter">Checkout</h1>
+          </div>
+
+          <StepIndicator currentStep={currentStep} />
+
+          <div className="grid grid-cols-1 lg:grid-cols-12 gap-12">
+            {/* Left Column: Flow */}
+            <div className="lg:col-span-7 xl:col-span-8">
+              <AnimatePresence mode="wait">
+                {currentStep === 1 && (
+                  <motion.div
+                    key="step1"
+                    initial={{ x: -20, opacity: 0 }}
+                    animate={{ x: 0, opacity: 1 }}
+                    exit={{ x: 20, opacity: 0 }}
+                    className="bg-white p-8 md:p-12 rounded-[32px] shadow-sm border border-[#6B4A2D]/5"
+                  >
+                    <h2 className="text-2xl font-black text-[#6B4A2D] uppercase tracking-tighter mb-8 flex items-center gap-3">
+                      <span className="w-8 h-8 rounded-lg bg-[#6B4A2D]/5 flex items-center justify-center text-sm">1</span>
+                      Your Information
+                    </h2>
+                    {!isAuthenticated && (
+                      <div className="bg-[#6B4A2D]/5 p-6 rounded-2xl mb-8 flex items-center justify-between">
+                        <div>
+                          <p className="text-sm font-bold text-[#6B4A2D]">Already have an account?</p>
+                          <p className="text-xs text-[#6B4A2D]/60 mt-1">Log in for a faster checkout experience.</p>
+                        </div>
+                        <Link href="/auth/login">
+                          <Button variant="outline" className="border-[#6B4A2D]/20 text-[#6B4A2D] hover:bg-[#6B4A2D] hover:text-white transition-all">Log In</Button>
+                        </Link>
+                      </div>
                     )}
-                  </div>
+                    <form onSubmit={handleInfoSubmit} className="space-y-6">
+                      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        <div className="space-y-2">
+                          <Label className="text-[10px] font-black uppercase tracking-widest text-[#6B4A2D]/60">Full Name</Label>
+                          <Input
+                            name="fullName"
+                            value={formData.fullName}
+                            onChange={handleInputChange}
+                            required
+                            className="h-14 rounded-xl border-[#6B4A2D]/10 focus:border-[#6B4A2D] transition-all"
+                            placeholder="John Doe"
+                          />
+                        </div>
+                        <div className="space-y-2">
+                          <Label className="text-[10px] font-black uppercase tracking-widest text-[#6B4A2D]/60">Email Address</Label>
+                          <Input
+                            type="email"
+                            name="email"
+                            value={formData.email}
+                            onChange={handleInputChange}
+                            required
+                            className="h-14 rounded-xl border-[#6B4A2D]/10 focus:border-[#6B4A2D] transition-all"
+                            placeholder="john@example.com"
+                          />
+                        </div>
+                      </div>
+                      <div className="space-y-2">
+                        <Label className="text-[10px] font-black uppercase tracking-widest text-[#6B4A2D]/60">Shipping Address</Label>
+                        <Input
+                          name="addressLine1"
+                          value={formData.addressLine1}
+                          onChange={handleInputChange}
+                          required
+                          className="h-14 rounded-xl border-[#6B4A2D]/10 focus:border-[#6B4A2D] transition-all"
+                          placeholder="123 Productivity Way"
+                        />
+                      </div>
+                      <div className="grid grid-cols-2 md:grid-cols-3 gap-6">
+                        <div className="space-y-2">
+                          <Label className="text-[10px] font-black uppercase tracking-widest text-[#6B4A2D]/60">City</Label>
+                          <Input
+                            name="city"
+                            value={formData.city}
+                            onChange={handleInputChange}
+                            required
+                            className="h-14 rounded-xl border-[#6B4A2D]/10 focus:border-[#6B4A2D] transition-all"
+                          />
+                        </div>
+                        <div className="space-y-2">
+                          <Label className="text-[10px] font-black uppercase tracking-widest text-[#6B4A2D]/60">State</Label>
+                          <Input
+                            name="state"
+                            value={formData.state}
+                            onChange={handleInputChange}
+                            required
+                            className="h-14 rounded-xl border-[#6B4A2D]/10 focus:border-[#6B4A2D] transition-all"
+                          />
+                        </div>
+                        <div className="space-y-2 col-span-2 md:col-span-1">
+                          <Label className="text-[10px] font-black uppercase tracking-widest text-[#6B4A2D]/60">Postal Code</Label>
+                          <Input
+                            name="postalCode"
+                            value={formData.postalCode}
+                            onChange={handleInputChange}
+                            required
+                            className="h-14 rounded-xl border-[#6B4A2D]/10 focus:border-[#6B4A2D] transition-all"
+                          />
+                        </div>
+                      </div>
+                      <Button type="submit" className="w-full bg-[#6B4A2D] hover:bg-[#6B4A2D]/90 text-white h-14 rounded-2xl text-lg font-bold uppercase tracking-widest mt-8 group">
+                        Continue to Shipping
+                        <ChevronRight className="group-hover:translate-x-1 transition-transform ml-2" />
+                      </Button>
+                    </form>
+                  </motion.div>
+                )}
 
-                  <div className="space-y-2">
-                    <Label htmlFor="email">Email</Label>
-                    <Input id="email" type="email" {...register('email')} />
-                    {errors.email && (
-                      <p className="text-sm text-destructive">{errors.email.message}</p>
-                    )}
+                {currentStep === 2 && (
+                  <motion.div
+                    key="step2"
+                    initial={{ x: -20, opacity: 0 }}
+                    animate={{ x: 0, opacity: 1 }}
+                    exit={{ x: 20, opacity: 0 }}
+                    className="bg-white p-8 md:p-12 rounded-[32px] shadow-sm border border-[#6B4A2D]/5"
+                  >
+                    <h2 className="text-2xl font-black text-[#6B4A2D] uppercase tracking-tighter mb-8 flex items-center gap-3">
+                      <span className="w-8 h-8 rounded-lg bg-[#6B4A2D]/5 flex items-center justify-center text-sm">2</span>
+                      Shipping Method
+                    </h2>
+
+                    <div className="space-y-4 mb-10">
+                      <div className="p-6 rounded-2xl border-2 border-[#6B4A2D] bg-[#6B4A2D]/5 flex items-center justify-between cursor-pointer">
+                        <div className="flex items-center gap-4">
+                          <div className="w-5 h-5 rounded-full border-4 border-[#6B4A2D] bg-white" />
+                          <div>
+                            <p className="font-bold text-[#6B4A2D]">Standard Shipping</p>
+                            <p className="text-xs text-[#6B4A2D]/60">3-5 business days</p>
+                          </div>
+                        </div>
+                        <span className="font-black text-[#6B4A2D] uppercase text-xs">Free</span>
+                      </div>
+                      <div className="p-6 rounded-2xl border border-[#6B4A2D]/10 opacity-50 flex items-center justify-between cursor-not-allowed">
+                        <div className="flex items-center gap-4">
+                          <div className="w-5 h-5 rounded-full border-2 border-[#6B4A2D]/20 bg-white" />
+                          <div>
+                            <p className="font-bold text-[#6B4A2D]/60">Express Delivery</p>
+                            <p className="text-xs text-[#6B4A2D]/40">Next day service</p>
+                          </div>
+                        </div>
+                        <span className="font-bold text-[#6B4A2D]/60 uppercase text-xs">+$15.00</span>
+                      </div>
+                    </div>
+
+                    <Button onClick={handleShippingSubmit} className="w-full bg-[#6B4A2D] hover:bg-[#6B4A2D]/90 text-white h-14 rounded-2xl text-lg font-bold uppercase tracking-widest group">
+                      Continue to Payment
+                      <ChevronRight className="group-hover:translate-x-1 transition-transform ml-2" />
+                    </Button>
+                  </motion.div>
+                )}
+
+                {currentStep === 3 && (
+                  <motion.div
+                    key="step3"
+                    initial={{ x: -20, opacity: 0 }}
+                    animate={{ x: 0, opacity: 1 }}
+                    exit={{ x: 20, opacity: 0 }}
+                    className="bg-white p-8 md:p-12 rounded-[32px] shadow-sm border border-[#6B4A2D]/5"
+                  >
+                    <h2 className="text-2xl font-black text-[#6B4A2D] uppercase tracking-tighter mb-8 flex items-center gap-3">
+                      <span className="w-8 h-8 rounded-lg bg-[#6B4A2D]/5 flex items-center justify-center text-sm">3</span>
+                      Payment Method
+                    </h2>
+
+                    <div className="space-y-4 mb-10">
+                      <div className="p-6 rounded-2xl border-2 border-[#6B4A2D] bg-[#6B4A2D]/5 flex items-center justify-between">
+                        <div className="flex items-center gap-4">
+                          <div className="w-5 h-5 rounded-full border-4 border-[#6B4A2D] bg-white" />
+                          <div className="flex items-center gap-3">
+                            <CreditCard size={20} className="text-[#6B4A2D]" />
+                            <p className="font-bold text-[#6B4A2D]">Stripe / Credit Card</p>
+                          </div>
+                        </div>
+                        <div className="flex gap-1">
+                          <div className="w-8 h-5 bg-[#6B4A2D]/10 rounded flex items-center justify-center text-[8px] font-bold">VISA</div>
+                          <div className="w-8 h-5 bg-[#6B4A2D]/10 rounded flex items-center justify-center text-[8px] font-bold">M/C</div>
+                        </div>
+                      </div>
+                      <div className="p-6 rounded-2xl border border-[#6B4A2D]/10 opacity-50 flex items-center justify-between cursor-not-allowed">
+                        <div className="flex items-center gap-4">
+                          <div className="w-5 h-5 rounded-full border-2 border-[#6B4A2D]/20 bg-white" />
+                          <div className="flex items-center gap-3">
+                            <ShoppingBag size={20} className="text-[#6B4A2D]/40" />
+                            <p className="font-bold text-[#6B4A2D]/60">Cash on Delivery</p>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+
+                    <div className="p-6 bg-[#6B4A2D]/5 rounded-2xl mb-10 border border-dashed border-[#6B4A2D]/30">
+                      <p className="text-xs text-[#6B4A2D]/60 text-center uppercase tracking-widest mb-4">You will be redirected to secure checkout</p>
+                      <div className="flex items-center justify-center gap-4">
+                        <Truck size={24} className="text-[#6B4A2D]/30" />
+                        <ArrowLeft className="text-[#6B4A2D]/30 rotate-180" />
+                        <CreditCard size={32} className="text-[#6B4A2D]" />
+                        <ArrowLeft className="text-[#6B4A2D]/30 rotate-180" />
+                        <CheckCircle size={24} className="text-[#6B4A2D]/30" />
+                      </div>
+                    </div>
+
+                    <Button
+                      onClick={handlePaymentSubmit}
+                      disabled={isProcessing}
+                      className="w-full bg-[#6B4A2D] hover:bg-[#6B4A2D]/90 text-white h-14 rounded-2xl text-lg font-bold uppercase tracking-widest group"
+                    >
+                      {isProcessing ? (
+                        <div className="flex items-center gap-2">
+                          <Loader2 className="animate-spin" />
+                          Processing...
+                        </div>
+                      ) : (
+                        <>
+                          Complete Purchase
+                          <ChevronRight className="group-hover:translate-x-1 transition-transform ml-2" />
+                        </>
+                      )}
+                    </Button>
+                  </motion.div>
+                )}
+              </AnimatePresence>
+            </div>
+
+            {/* Right Column: Order Summary */}
+            <div className="lg:col-span-5 xl:col-span-4">
+              <div className="bg-[#FFFBF6] border border-[#6B4A2D]/10 p-8 rounded-[32px] sticky top-32">
+                <h2 className="text-lg font-black text-[#6B4A2D] uppercase tracking-tighter mb-6">Order Summary</h2>
+
+                <div className="space-y-6 mb-8 max-h-[40vh] overflow-y-auto pr-2 scrollbar-thin">
+                  {cartItems.map((item) => (
+                    <div key={`${item.productId}-${item.variantId || ''}`} className="flex gap-4">
+                      <div className="w-16 h-16 bg-white rounded-xl flex-shrink-0 p-1 border border-[#6B4A2D]/5">
+                        <img
+                          src={item.product.images?.[0] || '/placeholder.png'}
+                          alt={item.product.name}
+                          className="w-full h-full object-cover rounded-lg"
+                        />
+                      </div>
+                      <div className="flex-1">
+                        <div className="flex justify-between">
+                          <h4 className="font-bold text-[#6B4A2D] text-sm line-clamp-1">{item.product.name}</h4>
+                          <span className="font-bold text-[#6B4A2D] text-sm">${(item.product.price * item.quantity).toFixed(2)}</span>
+                        </div>
+                        <p className="text-[10px] text-[#6B4A2D]/60 mt-1 uppercase tracking-widest">Qty: {item.quantity}</p>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+
+                <div className="space-y-4 border-t border-[#6B4A2D]/10 pt-6">
+                  <div className="flex justify-between text-sm text-[#8B7E6F]">
+                    <span>Subtotal</span>
+                    <span className="font-bold text-[#6B4A2D]">{formatPrice(subtotal)}</span>
+                  </div>
+                  <div className="flex justify-between text-sm text-[#8B7E6F]">
+                    <span>Shipping</span>
+                    <span className="text-green-600 font-bold uppercase text-xs">Free</span>
+                  </div>
+                  <div className="flex justify-between text-xl font-black text-[#6B4A2D] border-t border-[#6B4A2D]/10 pt-4 uppercase tracking-tighter">
+                    <span>Total</span>
+                    <span>{formatPrice(total)}</span>
                   </div>
                 </div>
 
-                <div className="space-y-2">
-                  <Label htmlFor="phone">Phone</Label>
-                  <Input id="phone" {...register('phone')} />
-                  {errors.phone && (
-                    <p className="text-sm text-destructive">{errors.phone.message}</p>
-                  )}
-                </div>
-
-                <div className="space-y-2">
-                  <Label htmlFor="addressLine1">Address Line 1</Label>
-                  <Input id="addressLine1" {...register('addressLine1')} />
-                  {errors.addressLine1 && (
-                    <p className="text-sm text-destructive">{errors.addressLine1.message}</p>
-                  )}
-                </div>
-
-                <div className="space-y-2">
-                  <Label htmlFor="addressLine2">Address Line 2 (Optional)</Label>
-                  <Input id="addressLine2" {...register('addressLine2')} />
-                </div>
-
-                <div className="grid md:grid-cols-3 gap-4">
-                  <div className="space-y-2">
-                    <Label htmlFor="city">City</Label>
-                    <Input id="city" {...register('city')} />
-                    {errors.city && (
-                      <p className="text-sm text-destructive">{errors.city.message}</p>
-                    )}
-                  </div>
-
-                  <div className="space-y-2">
-                    <Label htmlFor="state">State</Label>
-                    <Input id="state" {...register('state')} />
-                    {errors.state && (
-                      <p className="text-sm text-destructive">{errors.state.message}</p>
-                    )}
-                  </div>
-
-                  <div className="space-y-2">
-                    <Label htmlFor="postalCode">Postal Code</Label>
-                    <Input id="postalCode" {...register('postalCode')} />
-                    {errors.postalCode && (
-                      <p className="text-sm text-destructive">{errors.postalCode.message}</p>
-                    )}
+                <div className="mt-8 p-4 bg-[#6B4A2D]/5 rounded-2xl">
+                  <div className="flex items-start gap-3">
+                    <ShieldCheck className="text-[#6B4A2D] w-5 h-5 flex-shrink-0 mt-0.5" />
+                    <p className="text-[10px] text-[#6B4A2D]/70 font-medium leading-relaxed uppercase tracking-wider">
+                      Secure Payment Gateway. Your data is protected with 256-bit SSL encryption.
+                    </p>
                   </div>
                 </div>
-
-                <div className="space-y-2">
-                  <Label htmlFor="country">Country</Label>
-                  <Input id="country" {...register('country')} />
-                  {errors.country && (
-                    <p className="text-sm text-destructive">{errors.country.message}</p>
-                  )}
-                </div>
-
-                <Button type="submit" size="lg" className="w-full" disabled={isPending}>
-                  {isPending ? 'Placing Order...' : 'Place Order'}
-                </Button>
-              </form>
-            </CardContent>
-          </Card>
-        </div>
-
-        <div>
-          <Card>
-            <CardHeader>
-              <CardTitle>Order Summary</CardTitle>
-            </CardHeader>
-            <CardContent className="space-y-4">
-              <div className="space-y-2">
-                {items.map((item) => (
-                  <div key={item.productId} className="flex justify-between text-sm">
-                    <span>
-                      {item.product.name} x {item.quantity}
-                    </span>
-                    <span>{formatPrice(item.product.price * item.quantity)}</span>
-                  </div>
-                ))}
               </div>
-
-              <div className="border-t pt-4 space-y-2">
-                <div className="flex justify-between">
-                  <span className="text-muted-foreground">Subtotal</span>
-                  <span>{formatPrice(getTotal())}</span>
-                </div>
-                <div className="flex justify-between">
-                  <span className="text-muted-foreground">Shipping</span>
-                  <span>Free</span>
-                </div>
-                <div className="border-t pt-2 flex justify-between font-bold text-lg">
-                  <span>Total</span>
-                  <span>{formatPrice(getTotal())}</span>
-                </div>
-              </div>
-            </CardContent>
-          </Card>
+            </div>
+          </div>
         </div>
       </div>
     </div>
+  );
+}
+
+// Support Next.js routing by exporting as default
+import Link from 'next/link';
+import { ShieldCheck } from 'lucide-react';
+
+function Header() {
+  return (
+    <header className="p-4 bg-white shadow">
+      <h1>Checkout</h1>
+    </header>
   );
 }

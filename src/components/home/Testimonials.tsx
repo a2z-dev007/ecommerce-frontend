@@ -163,7 +163,7 @@ const Testimonials: React.FC = () => {
               x: {
                 repeat: Infinity,
                 repeatType: "loop",
-                duration: 40,
+                duration: 60,
                 ease: "linear",
               },
             }}
@@ -175,18 +175,18 @@ const Testimonials: React.FC = () => {
           </motion.div>
         </div>
 
-        {/* Second Row - Moving Right to Left (Slower) */}
+        {/* Second Row - Moving Left to Right */}
         <div className="relative">
           <motion.div
             className="flex gap-6"
             animate={isPaused ? {} : {
-              x: [0, "-50%"],
+              x: ["-50%", 0],
             }}
             transition={{
               x: {
                 repeat: Infinity,
                 repeatType: "loop",
-                duration: 50,
+                duration: 70,
                 ease: "linear",
               },
             }}
