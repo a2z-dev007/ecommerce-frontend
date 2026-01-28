@@ -94,167 +94,168 @@ const Hero: React.FC = () => {
 
       {/* Monolithic Background Text: ANYWHERE */}
       <div className="absolute inset-0 z-10 flex items-center justify-center pointer-events-none overflow-hidden">
-        <motion.h1
-          style={{
-            y: textTranslateY,
-            scale: textScale,
-            opacity: textOpacity
-          }}
-          initial={{ opacity: 0, scale: 0.95, y: 40 }}
-          animate={{ opacity: 1, scale: 1, y: 0 }}
-          transition={{
-            duration: 1.2,
-            delay: 0.1,
-            ease: [0.22, 1, 0.36, 1]
-          }}
-          className="text-[18vw] pb-[12.5rem] md:text-[18vw] lg:text-[15vw] font-black text-[#F2EFE9] leading-none tracking-[-0.04em] select-none uppercase text-center"
-        >
-          ANYWHERE
-        </motion.h1>
-      </div>
-
-      {/* Main Product Container (Grounded Bag) with Parallax */}
-      <div className="relative z-20 w-full max-w-7xl px-4 flex flex-col items-center mt-auto xl:pt-[10rem] perspective-[1200px]">
-        <motion.div
-          style={{ y: bagParallax }}
-          initial={{ y: 100, opacity: 0 }}
-          animate={{ y: 0, opacity: 1 }}
-          transition={{ duration: 1.4, ease: [0.16, 1, 0.3, 1] }}
-          className="relative w-full flex justify-center -translate-y-12"
-        >
-          {/* Wrapper for floating animation */}
-          <motion.div
-            animate={{
-              y: [0, -12, 0],
+        <div className="absolute inset-0 z-10 flex items-center justify-center pointer-events-none overflow-hidden">
+          <motion.h1
+            style={{
+              y: textTranslateY,
+              scale: textScale,
+              opacity: textOpacity
             }}
+            initial={{ opacity: 0, scale: 0.95, y: 40 }}
+            animate={{ opacity: 1, scale: 1, y: 0 }}
             transition={{
-              duration: 4.5,
-              repeat: Infinity,
-              ease: "easeInOut",
-              delay: 1.2
+              duration: 1.2,
+              delay: 0.1,
+              ease: [0.22, 1, 0.36, 1]
             }}
-            className="w-full flex justify-center"
+            className="text-[18vw] pb-[12.5rem] md:text-[18vw] lg:text-[15vw] font-black text-[#F2EFE9] leading-none tracking-[-0.04em] select-none uppercase text-center"
           >
-            {/* Inner image for mouse-driven tilt and shift */}
-            <motion.img
-              src="/assets/bag.png"
-              alt="Kangpack Product"
-              className="w-[98%] md:w-[88%] lg:w-[93%] xl:w-[98%] h-auto object-contain drop-shadow-[0_60px_80px_rgba(0,0,0,0.6)]"
-              style={{
-                rotateX: bagRotateX,
-                rotateY: bagRotateY,
-                x: bagMoveX,
-                y: bagMoveY
-              }}
-            />
-          </motion.div>
-        </motion.div>
-      </div>
+            ANYWHERE
+          </motion.h1>
+        </div>
 
-      {/* Bottom Interface Elements */}
-      <div className="absolute bottom-8 md:bottom-12 left-0 right-0 z-40 px-6 md:px-12 lg:px-16 flex items-end justify-between pointer-events-none">
-        {/* Left Side: Shop CTA */}
-        <motion.div
-          initial={{ x: -20, opacity: 0 }}
-          animate={{ x: 0, opacity: 1 }}
-          transition={{ delay: 0.8 }}
-          className="flex flex-col gap-3 md:gap-4 pointer-events-auto"
-        >
-          <p className="text-white text-sm md:text-base font-normal tracking-normal">Work without limits</p>
-          <button className="flex items-center gap-3 bg-white px-1.5 py-1.5 pr-8 md:pr-10 rounded-full hover:shadow-2xl transition-all group">
-            <div className="w-10 h-10 md:w-11 md:h-11 bg-brand-brown rounded-full flex items-center justify-center text-white group-hover:bg-brand-brown/90 transition-colors">
-              <ArrowRight className="w-4 h-4 md:w-5 md:h-5 group-hover:translate-x-1 transition-transform" />
-            </div>
-            <span className="text-brand-brown font-bold text-xs md:text-sm tracking-wide uppercase">Shop Now</span>
-          </button>
-        </motion.div>
-
-        {/* Right Side: Video Preview - Original Position */}
-        <AnimatePresence>
-          {!isScrolled && (
+        {/* Main Product Container (Grounded Bag) with Parallax */}
+        <div className="relative z-20 w-full max-w-7xl px-4 flex flex-col items-center mt-auto xl:pt-[10rem] perspective-[1200px]">
+          <motion.div
+            style={{ y: bagParallax }}
+            initial={{ y: 100, opacity: 0 }}
+            animate={{ y: 0, opacity: 1 }}
+            transition={{ duration: 1.4, ease: [0.16, 1, 0.3, 1] }}
+            className="relative w-full flex justify-center -translate-y-12"
+          >
+            {/* Wrapper for floating animation */}
             <motion.div
-              initial={{ x: 20, opacity: 0 }}
-              animate={{ x: 0, opacity: 1 }}
-              exit={{ opacity: 0, scale: 0.8 }}
-              transition={{ delay: 1 }}
-              className="flex flex-col items-center gap-3 group cursor-pointer pointer-events-auto"
+              animate={{
+                y: [0, -12, 0],
+              }}
+              transition={{
+                duration: 4.5,
+                repeat: Infinity,
+                ease: "easeInOut",
+                delay: 1.2
+              }}
+              className="w-full flex justify-center"
             >
-              <div className="relative w-44 md:w-52 lg:w-56 aspect-video rounded-2xl md:rounded-3xl overflow-hidden border-2 border-white/20 shadow-[0_20px_50px_rgba(0,0,0,0.5)] group-hover:border-white/40 transition-all">
-                <img
-                  src="https://picsum.photos/seed/kang-action/500/300"
-                  className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-1000 brightness-[0.75]"
-                  alt="Video thumbnail"
-                />
-                <div className="absolute inset-0 flex items-center justify-center">
-                  <div className="w-12 h-12 md:w-14 md:h-14 bg-white/10 backdrop-blur-md rounded-full flex items-center justify-center ring-1 ring-white/30 group-hover:scale-110 transition-transform">
-                    <Play className="w-4 h-4 md:w-5 md:h-5 text-white fill-white" />
+              {/* Inner image for mouse-driven tilt and shift */}
+              <motion.img
+                src="/assets/bag.png"
+                alt="Kangpack Product"
+                className="w-[98%] md:w-[88%] lg:w-[93%] xl:w-[98%] h-auto object-contain drop-shadow-[0_60px_80px_rgba(0,0,0,0.6)]"
+                style={{
+                  rotateX: bagRotateX,
+                  rotateY: bagRotateY,
+                  x: bagMoveX,
+                  y: bagMoveY
+                }}
+              />
+            </motion.div>
+          </motion.div>
+        </div>
+
+        {/* Bottom Interface Elements */}
+        <div className="absolute bottom-8 md:bottom-12 left-0 right-0 z-40 px-6 md:px-12 lg:px-16 flex items-end justify-between pointer-events-none">
+          {/* Left Side: Shop CTA */}
+          <motion.div
+            initial={{ x: -20, opacity: 0 }}
+            animate={{ x: 0, opacity: 1 }}
+            transition={{ delay: 0.8 }}
+            className="flex flex-col gap-3 md:gap-4 pointer-events-auto"
+          >
+            <p className="text-white text-sm md:text-base font-normal tracking-normal">Work without limits</p>
+            <button className="flex items-center gap-3 bg-white px-1.5 py-1.5 pr-8 md:pr-10 rounded-full hover:shadow-2xl transition-all group">
+              <div className="w-10 h-10 md:w-11 md:h-11 bg-brand-brown rounded-full flex items-center justify-center text-white group-hover:bg-brand-brown/90 transition-colors">
+                <ArrowRight className="w-4 h-4 md:w-5 md:h-5 group-hover:translate-x-1 transition-transform" />
+              </div>
+              <span className="text-brand-brown font-bold text-xs md:text-sm tracking-wide uppercase">Shop Now</span>
+            </button>
+          </motion.div>
+
+          {/* Right Side: Video Preview - Original Position */}
+          <AnimatePresence>
+            {!isScrolled && (
+              <motion.div
+                initial={{ x: 20, opacity: 0 }}
+                animate={{ x: 0, opacity: 1 }}
+                exit={{ opacity: 0, scale: 0.8 }}
+                transition={{ delay: 1 }}
+                className="flex flex-col items-center gap-3 group cursor-pointer pointer-events-auto"
+              >
+                <div className="relative w-44 md:w-52 lg:w-56 aspect-video rounded-2xl md:rounded-3xl overflow-hidden border-2 border-white/20 shadow-[0_20px_50px_rgba(0,0,0,0.5)] group-hover:border-white/40 transition-all">
+                  <img
+                    src="https://picsum.photos/seed/kang-action/500/300"
+                    className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-1000 brightness-[0.75]"
+                    alt="Video thumbnail"
+                  />
+                  <div className="absolute inset-0 flex items-center justify-center">
+                    <div className="w-12 h-12 md:w-14 md:h-14 bg-white/10 backdrop-blur-md rounded-full flex items-center justify-center ring-1 ring-white/30 group-hover:scale-110 transition-transform">
+                      <Play className="w-4 h-4 md:w-5 md:h-5 text-white fill-white" />
+                    </div>
                   </div>
                 </div>
-              </div>
-              <p className="text-[9px] md:text-[10px] font-extrabold text-white uppercase tracking-[0.3em] opacity-70 group-hover:opacity-100 transition-all">WATCH VIDEO</p>
+                <p className="text-[9px] md:text-[10px] font-extrabold text-white uppercase tracking-[0.3em] opacity-70 group-hover:opacity-100 transition-all">WATCH VIDEO</p>
+              </motion.div>
+            )}
+          </AnimatePresence>
+        </div>
+
+        {/* Floating Circular Video Button - Appears on Scroll */}
+        <AnimatePresence>
+          {isScrolled && (
+            <motion.div
+              initial={{ scale: 0, opacity: 0 }}
+              animate={{ scale: 1, opacity: 1 }}
+              exit={{ scale: 0, opacity: 0 }}
+              transition={{ type: "spring", stiffness: 260, damping: 20 }}
+              className="fixed bottom-8 right-8 z-50 cursor-pointer group"
+            >
+              {/* Main Circular Button */}
+              <motion.div
+                whileHover={{ scale: 1.1 }}
+                whileTap={{ scale: 0.95 }}
+                className="relative w-20 h-20 md:w-24 md:h-24 rounded-full overflow-hidden border-4 border-white shadow-[0_10px_40px_rgba(0,0,0,0.4)] group-hover:border-white/90 transition-all z-10"
+              >
+                {/* Pulse Animation Rings - Behind the button */}
+                <div className="absolute inset-0 -z-10 pointer-events-none">
+                  <motion.div
+                    animate={{
+                      scale: [1, 2, 1],
+                      opacity: [0.6, 0, 0.6],
+                    }}
+                    transition={{
+                      duration: 2,
+                      repeat: Infinity,
+                      ease: "easeInOut",
+                    }}
+                    className="absolute inset-0 rounded-full bg-white/40"
+                  />
+                  <motion.div
+                    animate={{
+                      scale: [1, 2.5, 1],
+                      opacity: [0.4, 0, 0.4],
+                    }}
+                    transition={{
+                      duration: 2,
+                      repeat: Infinity,
+                      ease: "easeInOut",
+                      delay: 0.5,
+                    }}
+                    className="absolute inset-0 rounded-full bg-white/30"
+                  />
+                </div>
+                <img
+                  src="https://picsum.photos/seed/kang-action/500/300"
+                  className="w-full h-full object-cover brightness-[0.7] group-hover:brightness-[0.9] transition-all"
+                  alt="Video thumbnail"
+                />
+                <div className="absolute inset-0 flex items-center justify-center bg-black/20">
+                  <div className="w-10 h-10 md:w-12 md:h-12 bg-white/20 backdrop-blur-md rounded-full flex items-center justify-center ring-2 ring-white/50 group-hover:bg-white/30 transition-all">
+                    <Play className="w-4 h-4 md:w-5 md:h-5 text-white fill-white ml-0.5" />
+                  </div>
+                </div>
+              </motion.div>
             </motion.div>
           )}
         </AnimatePresence>
-      </div>
-
-      {/* Floating Circular Video Button - Appears on Scroll */}
-      <AnimatePresence>
-        {isScrolled && (
-          <motion.div
-            initial={{ scale: 0, opacity: 0 }}
-            animate={{ scale: 1, opacity: 1 }}
-            exit={{ scale: 0, opacity: 0 }}
-            transition={{ type: "spring", stiffness: 260, damping: 20 }}
-            className="fixed bottom-8 right-8 z-50 cursor-pointer group"
-          >
-            {/* Main Circular Button */}
-            <motion.div
-              whileHover={{ scale: 1.1 }}
-              whileTap={{ scale: 0.95 }}
-              className="relative w-20 h-20 md:w-24 md:h-24 rounded-full overflow-hidden border-4 border-white shadow-[0_10px_40px_rgba(0,0,0,0.4)] group-hover:border-white/90 transition-all z-10"
-            >
-              {/* Pulse Animation Rings - Behind the button */}
-              <div className="absolute inset-0 -z-10 pointer-events-none">
-                <motion.div
-                  animate={{
-                    scale: [1, 2, 1],
-                    opacity: [0.6, 0, 0.6],
-                  }}
-                  transition={{
-                    duration: 2,
-                    repeat: Infinity,
-                    ease: "easeInOut",
-                  }}
-                  className="absolute inset-0 rounded-full bg-white/40"
-                />
-                <motion.div
-                  animate={{
-                    scale: [1, 2.5, 1],
-                    opacity: [0.4, 0, 0.4],
-                  }}
-                  transition={{
-                    duration: 2,
-                    repeat: Infinity,
-                    ease: "easeInOut",
-                    delay: 0.5,
-                  }}
-                  className="absolute inset-0 rounded-full bg-white/30"
-                />
-              </div>
-              <img
-                src="https://picsum.photos/seed/kang-action/500/300"
-                className="w-full h-full object-cover brightness-[0.7] group-hover:brightness-[0.9] transition-all"
-                alt="Video thumbnail"
-              />
-              <div className="absolute inset-0 flex items-center justify-center bg-black/20">
-                <div className="w-10 h-10 md:w-12 md:h-12 bg-white/20 backdrop-blur-md rounded-full flex items-center justify-center ring-2 ring-white/50 group-hover:bg-white/30 transition-all">
-                  <Play className="w-4 h-4 md:w-5 md:h-5 text-white fill-white ml-0.5" />
-                </div>
-              </div>
-            </motion.div>
-          </motion.div>
-        )}
-      </AnimatePresence>
     </section>
   );
 };

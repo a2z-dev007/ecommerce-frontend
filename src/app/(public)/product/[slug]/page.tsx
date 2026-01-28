@@ -428,33 +428,9 @@ export default function ProductDetailPage({ params }: { params: Promise<{ slug: 
                 <span className="text-[#8B7E6F] text-sm">(120 Reviews)</span>
               </div>
             </div>
-
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-              {[1, 2, 3].map((_, i) => (
-                <div key={i} className="border border-[#6B4A2D]/10 rounded-2xl p-8">
-                  <div className="flex gap-1 text-yellow-400 mb-4">
-                    {[...Array(5)].map((_, j) => <Star key={j} className="w-4 h-4 fill-current" />)}
-                  </div>
-                  <h4 className="font-bold text-[#6B4A2D] mb-2">Game Changer!</h4>
-                  <p className="text-[#8B7E6F] text-sm leading-relaxed mb-6">
-                    "I never knew I needed this until I got it. Generally, I work from cafes, but now I can work literally anywhere. The build quality is insane."
-                  </p>
-                  <div className="flex items-center gap-3">
-                    <div className="w-10 h-10 bg-gray-200 rounded-full overflow-hidden">
-                      <img src={`https://i.pravatar.cc/150?u=${i}`} alt="User" className="w-full h-full object-cover" />
-                    </div>
-                    <span className="font-bold text-[#6B4A2D] text-sm">Alex Johnson</span>
-                  </div>
-                </div>
-              ))}
-            </div>
+          )}
           </div>
-        </section>
-
-        {/* Related Products Section */}
-        <OurProducts />
-
-      </main>
-    </div >
+        </div>
+    </div>
   );
 }

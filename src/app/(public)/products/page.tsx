@@ -154,49 +154,43 @@ export default function ProductsPage() {
             </motion.p>
           </div>
         </div>
-    </div>
-  );
-}
 
-return (
-  <div className="container py-8">
-    <div className="mb-8">
-      <h1 className="text-3xl font-bold mb-2">All Products</h1>
-      <p className="text-muted-foreground">Browse our complete collection</p>
-    </div>
+        <ScrollSection className="py-24 px-6 md:px-12 relative z-20 overflow-hidden">
+          <div className="absolute top-0 right-0 w-1/2 h-1/2 bg-gradient-to-b from-[#D4CEC4]/10 to-transparent -z-10 rounded-full blur-3xl transform translate-x-1/2 -translate-y-1/2"></div>
 
-    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-      {data?.data.map((product) => (
-        <Card key={product.id} className="group overflow-hidden">
-          <Link href={ROUTES.PRODUCT_DETAIL(product.slug)}>
-            <div className="aspect-square bg-muted relative overflow-hidden">
-              {product.images?.[0] && (
-                <img
-                  src={product.images[0]}
-                  alt={product.name}
-                  className="object-cover w-full h-full group-hover:scale-105 transition-transform"
-                />
-              )}
-            </div>
+          <div className="max-w-[1400px] mx-auto">
+            {isLoading ? (
+              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 md:gap-8">
+                {[...Array(8)].map((_, i) => (
+                  <div key={i} className="bg-white rounded-2xl h-[500px] animate-pulse relative overflow-hidden">
+                    <div className="h-2/3 bg-gray-200"></div>
+                    <div className="p-6 space-y-4">
+                      <div className="h-4 bg-gray-200 rounded w-1/3"></div>
+                      <div className="h-8 bg-gray-200 rounded w-2/3"></div>
+                      <div className="h-4 bg-gray-200 rounded w-full"></div>
+                    </div>
+                  </div>
+                ))}
+              </div>
             ) : (
-            <>
-              {data?.data && data.data.length > 0 ? (
-                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 md:gap-8">
-                  {data.data.map((product: any, index: number) => (
-                    <ProductCard key={product.id} product={product} index={index} />
-                  ))}
-                </div>
-              ) : (
-                <div className="text-center py-20">
-                  <h3 className="text-2xl font-bold text-brand-brown">No products found.</h3>
-                  <p className="text-brand-brown/60 mt-2">Check back later for new arrivals.</p>
-                </div>
-              )}
-            </>
+              <>
+                {data?.data && data.data.length > 0 ? (
+                  <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 md:gap-8">
+                    {data.data.map((product: any, index: number) => (
+                      <ProductCard key={product.id} product={product} index={index} />
+                    ))}
+                  </div>
+                ) : (
+                  <div className="text-center py-20">
+                    <h3 className="text-2xl font-bold text-brand-brown">No products found.</h3>
+                    <p className="text-brand-brown/60 mt-2">Check back later for new arrivals.</p>
+                  </div>
+                )}
+              </>
             )}
           </div>
         </ScrollSection>
       </main>
-  </div>
-);
+    </div>
+  );
 }
