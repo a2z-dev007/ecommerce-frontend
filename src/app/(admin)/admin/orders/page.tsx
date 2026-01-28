@@ -1,13 +1,13 @@
 'use client';
 
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Badge } from '@/components/ui/badge';
 import { useAdminOrders, useUpdateOrderStatus } from '@/features/admin/queries';
 import { Skeleton } from '@/components/ui/skeleton';
-import { Search, Eye, Package, Truck, CheckCircle, XCircle, MoreHorizontal } from 'lucide-react';
+import { Search, Eye, Package, Truck, MoreHorizontal } from 'lucide-react';
 import { formatCurrency, formatDate } from '@/lib/utils';
 import {
   DropdownMenu,
@@ -16,6 +16,7 @@ import {
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
 import { OrderDetailsModal } from '@/features/admin/components/OrderDetailsModal';
+import { ORDER_STATUS } from '@/lib/constants';
 
 export default function AdminOrders() {
   const [page, setPage] = useState(1);
@@ -32,15 +33,15 @@ export default function AdminOrders() {
 
   const getStatusColor = (status: string) => {
     switch (status) {
-      case 'pending':
+      case ORDER_STATUS.PENDING:
         return 'secondary';
-      case 'processing':
+      case ORDER_STATUS.PROCESSING:
         return 'default';
-      case 'shipped':
+      case ORDER_STATUS.SHIPPED:
         return 'default';
-      case 'delivered':
+      case ORDER_STATUS.DELIVERED:
         return 'outline'; // Delivered could be default with different styling
-      case 'cancelled':
+      case ORDER_STATUS.CANCELLED:
         return 'destructive';
       default:
         return 'secondary';
@@ -51,6 +52,10 @@ export default function AdminOrders() {
     setSelectedOrder(order);
     setDetailsModalOpen(true);
   };
+
+  useEffect(() => {
+    setPage(1);
+  }, [search, statusFilter]);
 
   return (
     <div className="space-y-6">
@@ -112,6 +117,7 @@ export default function AdminOrders() {
           ) : (
             <div className="space-y-4">
               {orders.map((order: any) => (
+
                 <div key={order._id} className="border rounded-lg p-4 hover:bg-muted/50 transition-colors group">
                   <div className="flex flex-col md:flex-row md:items-start justify-between gap-4">
                     <div className="flex items-start gap-4 flex-1">
@@ -119,20 +125,23 @@ export default function AdminOrders() {
                         <Package className="h-5 w-5" />
                       </div>
                       <div className="flex-1">
-                        <div className="flex flex-wrap items-center gap-2">
+                        <div>
                           <p className="font-bold text-lg">Order #{order.orderNumber || order._id.slice(-6).toUpperCase()}</p>
+                          {/* <Badge variant={getStatusColor(order.status) as any} className="capitalize">
+                            status : {order.status}
+                          </Badge> */}
                           <Badge variant={getStatusColor(order.status) as any} className="capitalize">
                             {order.status}
                           </Badge>
                           <Badge variant={order.paymentStatus === 'paid' ? 'default' : 'secondary'} className="capitalize bg-green-50 text-green-700 hover:bg-green-50">
-                            {order.paymentStatus || 'pending'}
+                            Payment status : {order.paymentStatus || 'pending'}
                           </Badge>
                         </div>
                         <p className="text-sm text-muted-foreground mt-1">
                           {order.user?.name || 'Guest'} • {formatDate(order.createdAt)}
                         </p>
                         <p className="text-sm font-medium mt-1">
-                          {order.items?.length || 0} items • {formatCurrency(order.total)}
+                          {order.items?.length || 0} items • {formatCurrency(order.totalAmount)}
                         </p>
                         {order.trackingNumber && (
                           <div className="flex items-center gap-2 mt-2 px-2 py-1 bg-muted rounded w-fit text-xs">
@@ -174,7 +183,7 @@ export default function AdminOrders() {
           )}
 
           {/* Pagination */}
-          {pagination && pagination.totalPages > 1 && (
+          {pagination && pagination.pages > 1 && (
             <div className="flex items-center justify-between mt-6 pt-6 border-t">
               <p className="text-sm text-muted-foreground">
                 Showing {((page - 1) * 10) + 1} to {Math.min(page * 10, pagination.total)} of {pagination.total} orders
@@ -192,7 +201,7 @@ export default function AdminOrders() {
                   variant="outline"
                   size="sm"
                   onClick={() => setPage(p => p + 1)}
-                  disabled={page >= pagination.totalPages}
+                  disabled={page >= pagination.pages}
                 >
                   Next
                 </Button>

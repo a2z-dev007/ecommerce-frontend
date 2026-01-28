@@ -16,6 +16,7 @@ export function formatCurrency(amount: number, currency: string = 'INR'): string
   return new Intl.NumberFormat('en-IN', {
     style: 'currency',
     currency,
+    maximumFractionDigits: 0,
   }).format(amount);
 }
 
@@ -38,3 +39,14 @@ export function truncate(text: string, length: number): string {
   if (text.length <= length) return text;
   return text.slice(0, length) + "...";
 }
+
+export const orderStatus = {
+  pending: "pending",
+  processing: "processing",
+  shipped: "shipped",
+  delivered: "delivered",
+  cancelled: "cancelled",
+} as const;
+
+export type OrderStatus =
+  typeof orderStatus[keyof typeof orderStatus];

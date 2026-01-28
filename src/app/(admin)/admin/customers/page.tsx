@@ -171,7 +171,7 @@ export default function AdminCustomers() {
           )}
 
           {/* Pagination */}
-          {pagination && pagination.totalPages > 1 && (
+          {pagination && pagination.pages > 1 && (
             <div className="flex items-center justify-between mt-6 pt-6 border-t">
               <p className="text-sm text-muted-foreground">
                 Showing {((page - 1) * 10) + 1} to {Math.min(page * 10, pagination.total)} of {pagination.total} customers
@@ -189,7 +189,7 @@ export default function AdminCustomers() {
                   variant="outline"
                   size="sm"
                   onClick={() => setPage(p => p + 1)}
-                  disabled={page >= pagination.totalPages}
+                  disabled={page >= pagination.pages}
                 >
                   Next
                 </Button>
