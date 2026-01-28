@@ -26,8 +26,8 @@ export default function ProductsPage() {
 
   if (isLoading) {
     return (
-      <div className="container py-8">
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+      <div className="container py-10 md:py-16">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 md:gap-8">
           {[...Array(8)].map((_, i) => (
             <Card key={i} className="animate-pulse">
               <div className="aspect-square bg-muted" />
@@ -43,13 +43,13 @@ export default function ProductsPage() {
   }
 
   return (
-    <div className="container py-8">
-      <div className="mb-8">
+    <div className="container py-10 md:py-16">
+      <div className="mb-10">
         <h1 className="text-3xl font-bold mb-2">All Products</h1>
         <p className="text-muted-foreground">Browse our complete collection</p>
       </div>
 
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 md:gap-8">
         {data?.data.map((product) => (
           <Card key={product.id} className="group overflow-hidden">
             <Link href={ROUTES.PRODUCT_DETAIL(product.slug)}>

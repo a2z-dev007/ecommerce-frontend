@@ -5,12 +5,20 @@ import { motion } from 'framer-motion';
 import { ASSETS } from '@/constants/assets';
 
 const InlineImage = ({ src, className = "", rotate = 0 }: { src: string; className?: string; rotate?: number }) => (
-  <div
+  <motion.div
     className={`inline-flex items-center justify-center w-[1.3em] h-[1em] rounded-[24px] overflow-hidden translate-y-[0.1em] border-[4px] border-white shadow-lg mx-1 ${className}`}
     style={{ transform: `translateY(0.1em) rotate(${rotate}deg)` }}
+    whileHover={{
+      y: [0, -8, 0, -5, 0, -3, 0],
+      rotate: [rotate, rotate - 5, rotate + 5, rotate - 3, rotate + 3, rotate],
+      transition: {
+        duration: 0.6,
+        ease: "easeInOut",
+      }
+    }}
   >
     <img src={src} className="w-full h-full object-cover" alt="Detail" />
-  </div>
+  </motion.div>
 );
 
 const DesignedToMove: React.FC = () => {

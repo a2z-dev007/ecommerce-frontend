@@ -44,19 +44,26 @@ const Navbar: React.FC = () => {
       </motion.div>
 
       {/* Desktop Navigation Links (Right aligned) */}
-      <div className="hidden md:flex gap-12 text-[11px] font-[900] uppercase tracking-[0.25em] text-white/90">
+      <div className="hidden md:flex gap-8 lg:gap-10 text-base font-medium  uppercase tracking-[-0.01em] text-[#F9F9F9] leading-4">
         {navLinks.map((link, index) => (
           <motion.a
             key={link.name}
             href={link.href}
             initial={{ opacity: 0, x: 20 }}
-            animate={{ opacity: 1, x: 0 }}
+            animate={{ opacity: 0.5, x: 0 }}
+              whileHover={{ 
+        opacity: 1, 
+        scale: 1.05,
+        transition: { duration: 0.15, ease: "easeOut" } // ⚡ fast hover
+      }}
             transition={{
               duration: 0.8,
               delay: 0.1 + index * 0.1,
               ease: "easeOut"
             }}
-            className="hover:text-white transition-all  text-base transform hover:scale-105"
+            
+            
+            className="hover:text-white transition-all transform  hover:scale-105 text-[#F9F9F9] opacity-[0.5] hover:opacity-[1]"
           >
             {link.name}
           </motion.a>

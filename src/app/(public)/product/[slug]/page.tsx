@@ -4,7 +4,7 @@ import { useQuery } from '@tanstack/react-query';
 import { productsApi } from '@/features/products/api';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
-import { QUERY_KEYS } from '@/lib/constants';
+import { QUERY_KEYS, ROUTES } from '@/lib/constants';
 import { formatPrice } from '@/lib/utils';
 import { ShoppingCart, Heart } from 'lucide-react';
 import { useCart } from '@/hooks/use-cart';
@@ -30,8 +30,8 @@ export default function ProductDetailPage({ params }: { params: Promise<{ slug: 
 
   if (isLoading) {
     return (
-      <div className="container py-8">
-        <div className="grid md:grid-cols-2 gap-8 animate-pulse">
+      <div className="container py-10 md:py-16">
+        <div className="grid md:grid-cols-2 gap-8 md:gap-12 animate-pulse">
           <div className="aspect-square bg-muted rounded-lg" />
           <div className="space-y-4">
             <div className="h-8 bg-muted rounded w-3/4" />
@@ -45,15 +45,18 @@ export default function ProductDetailPage({ params }: { params: Promise<{ slug: 
 
   if (!product) {
     return (
-      <div className="container py-8">
-        <p>Product not found</p>
+      <div className="container py-16 md:py-24 text-center">
+        <h1 className="text-2xl font-bold mb-4">Product not found</h1>
+        <Link href={ROUTES.PRODUCTS}>
+          <Button>Back to Products</Button>
+        </Link>
       </div>
     );
   }
 
   return (
-    <div className="container py-8">
-      <div className="grid md:grid-cols-2 gap-8">
+    <div className="container py-10 md:py-16">
+      <div className="grid md:grid-cols-2 gap-8 md:gap-12">
         {/* Images */}
         <div className="space-y-4">
           <div className="aspect-square bg-muted rounded-lg overflow-hidden">

@@ -1,6 +1,33 @@
 import axios, { AxiosError, InternalAxiosRequestConfig } from 'axios';
 import { API_URL, ROUTES } from './constants';
 
+// Helper function to transform MongoDB _id to id
+function transformMongoResponse(data: any): any {
+  if (Array.isArray(data)) {
+    return data.map(item => transformMongoResponse(item));
+  }
+  
+  if (data && typeof data === 'object') {
+    const transformed: any = {};
+    
+    for (const key in data) {
+      if (key === '_id') {
+        transformed.id = data[key];
+      } else if (key === 'data' && (Array.isArray(data[key]) || typeof data[key] === 'object')) {
+        transformed[key] = transformMongoResponse(data[key]);
+      } else if (typeof data[key] === 'object' && data[key] !== null) {
+        transformed[key] = transformMongoResponse(data[key]);
+      } else {
+        transformed[key] = data[key];
+      }
+    }
+    
+    return transformed;
+  }
+  
+  return data;
+}
+
 const api = axios.create({
   baseURL: API_URL,
   headers: {
@@ -25,7 +52,13 @@ api.interceptors.request.use(
 
 // Response interceptor
 api.interceptors.response.use(
-  (response) => response,
+  (response) => {
+    // Transform _id to id for MongoDB documents
+    if (response.data) {
+      response.data = transformMongoResponse(response.data);
+    }
+    return response;
+  },
   async (error: AxiosError) => {
     const originalRequest = error.config as InternalAxiosRequestConfig & { _retry?: boolean };
 
