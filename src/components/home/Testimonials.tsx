@@ -1,8 +1,7 @@
-
-"use client"
-import React, { useState } from 'react';
-import { motion } from 'framer-motion';
-import { Star, MessageSquare } from 'lucide-react';
+"use client";
+import React, { useState } from "react";
+import { motion } from "framer-motion";
+import { Star, MessageSquare } from "lucide-react";
 
 interface Testimonial {
   name: string;
@@ -22,7 +21,7 @@ const Testimonials: React.FC = () => {
       company: "Royal Kingscope",
       text: "I use it every day — whether I'm commuting, waiting in line, or at a café. The ergonomic design actually makes my posture better!",
       rating: 5,
-      avatar: "https://i.pravatar.cc/150?img=12"
+      avatar: "https://i.pravatar.cc/150?img=12",
     },
     {
       name: "Sarah Mitchell",
@@ -30,7 +29,7 @@ const Testimonials: React.FC = () => {
       company: "Creative Studios",
       text: "The perfect companion for my daily commute. It's stylish, functional, and incredibly comfortable to wear all day long.",
       rating: 5,
-      avatar: "https://i.pravatar.cc/150?img=45"
+      avatar: "https://i.pravatar.cc/150?img=45",
     },
     {
       name: "James Chen",
@@ -38,7 +37,7 @@ const Testimonials: React.FC = () => {
       company: "Tech Innovations",
       text: "I use it every day — whether I'm commuting, waiting in line, or at a café. The ergonomic design actually makes my posture better!",
       rating: 5,
-      avatar: "https://i.pravatar.cc/150?img=33"
+      avatar: "https://i.pravatar.cc/150?img=33",
     },
     {
       name: "Maria Garcia",
@@ -46,7 +45,7 @@ const Testimonials: React.FC = () => {
       company: "Brand Solutions",
       text: "This bag has transformed how I work on the go. The organization is perfect and the quality is outstanding!",
       rating: 5,
-      avatar: "https://i.pravatar.cc/150?img=47"
+      avatar: "https://i.pravatar.cc/150?img=47",
     },
     {
       name: "David Kim",
@@ -54,7 +53,7 @@ const Testimonials: React.FC = () => {
       company: "StartUp Ventures",
       text: "I use it every day — whether I'm commuting, waiting in line, or at a café. The ergonomic design actually makes my posture better!",
       rating: 5,
-      avatar: "https://i.pravatar.cc/150?img=68"
+      avatar: "https://i.pravatar.cc/150?img=68",
     },
     {
       name: "Emily Watson",
@@ -62,24 +61,23 @@ const Testimonials: React.FC = () => {
       company: "Global Advisors",
       text: "The best investment I've made for my daily routine. Comfortable, practical, and looks professional in any setting.",
       rating: 5,
-      avatar: "https://i.pravatar.cc/150?img=26"
+      avatar: "https://i.pravatar.cc/150?img=26",
     },
   ];
 
   // Duplicate testimonials for seamless loop
   const duplicatedTestimonials = [...testimonials, ...testimonials];
 
-
   const TestimonialCard = ({ testimonial }: { testimonial: Testimonial }) => (
     <motion.div
-      className="flex-shrink-0 cursor-pointer w-[320px] md:w-[420px] bg-[#EEEAE2] rounded-2xl p-8 shadow-[0_2px_12px_rgba(0,0,0,0.06)] border-[3px] border-[#6B4A2D]/10 border-dashed transition-all duration-300"
+      className="flex-shrink-0 cursor-pointer w-[280px] sm:w-[320px] md:w-[420px] bg-[#EEEAE2] rounded-2xl p-6 md:p-8 shadow-[0_2px_12px_rgba(0,0,0,0.06)] border-[3px] border-[#6B4A2D]/10 border-dashed transition-all duration-300"
       onHoverStart={() => setIsPaused(true)}
       onHoverEnd={() => setIsPaused(false)}
       whileHover={{
         scale: 1.05,
         y: -8,
         boxShadow: "0 20px 40px rgba(0,0,0,0.15)",
-        borderColor: "rgba(107, 74, 45, 0.2)"
+        borderColor: "rgba(107, 74, 45, 0.2)",
       }}
       transition={{ duration: 0.3 }}
     >
@@ -117,7 +115,8 @@ const Testimonials: React.FC = () => {
       {/* Author Info */}
       <div>
         <h4 className="text-[#63615E] font-semibold text-base">
-          {testimonial.name} <span className="text-[#8B7E6F]">• {testimonial.role}</span>
+          {testimonial.name}{" "}
+          <span className="text-[#8B7E6F]">• {testimonial.role}</span>
         </h4>
         <p className="text-[#090909]/60 text-sm mt-1">{testimonial.company}</p>
       </div>
@@ -125,7 +124,7 @@ const Testimonials: React.FC = () => {
   );
 
   return (
-    <section className="py-20 md:py-32 overflow-hidden">
+    <section className="py-12 md:py-32 overflow-hidden">
       <div className="max-w-7xl mx-auto px-6 mb-16">
         {/* Header */}
         <div className="text-center">
@@ -138,14 +137,16 @@ const Testimonials: React.FC = () => {
           </div>
 
           {/* Heading */}
-          <h2 className="text-[clamp(2.5rem,7vw,5rem)] leading-[1.1] font-normal mb-4 tracking-tight">
+          <h2 className="text-[clamp(2rem,7vw,5rem)] leading-[1.1] font-normal mb-4 tracking-tight">
             <span className="text-[#6B4A2D] font-bold">Trusted By </span>
             <span className="text-[#B8AFA1] font-bold">Experts.</span>
           </h2>
 
           {/* Description */}
           <p className="light-text text-sm md:text-base max-w-3xl mx-auto leading-relaxed">
-            Real stories from real clients. See how our designs have transformed international and elevated businesses, and created lasting impressions.
+            Real stories from real clients. See how our designs have transformed
+            international and elevated businesses, and created lasting
+            impressions.
           </p>
         </div>
       </div>
@@ -156,9 +157,13 @@ const Testimonials: React.FC = () => {
         <div className="relative">
           <motion.div
             className="flex gap-6"
-            animate={isPaused ? {} : {
-              x: [0, "-50%"],
-            }}
+            animate={
+              isPaused
+                ? {}
+                : {
+                    x: [0, "-50%"],
+                  }
+            }
             transition={{
               x: {
                 repeat: Infinity,
@@ -170,7 +175,10 @@ const Testimonials: React.FC = () => {
             style={{ width: "max-content" }}
           >
             {duplicatedTestimonials.map((testimonial, index) => (
-              <TestimonialCard key={`row1-${index}`} testimonial={testimonial} />
+              <TestimonialCard
+                key={`row1-${index}`}
+                testimonial={testimonial}
+              />
             ))}
           </motion.div>
         </div>
@@ -179,9 +187,13 @@ const Testimonials: React.FC = () => {
         <div className="relative">
           <motion.div
             className="flex gap-6"
-            animate={isPaused ? {} : {
-              x: ["-50%", 0],
-            }}
+            animate={
+              isPaused
+                ? {}
+                : {
+                    x: ["-50%", 0],
+                  }
+            }
             transition={{
               x: {
                 repeat: Infinity,
@@ -193,7 +205,10 @@ const Testimonials: React.FC = () => {
             style={{ width: "max-content" }}
           >
             {duplicatedTestimonials.map((testimonial, index) => (
-              <TestimonialCard key={`row2-${index}`} testimonial={testimonial} />
+              <TestimonialCard
+                key={`row2-${index}`}
+                testimonial={testimonial}
+              />
             ))}
           </motion.div>
         </div>
