@@ -1,29 +1,30 @@
-'use client';
+"use client";
 
-import React, { useState } from 'react';
-import { useRouter } from 'next/navigation';
-import Link from 'next/link';
-import { toast } from 'sonner';
-import { motion } from 'framer-motion';
-import { ArrowLeft, Mail, Lock, AlertCircle } from 'lucide-react';
-import api from '@/lib/api';
-import { useAuth } from '@/hooks/use-auth';
-import Navbar from '@/components/home/Navbar';
-import { ASSETS } from '@/constants/assets';
-import { ParallaxImage } from '@/components/common/ScrollSection';
+import React, { useState } from "react";
+import { useRouter } from "next/navigation";
+import Link from "next/link";
+import { toast } from "sonner";
+import { motion } from "framer-motion";
+import { ArrowLeft, Mail, Lock, AlertCircle, Eye, EyeOff } from "lucide-react";
+import api from "@/lib/api";
+import { useAuth } from "@/hooks/use-auth";
+import Navbar from "@/components/home/Navbar";
+import { ASSETS } from "@/constants/assets";
+import { ParallaxImage } from "@/components/common/ScrollSection";
 
 export default function LoginPage() {
   const router = useRouter();
   const { setUser } = useAuth();
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
   const [loading, setLoading] = useState(false);
+  const [showPassword, setShowPassword] = useState(false);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
     if (!email || !password) {
-      toast.error('Please enter email and password');
+      toast.error("Please enter email and password");
       return;
     }
 
@@ -31,7 +32,7 @@ export default function LoginPage() {
 
     try {
       // Call login API
-      const response = await api.post('/auth/login', { email, password });
+      const response = await api.post("/auth/login", { email, password });
 
       // Extract data from response - Handle both potential response structures
       const data = response.data?.data || response.data;
@@ -39,8 +40,8 @@ export default function LoginPage() {
 
       // Store tokens
       if (accessToken) {
-        localStorage.setItem('token', accessToken);
-        localStorage.setItem('refreshToken', refreshToken);
+        localStorage.setItem("token", accessToken);
+        localStorage.setItem("refreshToken", refreshToken);
       } else {
         throw new Error("No access token received");
       }
@@ -49,26 +50,29 @@ export default function LoginPage() {
       const normalizedUser = {
         ...user,
         id: user._id || user.id,
-        name: user.name || `${user.firstName || ''} ${user.lastName || ''}`.trim(),
+        name:
+          user.name || `${user.firstName || ""} ${user.lastName || ""}`.trim(),
       };
 
       // Update Zustand store
       setUser(normalizedUser);
 
       // Show success message
-      toast.success('Welcome back!');
+      toast.success("Welcome back!");
 
       // Wait a bit for toast to show, then redirect
       setTimeout(() => {
-        if (user.role === 'admin' || user.role === 'staff') {
-          window.location.href = '/admin/dashboard';
+        if (user.role === "admin" || user.role === "staff") {
+          window.location.href = "/admin/dashboard";
         } else {
-          window.location.href = '/';
+          window.location.href = "/";
         }
       }, 500);
     } catch (error: any) {
       // Show error message
-      const message = error.response?.data?.message || 'Login failed. Please check your credentials.';
+      const message =
+        error.response?.data?.message ||
+        "Login failed. Please check your credentials.";
       toast.error(message);
       setLoading(false);
     }
@@ -76,8 +80,8 @@ export default function LoginPage() {
 
   return (
     <div className="min-h-screen bg-brand-beige font-sans flex flex-col">
-      <Navbar solid /> {/* Ensure solid navbar sits on top if needed, or relative */}
-
+      <Navbar solid />{" "}
+      {/* Ensure solid navbar sits on top if needed, or relative */}
       <div className="flex-grow flex items-center justify-center p-6 relative">
         {/* Background Pattern */}
         <div className="absolute inset-0 bg-[#D4CEC4]/20 pointer-events-none" />
@@ -100,28 +104,38 @@ export default function LoginPage() {
             <div className="absolute inset-0 bg-gradient-to-t from-[#6B4A2D] to-transparent" />
 
             <div className="absolute bottom-12 left-12 right-12 text-white">
-              <h2 className="text-3xl font-black uppercase tracking-tighter mb-4">Welcome Back.</h2>
+              <h2 className="text-3xl font-black uppercase tracking-tighter mb-4">
+                Welcome Back.
+              </h2>
               <p className="opacity-80 text-lg font-light leading-relaxed">
-                Sign in to access your orders, saved items, and exclusive offers.
+                Sign in to access your orders, saved items, and exclusive
+                offers.
               </p>
             </div>
           </div>
 
           {/* Right Side - Form */}
           <div className="w-full lg:w-1/2 p-8 md:p-16 flex flex-col justify-center relative">
-            <Link href="/" className="absolute top-8 left-8 text-[#6B4A2D]/60 hover:text-[#6B4A2D] flex items-center gap-2 text-sm font-bold uppercase tracking-wider transition-colors">
+            <Link
+              href="/"
+              className="absolute top-8 left-8 text-[#6B4A2D]/60 hover:text-[#6B4A2D] flex items-center gap-2 text-sm font-bold uppercase tracking-wider transition-colors"
+            >
               <ArrowLeft className="w-4 h-4" /> Back to Home
             </Link>
 
             <div className="max-w-sm mx-auto w-full">
               <div className="mb-10 mt-8 lg:mt-0">
-                <h1 className="text-3xl font-bold text-[#6B4A2D] mb-2">Sign In</h1>
+                <h1 className="text-3xl font-bold text-[#6B4A2D] mb-2">
+                  Sign In
+                </h1>
                 <p className="text-[#8B7E6F]">Please enter your details.</p>
               </div>
 
               <form onSubmit={handleSubmit} className="space-y-6">
                 <div className="space-y-2">
-                  <label className="text-xs font-bold text-[#6B4A2D]/60 uppercase tracking-widest pl-1">Email</label>
+                  <label className="text-xs font-bold text-[#6B4A2D]/60 uppercase tracking-widest pl-1">
+                    Email
+                  </label>
                   <div className="relative">
                     <Mail className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-[#6B4A2D]/40" />
                     <input
@@ -137,27 +151,46 @@ export default function LoginPage() {
                 </div>
 
                 <div className="space-y-2">
-                  <label className="text-xs font-bold text-[#6B4A2D]/60 uppercase tracking-widest pl-1">Password</label>
+                  <label className="text-xs font-bold text-[#6B4A2D]/60 uppercase tracking-widest pl-1">
+                    Password
+                  </label>
                   <div className="relative">
                     <Lock className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-[#6B4A2D]/40" />
                     <input
-                      type="password"
-                      className="w-full bg-[#f8f6f4] border border-[#6B4A2D]/10 rounded-xl px-4 py-3 pl-12 text-[#6B4A2D] focus:outline-none focus:border-[#6B4A2D]/40 transition-colors"
+                      type={showPassword ? "text" : "password"}
+                      className="w-full bg-[#f8f6f4] border border-[#6B4A2D]/10 rounded-xl px-4 py-3 pl-12 pr-12 text-[#6B4A2D] focus:outline-none focus:border-[#6B4A2D]/40 transition-colors"
                       placeholder="••••••••"
                       value={password}
                       onChange={(e) => setPassword(e.target.value)}
                       disabled={loading}
                       required
                     />
+                    <button
+                      type="button"
+                      onClick={() => setShowPassword(!showPassword)}
+                      className="absolute right-4 top-1/2 -translate-y-1/2 text-[#6B4A2D]/40 hover:text-[#6B4A2D]/60 transition-colors"
+                    >
+                      {showPassword ? (
+                        <EyeOff className="w-5 h-5" />
+                      ) : (
+                        <Eye className="w-5 h-5" />
+                      )}
+                    </button>
                   </div>
                 </div>
 
                 <div className="flex items-center justify-between text-sm">
                   <label className="flex items-center gap-2 cursor-pointer text-[#6B4A2D]/80 hover:text-[#6B4A2D]">
-                    <input type="checkbox" className="rounded border-[#6B4A2D]/20 text-[#6B4A2D] focus:ring-[#6B4A2D]" />
+                    <input
+                      type="checkbox"
+                      className="rounded border-[#6B4A2D]/20 text-[#6B4A2D] focus:ring-[#6B4A2D]"
+                    />
                     <span>Remember me</span>
                   </label>
-                  <Link href="#" className="font-bold text-[#6B4A2D] hover:underline">
+                  <Link
+                    href="/auth/forgot-password"
+                    className="font-bold text-[#6B4A2D] hover:underline"
+                  >
                     Forgot password?
                   </Link>
                 </div>
@@ -167,14 +200,17 @@ export default function LoginPage() {
                   disabled={loading}
                   className="w-full bg-[#6B4A2D] text-white py-4 rounded-xl font-bold uppercase tracking-widest hover:bg-opacity-90 transition-all disabled:opacity-70 disabled:cursor-not-allowed shadow-lg shadow-[#6B4A2D]/20"
                 >
-                  {loading ? 'Signing in...' : 'Sign In'}
+                  {loading ? "Signing in..." : "Sign In"}
                 </button>
               </form>
 
               <div className="mt-8 text-center">
                 <p className="text-[#8B7E6F]">
-                  Don't have an account? {' '}
-                  <Link href="/auth/register" className="font-bold text-[#6B4A2D] hover:underline">
+                  Don't have an account?{" "}
+                  <Link
+                    href="/auth/register"
+                    className="font-bold text-[#6B4A2D] hover:underline"
+                  >
                     Sign up for free
                   </Link>
                 </p>

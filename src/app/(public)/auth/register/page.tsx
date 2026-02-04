@@ -5,7 +5,15 @@ import { useRouter } from "next/navigation";
 import Link from "next/link";
 import { toast } from "sonner";
 import { motion } from "framer-motion";
-import { ArrowLeft, Mail, Lock, User, AlertCircle } from "lucide-react";
+import {
+  ArrowLeft,
+  Mail,
+  Lock,
+  User,
+  AlertCircle,
+  Eye,
+  EyeOff,
+} from "lucide-react";
 import api from "@/lib/api";
 import { useAuth } from "@/hooks/use-auth";
 import Navbar from "@/components/home/Navbar";
@@ -51,6 +59,8 @@ export default function RegisterPage() {
   const router = useRouter();
   const { setUser } = useAuth();
   const [loading, setLoading] = useState(false);
+  const [showPassword, setShowPassword] = useState(false);
+  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
 
   const {
     register,
@@ -74,33 +84,35 @@ export default function RegisterPage() {
       });
 
       // Extract data from response
-      const data = response.data?.data || response.data;
-      const { user, accessToken, refreshToken } = data;
+      // const data = response.data?.data || response.data;
+      // const { user, accessToken, refreshToken } = data;
 
-      // Store tokens
-      if (accessToken) {
-        localStorage.setItem("token", accessToken);
-        localStorage.setItem("refreshToken", refreshToken);
-      }
+      // Store tokens -- DO NOT STORE for verification flow
+      // if (accessToken) {
+      //   localStorage.setItem("token", accessToken);
+      //   localStorage.setItem("refreshToken", refreshToken);
+      // }
 
-      // Normalize user data
-      const normalizedUser = {
-        ...user,
-        id: user._id || user.id,
-        name:
-          user.name || `${user.firstName || ""} ${user.lastName || ""}`.trim(),
-      };
+      // Normalize user data -- DO NOT SET USER
+      // const normalizedUser = {
+      //   ...user,
+      //   id: user._id || user.id,
+      //   name:
+      //     user.name || `${user.firstName || ""} ${user.lastName || ""}`.trim(),
+      // };
 
       // Update Zustand store
-      setUser(normalizedUser);
+      // setUser(normalizedUser);
 
       // Show success message
-      toast.success("Account created successfully!");
+      toast.success(
+        "Account created! Please check your email to verify your account.",
+      );
 
-      // Wait a bit for toast to show, then redirect
+      // Wait a bit for toast to show, then redirect to login
       setTimeout(() => {
-        window.location.href = "/";
-      }, 500);
+        window.location.href = "/auth/login";
+      }, 2000);
     } catch (error: any) {
       // Show error message
       const message =
@@ -235,12 +247,23 @@ export default function RegisterPage() {
                   <div className="relative">
                     <Lock className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-[#6B4A2D]/40" />
                     <input
-                      type="password"
+                      type={showPassword ? "text" : "password"}
                       {...register("password")}
-                      className={`w-full bg-[#f8f6f4] border border-[#6B4A2D]/10 rounded-xl px-4 py-3 pl-10 text-[#6B4A2D] focus:outline-none focus:border-[#6B4A2D]/40 transition-colors text-sm ${errors.password ? "border-red-500 bg-red-50" : ""}`}
+                      className={`w-full bg-[#f8f6f4] border border-[#6B4A2D]/10 rounded-xl px-4 py-3 pl-10 pr-12 text-[#6B4A2D] focus:outline-none focus:border-[#6B4A2D]/40 transition-colors text-sm ${errors.password ? "border-red-500 bg-red-50" : ""}`}
                       placeholder="••••••••"
                       disabled={loading}
                     />
+                    <button
+                      type="button"
+                      onClick={() => setShowPassword(!showPassword)}
+                      className="absolute right-4 top-1/2 -translate-y-1/2 text-[#6B4A2D]/40 hover:text-[#6B4A2D]/60 transition-colors"
+                    >
+                      {showPassword ? (
+                        <EyeOff className="w-4 h-4" />
+                      ) : (
+                        <Eye className="w-4 h-4" />
+                      )}
+                    </button>
                   </div>
                   {errors.password && (
                     <p className="text-red-500 text-xs pl-1">
@@ -256,12 +279,25 @@ export default function RegisterPage() {
                   <div className="relative">
                     <Lock className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-[#6B4A2D]/40" />
                     <input
-                      type="password"
+                      type={showConfirmPassword ? "text" : "password"}
                       {...register("confirmPassword")}
-                      className={`w-full bg-[#f8f6f4] border border-[#6B4A2D]/10 rounded-xl px-4 py-3 pl-10 text-[#6B4A2D] focus:outline-none focus:border-[#6B4A2D]/40 transition-colors text-sm ${errors.confirmPassword ? "border-red-500 bg-red-50" : ""}`}
+                      className={`w-full bg-[#f8f6f4] border border-[#6B4A2D]/10 rounded-xl px-4 py-3 pl-10 pr-12 text-[#6B4A2D] focus:outline-none focus:border-[#6B4A2D]/40 transition-colors text-sm ${errors.confirmPassword ? "border-red-500 bg-red-50" : ""}`}
                       placeholder="••••••••"
                       disabled={loading}
                     />
+                    <button
+                      type="button"
+                      onClick={() =>
+                        setShowConfirmPassword(!showConfirmPassword)
+                      }
+                      className="absolute right-4 top-1/2 -translate-y-1/2 text-[#6B4A2D]/40 hover:text-[#6B4A2D]/60 transition-colors"
+                    >
+                      {showConfirmPassword ? (
+                        <EyeOff className="w-4 h-4" />
+                      ) : (
+                        <Eye className="w-4 h-4" />
+                      )}
+                    </button>
                   </div>
                   {errors.confirmPassword && (
                     <p className="text-red-500 text-xs pl-1">

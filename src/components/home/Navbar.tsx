@@ -24,6 +24,7 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { useRouter } from "next/navigation";
+import { LogoutConfirmModal } from "../common/LogoutConfirmModal";
 
 interface NavbarProps {
   darkText?: boolean;
@@ -34,13 +35,14 @@ const Navbar: React.FC<NavbarProps> = ({ darkText = false, solid = false }) => {
   const [isOpen, setIsOpen] = useState(false);
   const [isCartOpen, setIsCartOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
+  const [showLogoutModal, setShowLogoutModal] = useState(false); // Add state
 
   const { isAuthenticated, user, logout } = useAuth();
   const cartItems = useAppSelector((state) => state.cart.items);
   const [cartCount, setCartCount] = useState(0);
   const router = useRouter();
 
-  // Handle scroll effect for navbar background
+  // ... (useEffect hooks) ...
   useEffect(() => {
     const handleScroll = () => {
       setScrolled(window.scrollY > 50);
@@ -49,7 +51,6 @@ const Navbar: React.FC<NavbarProps> = ({ darkText = false, solid = false }) => {
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
-  // Sync cart count
   useEffect(() => {
     const count = cartItems.reduce((sum, item) => sum + item.quantity, 0);
     setCartCount(count);
@@ -63,11 +64,11 @@ const Navbar: React.FC<NavbarProps> = ({ darkText = false, solid = false }) => {
     { name: "Contact Us", href: "/contact" },
   ];
 
-  const handleLogout = () => {
-    logout();
-    router.push("/");
-    router.refresh();
-  };
+  /*
+   * Removing old handleLogout which did direct logout.
+   * Now we will just trigger the modal.
+   */
+  // const handleLogout = () => { ... } // Removed
 
   const isDark = darkText || scrolled || solid;
   const isSolid = solid || scrolled;
@@ -80,7 +81,7 @@ const Navbar: React.FC<NavbarProps> = ({ darkText = false, solid = false }) => {
     ? "bg-white/90 backdrop-blur-md shadow-sm py-4"
     : "bg-transparent py-10 shadow-none";
 
-  // Lock scroll when mobile menu is open
+  // ... (lock scroll effect) ...
   useEffect(() => {
     if (isOpen) {
       document.body.style.overflow = "hidden";
@@ -97,7 +98,7 @@ const Navbar: React.FC<NavbarProps> = ({ darkText = false, solid = false }) => {
       <nav
         className={`fixed top-0 w-full z-50 px-6 md:px-16 transition-all duration-300 flex justify-between items-center ${bgColorClass}`}
       >
-        {/* Logo (Left aligned) */}
+        {/* ... (Logo) ... */}
         <Link href="/">
           <motion.div
             initial={{ opacity: 0, x: -20 }}
@@ -109,13 +110,13 @@ const Navbar: React.FC<NavbarProps> = ({ darkText = false, solid = false }) => {
               <span
                 className={`${textColorClass} text-2xl font-black tracking-tighter uppercase flex items-center gap-1 transition-colors duration-300`}
               >
-                ka
+                kang
                 <span
                   className={`${isDark ? "text-[#6B4A2D]/40" : "text-white/40"} italic`}
                 >
                   _
                 </span>
-                gpack
+                pack
               </span>
               <div
                 className={`absolute -top-1 left-7 w-3 h-3 ${isDark ? "bg-[#6B4A2D]/20" : "bg-white/20"} rounded-full blur-[2px]`}
@@ -126,7 +127,7 @@ const Navbar: React.FC<NavbarProps> = ({ darkText = false, solid = false }) => {
 
         {/* Desktop Navigation Links (Center) */}
         <div
-          className={`hidden lg:flex gap-8 text-[12px] md:text-lg font-[900] uppercase tracking-[0.2em] ${isDark ? "text-[#6B4A2D]/90" : "text-white/90"}`}
+          className={`hidden lg:flex gap-4 xl:gap-8 text-xs xl:text-sm font-bold uppercase tracking-widest ${isDark ? "text-[#6B4A2D]/90" : "text-white/90"}`}
         >
           {navLinks.map((link, index) => (
             <Link key={link.name} href={link.href} passHref>
@@ -167,7 +168,7 @@ const Navbar: React.FC<NavbarProps> = ({ darkText = false, solid = false }) => {
           </motion.button>
 
           {/* Auth Buttons (Desktop) */}
-          <div className="hidden md:flex items-center gap-4">
+          <div className="hidden lg:flex items-center gap-4">
             {isAuthenticated ? (
               <DropdownMenu>
                 <DropdownMenuTrigger asChild>
@@ -202,7 +203,7 @@ const Navbar: React.FC<NavbarProps> = ({ darkText = false, solid = false }) => {
                   </DropdownMenuItem>
                   <DropdownMenuSeparator />
                   <DropdownMenuItem
-                    onClick={handleLogout}
+                    onClick={() => setShowLogoutModal(true)} // Trigger modal
                     className="text-red-500 cursor-pointer focus:text-red-500 focus:bg-red-50"
                   >
                     <LogOut className="mr-2 h-4 w-4" />
@@ -233,7 +234,7 @@ const Navbar: React.FC<NavbarProps> = ({ darkText = false, solid = false }) => {
           <motion.div
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
-            className="md:hidden"
+            className="lg:hidden"
           >
             <button
               onClick={() => setIsOpen(!isOpen)}
@@ -252,7 +253,7 @@ const Navbar: React.FC<NavbarProps> = ({ darkText = false, solid = false }) => {
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
-            className="fixed inset-0 z-[100] md:hidden"
+            className="fixed inset-0 z-[100] lg:hidden"
           >
             {/* Backdrop */}
             <motion.div
@@ -269,148 +270,153 @@ const Navbar: React.FC<NavbarProps> = ({ darkText = false, solid = false }) => {
               animate={{ x: 0 }}
               exit={{ x: "100%" }}
               transition={{ type: "spring", damping: 30, stiffness: 300 }}
-              className="absolute top-0 right-0 w-[85%] max-w-sm h-screen bg-[#6B4A2D] shadow-2xl flex flex-col overflow-hidden"
+              className="absolute top-0 right-0 w-full sm:w-[85%] sm:max-w-sm h-[100dvh] bg-[#6B4A2D] shadow-2xl flex flex-col z-[110]"
             >
-              {/* Decorative Background Text */}
-              <div className="absolute top-[20%] -right-20 select-none pointer-events-none opacity-5 vertical-text">
-                <span className="text-[150px] font-black tracking-tighter text-white uppercase leading-none">
+              {/* Decorative Background Text - Fixed position to stay behind everything */}
+              <div className="absolute top-1/2 -right-24 -translate-y-1/2 select-none pointer-events-none opacity-[0.03] z-0 overflow-hidden">
+                <span className="text-[120px] sm:text-[150px] font-black tracking-tighter text-white uppercase leading-none whitespace-nowrap vertical-text">
                   KANGPACK
                 </span>
               </div>
 
-              {/* Mobile Menu Header */}
-              <div className="flex justify-between items-center px-8 py-10 relative z-10">
+              {/* Mobile Menu Header - Fixed at Top */}
+              <div className="flex-shrink-0 flex justify-between items-center px-6 py-6 border-b border-white/5 relative z-20 bg-[#6B4A2D]/95 backdrop-blur-sm">
                 <Link href="/" onClick={() => setIsOpen(false)}>
-                  <span className="text-white text-2xl font-black tracking-tighter uppercase">
+                  <span className="text-white text-xl font-black tracking-tighter uppercase">
                     ka<span className="text-white/40 italic">_</span>gpack
                   </span>
                 </Link>
                 <motion.button
                   whileTap={{ scale: 0.9 }}
                   onClick={() => setIsOpen(false)}
-                  className="w-12 h-12 bg-white/10 rounded-full flex items-center justify-center text-white border border-white/20"
+                  className="w-10 h-10 bg-white/10 rounded-full flex items-center justify-center text-white border border-white/20 hover:bg-white/20 transition-colors"
                 >
-                  <X size={24} />
+                  <X size={20} />
                 </motion.button>
               </div>
 
-              <div className="flex-1 px-8 py-6 flex flex-col justify-between relative z-10">
-                <div className="flex flex-col gap-6">
-                  <p className="text-white/40 text-[10px] font-bold uppercase tracking-[0.3em] mb-4">
-                    Navigations
-                  </p>
-                  {navLinks.map((link, i) => (
-                    <motion.div
-                      initial={{ opacity: 0, x: 20 }}
-                      animate={{ opacity: 1, x: 0 }}
-                      transition={{ delay: 0.1 + i * 0.05 }}
-                      key={link.name}
-                    >
-                      <Link
-                        href={link.href}
-                        className="group flex items-center gap-4"
-                        onClick={() => setIsOpen(false)}
+              {/* Scrollable Content Area */}
+              <div className="flex-1 overflow-y-auto overflow-x-hidden relative z-10 custom-scrollbar">
+                <div className="flex flex-col min-h-full px-6 py-8">
+                  {/* Navigation Links */}
+                  <div className="flex flex-col gap-5 mb-12">
+                    <p className="text-white/30 text-[10px] font-bold uppercase tracking-[0.3em] mb-2 px-1">
+                      Menu
+                    </p>
+                    {navLinks.map((link, i) => (
+                      <motion.div
+                        initial={{ opacity: 0, x: 20 }}
+                        animate={{ opacity: 1, x: 0 }}
+                        transition={{ delay: 0.1 + i * 0.05 }}
+                        key={link.name}
                       >
-                        <span className="text-[10px] font-bold text-white/30 font-mono mt-2">
-                          0{i + 1}
-                        </span>
-                        <div className="flex flex-col">
-                          <span className="text-3xl font-black text-white uppercase tracking-tighter group-hover:text-white/70 transition-colors leading-none">
+                        <Link
+                          href={link.href}
+                          className="group flex items-center gap-4 py-1"
+                          onClick={() => setIsOpen(false)}
+                        >
+                          <span className="text-[10px] font-bold text-white/20 font-mono pt-1 w-6">
+                            0{i + 1}
+                          </span>
+                          <span className="text-3xl font-black text-white uppercase tracking-tighter group-hover:text-white/80 transition-colors leading-none">
                             {link.name}
                           </span>
-                        </div>
-                        <div className="h-[1px] flex-grow bg-white/10 opacity-0 group-hover:opacity-100 transition-all ml-2" />
-                      </Link>
-                    </motion.div>
-                  ))}
-                </div>
-
-                <div className="mt-auto pt-10 space-y-10">
-                  {/* Auth Section */}
-                  <div className="space-y-4">
-                    {!isAuthenticated ? (
-                      <div className="flex flex-col gap-3">
-                        <Link
-                          href="/auth/login"
-                          onClick={() => setIsOpen(false)}
-                          className="w-full"
-                        >
-                          <Button
-                            variant="outline"
-                            className="w-full h-14 border-white/20 text-white hover:bg-white/10 hover:text-white bg-transparent text-sm font-bold uppercase tracking-widest rounded-2xl"
-                          >
-                            Log In
-                          </Button>
                         </Link>
-                        <Link
-                          href="/auth/register"
-                          onClick={() => setIsOpen(false)}
-                          className="w-full"
-                        >
-                          <Button className="w-full h-14 bg-white text-[#6B4A2D] hover:bg-white/90 text-sm font-bold uppercase tracking-widest rounded-2xl shadow-xl shadow-black/10">
-                            Sign Up
-                          </Button>
-                        </Link>
-                      </div>
-                    ) : (
-                      <div className="flex flex-col gap-3">
-                        <div className="flex items-center gap-4 p-4 bg-white/10 rounded-2xl border border-white/10 mb-2">
-                          <div className="w-10 h-10 rounded-full bg-white/20 flex items-center justify-center text-white">
-                            <User size={20} />
-                          </div>
-                          <div className="flex flex-col">
-                            <span className="text-white text-xs font-bold uppercase tracking-wider">
-                              {user?.name || user?.firstName}
-                            </span>
-                            <span className="text-white/40 text-[10px]">
-                              {user?.email}
-                            </span>
-                          </div>
-                        </div>
-                        <Link
-                          href="/dashboard"
-                          onClick={() => setIsOpen(false)}
-                          className="w-full"
-                        >
-                          <Button className="w-full h-14 bg-white text-[#6B4A2D] hover:bg-white/90 text-sm font-bold uppercase tracking-widest rounded-2xl">
-                            Dashboard
-                          </Button>
-                        </Link>
-                        <Button
-                          onClick={() => {
-                            handleLogout();
-                            setIsOpen(false);
-                          }}
-                          variant="ghost"
-                          className="w-full h-14 text-white/60 hover:text-white hover:bg-white/10 bg-transparent text-sm font-bold uppercase tracking-widest rounded-2xl"
-                        >
-                          Log Out
-                        </Button>
-                      </div>
-                    )}
+                      </motion.div>
+                    ))}
                   </div>
 
-                  {/* Footer links in drawer */}
-                  <div className="flex justify-between items-center border-t border-white/10 pt-8 pb-10">
-                    <div className="flex gap-4">
-                      <motion.a
-                        whileHover={{ y: -2 }}
-                        href="#"
-                        className="w-10 h-10 rounded-full bg-white/5 flex items-center justify-center text-white/60 hover:text-white transition-colors border border-white/10"
-                      >
-                        <span className="text-[10px] font-bold">IG</span>
-                      </motion.a>
-                      <motion.a
-                        whileHover={{ y: -2 }}
-                        href="#"
-                        className="w-10 h-10 rounded-full bg-white/5 flex items-center justify-center text-white/60 hover:text-white transition-colors border border-white/10"
-                      >
-                        <span className="text-[10px] font-bold">TW</span>
-                      </motion.a>
+                  <div className="mt-auto space-y-8">
+                    {/* Auth Section */}
+                    <div className="space-y-4">
+                      {!isAuthenticated ? (
+                        <div className="grid grid-cols-2 gap-3">
+                          <Link
+                            href="/auth/login"
+                            onClick={() => setIsOpen(false)}
+                            className="w-full"
+                          >
+                            <Button
+                              variant="outline"
+                              className="w-full h-12 border-white/20 text-white hover:bg-white/10 hover:text-white bg-transparent text-xs font-bold uppercase tracking-widest rounded-xl"
+                            >
+                              Log In
+                            </Button>
+                          </Link>
+                          <Link
+                            href="/auth/register"
+                            onClick={() => setIsOpen(false)}
+                            className="w-full"
+                          >
+                            <Button className="w-full h-12 bg-white text-[#6B4A2D] hover:bg-white/90 text-xs font-bold uppercase tracking-widest rounded-xl border border-white">
+                              Sign Up
+                            </Button>
+                          </Link>
+                        </div>
+                      ) : (
+                        <div className="flex flex-col gap-3">
+                          <div className="flex items-center gap-3 p-3 bg-white/5 rounded-xl border border-white/10 mb-2">
+                            <div className="w-8 h-8 rounded-full bg-white/20 flex items-center justify-center text-white shrink-0">
+                              <User size={16} />
+                            </div>
+                            <div className="flex flex-col overflow-hidden">
+                              <span className="text-white text-xs font-bold uppercase tracking-wider truncate">
+                                {user?.name || user?.firstName}
+                              </span>
+                              <span className="text-white/40 text-[10px] truncate">
+                                {user?.email}
+                              </span>
+                            </div>
+                          </div>
+
+                          <div className="grid grid-cols-2 gap-3">
+                            <Link
+                              href="/dashboard"
+                              onClick={() => setIsOpen(false)}
+                              className="w-full"
+                            >
+                              <Button className="w-full h-12 bg-white text-[#6B4A2D] hover:bg-white/90 text-xs font-bold uppercase tracking-widest rounded-xl">
+                                Dashboard
+                              </Button>
+                            </Link>
+                            <Button
+                              onClick={() => {
+                                setIsOpen(false);
+                                setShowLogoutModal(true);
+                              }}
+                              variant="ghost"
+                              className="w-full h-12 text-white/70 hover:text-white hover:bg-white/10 bg-white/5 text-xs font-bold uppercase tracking-widest rounded-xl border border-white/5"
+                            >
+                              Log Out
+                            </Button>
+                          </div>
+                        </div>
+                      )}
                     </div>
-                    <span className="text-white/20 text-[9px] uppercase tracking-widest">
-                      © 2026 KANGPACK™
-                    </span>
+
+                    {/* Footer Socials */}
+                    <div className="flex justify-between items-end border-t border-white/10 pt-6">
+                      <div className="flex gap-3">
+                        {["IG", "TW", "FB"].map((social) => (
+                          <motion.a
+                            key={social}
+                            whileHover={{ y: -2 }}
+                            href="#"
+                            className="w-9 h-9 rounded-full bg-white/5 flex items-center justify-center text-white/50 hover:text-white transition-colors border border-white/10 text-[10px] font-bold"
+                          >
+                            {social}
+                          </motion.a>
+                        ))}
+                      </div>
+                      <div className="text-right">
+                        <span className="text-white/20 text-[9px] uppercase tracking-widest block">
+                          © 2026
+                        </span>
+                        <span className="text-white/40 text-[10px] font-bold uppercase tracking-wider">
+                          KANGPACK
+                        </span>
+                      </div>
+                    </div>
                   </div>
                 </div>
               </div>
@@ -421,6 +427,12 @@ const Navbar: React.FC<NavbarProps> = ({ darkText = false, solid = false }) => {
 
       {/* Cart Drawer */}
       <CartDrawer isOpen={isCartOpen} onClose={() => setIsCartOpen(false)} />
+
+      {/* Logout Modal */}
+      <LogoutConfirmModal
+        isOpen={showLogoutModal}
+        onClose={() => setShowLogoutModal(false)}
+      />
     </>
   );
 };
