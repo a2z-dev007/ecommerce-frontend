@@ -1,21 +1,44 @@
-
-"use client"
-import React, { useState } from 'react';
-import { Plus, Minus } from 'lucide-react';
-import { motion, AnimatePresence } from 'framer-motion';
+"use client";
+import React, { useState } from "react";
+import { Plus, Minus } from "lucide-react";
+import { motion, AnimatePresence } from "framer-motion";
 
 const FAQ: React.FC = () => {
   const [openIndex, setOpenIndex] = useState<number | null>(null);
 
   const faqs = [
-    { q: "What is Kangpack?", a: "Kangpack is a wearable workstation designed for professionals who work on the go." },
-    { q: "How does Kangpack work?", a: "It uses an ergonomic harness and a stable tray to provide a desk-like surface anywhere." },
-    { q: "What laptop sizes does it support?", a: "It supports laptops from 13 inches to 15.6 inches comfortably." },
-    { q: "Is it comfortable for long use?", a: "Yes, its ergonomic design distributes weight across your shoulders and back." },
-    { q: "Can I walk or stand while using it?", a: "Absolutely! It's designed for use while standing, walking, or sitting." },
-    { q: "Is Kangpack heavy?", a: "No, it weighs only 820g, which is lighter than many typical leather backpacks." },
-    { q: "Does it protect my laptop?", a: "Yes, it features padding and a radiation shield (on specific models)." },
-    { q: "Is it suitable for travel and public spaces?", a: "Perfectly! It's ideal for trains, airports, and waiting lines." }
+    {
+      q: "What is Kangpack?",
+      a: "Kangpack is a wearable workstation designed for professionals who work on the go.",
+    },
+    {
+      q: "How does Kangpack work?",
+      a: "It uses an ergonomic harness and a stable tray to provide a desk-like surface anywhere.",
+    },
+    {
+      q: "What laptop sizes does it support?",
+      a: "It supports laptops from 13 inches to 15.6 inches comfortably.",
+    },
+    {
+      q: "Is it comfortable for long use?",
+      a: "Yes, its ergonomic design distributes weight across your shoulders and back.",
+    },
+    {
+      q: "Can I walk or stand while using it?",
+      a: "Absolutely! It's designed for use while standing, walking, or sitting.",
+    },
+    {
+      q: "Is Kangpack heavy?",
+      a: "No, it weighs only 820g, which is lighter than many typical leather backpacks.",
+    },
+    {
+      q: "Does it protect my laptop?",
+      a: "Yes, it features padding and a radiation shield (on specific models).",
+    },
+    {
+      q: "Is it suitable for travel and public spaces?",
+      a: "Perfectly! It's ideal for trains, airports, and waiting lines.",
+    },
   ];
 
   return (
@@ -32,11 +55,14 @@ const FAQ: React.FC = () => {
           </div>
 
           <h2 className="text-[clamp(2.5rem,8vw,5.5rem)] md:text-[clamp(3rem,8vw,6rem)] leading-[0.95] mb-6 md:mb-8 tracking-tighter">
-            <span className="text-[#6B4A2D] font-bold">Frequently </span>
+            <span className="bg-gradient-to-r from-amber-700 via-amber-800 to-amber-900 bg-clip-text text-transparent font-bold">
+              Frequently{" "}
+            </span>
             <span className="text-[#B8AFA1] font-bold">Asked</span>
           </h2>
           <p className="light-text text-[15px] md:text-base leading-relaxed max-w-[320px] mb-10 lg:mb-0">
-            Find quick answers to common questions about Kangpack usage, care, and support essentials.
+            Find quick answers to common questions about Kangpack usage, care,
+            and support essentials.
           </p>
         </div>
 
@@ -51,14 +77,18 @@ const FAQ: React.FC = () => {
                 >
                   <div className="flex items-center gap-6 md:gap-24">
                     <span className="text-[12px] md:text-[16px] text-[#6B4A2D]/40 font-mono w-6 md:w-8">
-                      {String(i + 1).padStart(2, '0')}
+                      {String(i + 1).padStart(2, "0")}
                     </span>
-                    <span className={`text-[15px] md:text-[18px] font-bold md:font-medium tracking-tight transition-colors duration-300 ${openIndex === i ? 'text-[#6B4A2D]' : 'text-[#6B4A2D]/80 group-hover:text-[#6B4A2D]'}`}>
+                    <span
+                      className={`text-[15px] md:text-[18px] font-bold md:font-medium tracking-tight transition-colors duration-300 ${openIndex === i ? "text-[#6B4A2D]" : "text-[#6B4A2D]/80 group-hover:text-[#6B4A2D]"}`}
+                    >
                       {faq.q}
                     </span>
                   </div>
                   <div className="flex-shrink-0 ml-4">
-                    <div className={`w-7 h-7 md:w-8 md:h-8 rounded-full flex items-center justify-center transition-all duration-300 ${openIndex === i ? 'bg-[#6B4A2D] text-white' : 'text-[#6B4A2D] border border-black/5'}`}>
+                    <div
+                      className={`w-7 h-7 md:w-8 md:h-8 rounded-full flex items-center justify-center transition-all duration-300 ${openIndex === i ? "bg-gradient-to-r from-amber-700 via-amber-800 to-amber-900 text-white" : "text-[#6B4A2D] border border-black/5"}`}
+                    >
                       {openIndex === i ? (
                         <Minus className="w-4 h-4 md:w-5 md:h-5" />
                       ) : (
@@ -72,9 +102,12 @@ const FAQ: React.FC = () => {
                   {openIndex === i && (
                     <motion.div
                       initial={{ height: 0, opacity: 0 }}
-                      animate={{ height: 'auto', opacity: 1 }}
+                      animate={{ height: "auto", opacity: 1 }}
                       exit={{ height: 0, opacity: 0 }}
-                      transition={{ duration: 0.4, ease: [0.04, 0.62, 0.23, 0.98] }}
+                      transition={{
+                        duration: 0.4,
+                        ease: [0.04, 0.62, 0.23, 0.98],
+                      }}
                       className="overflow-hidden"
                     >
                       <p className="pb-8 pl-12 md:pl-[120px] lg:pl-[136px] text-[#8B7E6F] leading-relaxed text-[14px] md:text-[16px] max-w-3xl">
@@ -93,4 +126,3 @@ const FAQ: React.FC = () => {
 };
 
 export default FAQ;
-

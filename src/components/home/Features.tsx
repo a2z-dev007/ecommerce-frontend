@@ -1,36 +1,42 @@
-
-"use client"
-import React from 'react';
-import { motion } from 'framer-motion';
-import side2 from '@/assets/side2.png';
-import { Laptop, Briefcase, User, Zap, ArrowUpRight } from 'lucide-react';
-import { Lightbox, useLightbox } from '@/components/ui/Lightbox';
-import { ParallaxImage, FadeInScale } from '@/components/common/ScrollSection';
+"use client";
+import React from "react";
+import { motion } from "framer-motion";
+import side2 from "@/assets/side2.png";
+import { Laptop, Briefcase, User, Zap, ArrowUpRight } from "lucide-react";
+import { Lightbox, useLightbox } from "@/components/ui/Lightbox";
+import { ParallaxImage, FadeInScale } from "@/components/common/ScrollSection";
 
 const Features: React.FC = () => {
-  const { isOpen, images, currentIndex, openLightbox, closeLightbox, setIndex } = useLightbox();
+  const {
+    isOpen,
+    images,
+    currentIndex,
+    openLightbox,
+    closeLightbox,
+    setIndex,
+  } = useLightbox();
 
   const features = [
     {
       icon: <Laptop className="w-5 h-5 text-brand-brown" />,
       title: "Hands free work",
-      desc: "Work comfortably without needing a desk or table"
+      desc: "Work comfortably without needing a desk or table",
     },
     {
       icon: <Briefcase className="w-5 h-5 text-brand-brown" />,
       title: "Built for mobility",
-      desc: "Designed for commuting, travel & public spaces"
+      desc: "Designed for commuting, travel & public spaces",
     },
     {
       icon: <User className="w-5 h-5 text-brand-brown" />,
       title: "Ergonomic Design",
-      desc: "Balanced support for stability, comfort & posture."
+      desc: "Balanced support for stability, comfort & posture.",
     },
     {
       icon: <Zap className="w-5 h-5 text-brand-brown" />,
       title: "Instant Access",
-      desc: "Open, work & move without setup or friction"
-    }
+      desc: "Open, work & move without setup or friction",
+    },
   ];
 
   return (
@@ -66,9 +72,10 @@ const Features: React.FC = () => {
                 whileInView={{ opacity: 1, scale: 1 }}
                 viewport={{ once: false }}
                 transition={{ duration: 0.8 }}
-                className="text-[#6B4A2D] font-bold block mb-2"
+                className="inline-block mb-2 bg-gradient-to-r from-amber-700 via-amber-800 to-amber-900 bg-clip-text text-transparent font-bold"
               >
-                We turn mobility into productivity, redefining how modern professionals work on the move.
+                We turn mobility into productivity, redefining how modern
+                professionals work on the move.
               </motion.span>
               <motion.span
                 initial={{ opacity: 0 }}
@@ -77,7 +84,8 @@ const Features: React.FC = () => {
                 transition={{ duration: 0.8, delay: 0.2 }}
                 className="text-[#B8AFA1] font-bold"
               >
-                A wearable workstation designed for comfort, focus, and freedom anywhere.
+                A wearable workstation designed for comfort, focus, and freedom
+                anywhere.
               </motion.span>
             </h2>
           </div>
@@ -99,8 +107,12 @@ const Features: React.FC = () => {
                   <div className="text-brand-brown">{f.icon}</div>
                 </div>
                 <div>
-                  <h4 className="font-bold text-brand-brown mb-0.5 text-lg">{f.title}</h4>
-                  <p className="text-brand-brown/40 text-[13px] font-medium leading-tight">{f.desc}</p>
+                  <h4 className="font-bold text-brand-brown mb-0.5 text-lg">
+                    {f.title}
+                  </h4>
+                  <p className="text-brand-brown/40 text-[13px] font-medium leading-tight">
+                    {f.desc}
+                  </p>
                 </div>
               </motion.div>
             ))}
@@ -108,9 +120,11 @@ const Features: React.FC = () => {
             <motion.button
               whileHover={{ scale: 1.02 }}
               whileTap={{ scale: 0.98 }}
-              className="bg-brand-brown/80 hover:bg-brand-brown text-white p-7 rounded-2xl flex items-center justify-between group transition-all mt-1 shadow-xl"
+              className="bg-gradient-to-r from-amber-700 via-amber-800 to-amber-900 text-white p-7 rounded-2xl flex items-center justify-between group transition-all mt-1 shadow-xl border-none opacity-90 hover:opacity-100"
             >
-              <span className="font-bold text-base tracking-wide uppercase">More about us</span>
+              <span className="font-bold text-base tracking-wide uppercase">
+                More about us
+              </span>
               <ArrowUpRight className="w-6 h-6 transition-transform group-hover:translate-x-1 group-hover:-translate-y-1" />
             </motion.button>
           </div>

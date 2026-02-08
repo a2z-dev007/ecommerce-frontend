@@ -124,7 +124,7 @@ export const Footer: React.FC = () => {
                   placeholder="Enter your email"
                   className="flex-grow bg-[#EAE5DC]/50 focus:bg-[#EAE5DC] px-6 py-4 rounded-2xl sm:rounded-r-none sm:rounded-l-2xl outline-none text-[#6B4A2D] placeholder-[#A39B8B] transition-all border border-transparent focus:border-[#6B4A2D]/10"
                 />
-                <button className="bg-[#6B4A2D] text-white px-8 py-4 rounded-2xl sm:rounded-l-none sm:rounded-r-2xl font-bold text-[14px] uppercase tracking-widest hover:bg-[#5A3E25] transition-all shadow-lg shadow-[#6B4A2D]/10 active:scale-95">
+                <button className="bg-gradient-to-r from-amber-700 via-amber-800 to-amber-900 text-white px-8 py-4 rounded-2xl sm:rounded-l-none sm:rounded-r-2xl font-bold text-[14px] uppercase tracking-widest hover:opacity-90 transition-all shadow-lg shadow-[#6B4A2D]/10 active:scale-95">
                   Subscribe
                 </button>
               </div>
@@ -164,7 +164,7 @@ export const Footer: React.FC = () => {
 
         {/* Massive Branding Background Text - Responsive Hero UI */}
         <div className="relative select-none pointer-events-none flex justify-center items-end overflow-hidden h-[22vw] sm:h-[18vw] lg:h-[15vw] pt-10">
-          <h1 className="w-full text-[20vw] sm:text-[22vw] lg:text-[17vw] font-black text-center leading-none tracking-tighter uppercase whitespace-nowrap text-[#6B4A2D] opacity-[0.06] translate-y-[4vw]">
+          <h1 className="w-full text-[20vw] sm:text-[22vw] lg:text-[17vw] font-black text-center leading-none tracking-tighter uppercase whitespace-nowrap bg-gradient-to-b from-amber-700 via-amber-800 to-amber-900 bg-clip-text text-transparent opacity-[0.06] translate-y-[4vw]">
             KANGPACK
           </h1>
           {/* Bottom color match for seamless look */}

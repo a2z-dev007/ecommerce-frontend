@@ -221,7 +221,7 @@ const Navbar: React.FC<NavbarProps> = ({ darkText = false, solid = false }) => {
                 </Link>
                 <Link href="/auth/register">
                   <Button
-                    className={`rounded-full px-6 text-[11px] font-bold uppercase tracking-widest h-9 ${isDark ? "bg-[#6B4A2D] text-white hover:bg-[#6B4A2D]/90" : "bg-white text-[#6B4A2D] hover:bg-white/90"}`}
+                    className={`rounded-full px-6 text-[11px] font-bold uppercase tracking-widest h-9 border-none ${isDark ? "bg-gradient-to-r from-amber-700 via-amber-800 to-amber-900 text-white" : "bg-white text-amber-800 hover:bg-white/90"}`}
                   >
                     Sign Up
                   </Button>
@@ -348,7 +348,7 @@ const Navbar: React.FC<NavbarProps> = ({ darkText = false, solid = false }) => {
                             onClick={() => setIsOpen(false)}
                             className="w-full"
                           >
-                            <Button className="w-full h-12 bg-white text-[#6B4A2D] hover:bg-white/90 text-xs font-bold uppercase tracking-widest rounded-xl border border-white">
+                            <Button className="w-full h-12 bg-gradient-to-r from-amber-700 via-amber-800 to-amber-900 text-white text-xs font-bold uppercase tracking-widest rounded-xl border-none">
                               Sign Up
                             </Button>
                           </Link>
@@ -375,7 +375,7 @@ const Navbar: React.FC<NavbarProps> = ({ darkText = false, solid = false }) => {
                               onClick={() => setIsOpen(false)}
                               className="w-full"
                             >
-                              <Button className="w-full h-12 bg-white text-[#6B4A2D] hover:bg-white/90 text-xs font-bold uppercase tracking-widest rounded-xl">
+                              <Button className="w-full h-12 bg-gradient-to-r from-amber-700 via-amber-800 to-amber-900 text-white text-xs font-bold uppercase tracking-widest rounded-xl border-none">
                                 Dashboard
                               </Button>
                             </Link>

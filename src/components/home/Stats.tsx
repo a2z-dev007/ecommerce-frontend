@@ -1,7 +1,7 @@
-"use client"
-import React from 'react';
-import SlotCounter from 'react-slot-counter';
-import { motion } from 'framer-motion';
+"use client";
+import React from "react";
+import SlotCounter from "react-slot-counter";
+import { motion } from "framer-motion";
 
 const Stats: React.FC = () => {
   const statsData = [
@@ -9,20 +9,20 @@ const Stats: React.FC = () => {
       value: "3",
       suffix: "+",
       label: "Ways to Wear",
-      description: "Backpack • Sling • Workstation"
+      description: "Backpack • Sling • Workstation",
     },
     {
       value: "95",
       suffix: "%",
       label: "Posture Stability",
-      description: "Ergonomic weight balance"
+      description: "Ergonomic weight balance",
     },
     {
       value: "200",
       suffix: "%",
       label: "Satisfied Clients",
-      description: "With a great experience and results."
-    }
+      description: "With a great experience and results.",
+    },
   ];
 
   return (
@@ -38,7 +38,7 @@ const Stats: React.FC = () => {
               viewport={{ once: true }}
               className="flex items-center gap-3"
             >
-              <div className="w-2.5 h-2.5 bg-[#6B4A2D] rounded-[2px]" />
+              <div className="w-2.5 h-2.5 bg-gradient-to-br from-amber-700 via-amber-800 to-amber-900 rounded-[2px]" />
               <span className="text-[11px] font-bold uppercase tracking-widest text-[#6B4A2D]/60 mt-0.5">
                 Stats & Facts
               </span>
@@ -54,8 +54,14 @@ const Stats: React.FC = () => {
               transition={{ duration: 0.8 }}
               className="text-[clamp(1.6rem,4.5vw,3.2rem)] leading-[1.1] tracking-tight text-left max-w-4xl"
             >
-              <span className="text-[#6B4A2D] font-bold">We engineer freedom for modern professionals where mobility meets real productivity. </span>
-              <span className="text-[#B8AFA1] font-bold">Every detail is designed to remove friction, boost comfort, and keep you moving without slowing down.</span>
+              <span className="bg-gradient-to-r from-amber-700 via-amber-800 to-amber-900 bg-clip-text text-transparent font-bold">
+                We engineer freedom for modern professionals where mobility
+                meets real productivity.{" "}
+              </span>
+              <span className="text-[#B8AFA1] font-bold">
+                Every detail is designed to remove friction, boost comfort, and
+                keep you moving without slowing down.
+              </span>
             </motion.h2>
           </div>
         </div>
@@ -69,14 +75,17 @@ const Stats: React.FC = () => {
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
               transition={{ delay: index * 0.1, duration: 0.8 }}
-              className={`group ${index === 2 ? 'sm:col-span-2 lg:col-span-1' : ''}`}
+              className={`group ${index === 2 ? "sm:col-span-2 lg:col-span-1" : ""}`}
             >
               {/* Number and Suffix */}
               <div className="text-[clamp(3.5rem,12vw,8rem)] lg:text-[clamp(4.5rem,8vw,9.5rem)] font-black text-[#6B4A2D] leading-[0.8] mb-4 md:mb-6 lg:mb-8 flex items-baseline">
                 <SlotCounter
                   value={stat.value}
                   duration={2}
-                  animateOnVisible={{ triggerOnce: true, rootMargin: '0px 0px -100px 0px' }}
+                  animateOnVisible={{
+                    triggerOnce: true,
+                    rootMargin: "0px 0px -100px 0px",
+                  }}
                 />
                 <span className="ml-[1px] md:ml-[2px]">{stat.suffix}</span>
               </div>

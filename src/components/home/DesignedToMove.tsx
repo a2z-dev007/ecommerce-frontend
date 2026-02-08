@@ -1,10 +1,18 @@
 "use client";
 
-import React from 'react';
-import { motion } from 'framer-motion';
-import { ASSETS } from '@/constants/assets';
+import React from "react";
+import { motion } from "framer-motion";
+import { ASSETS } from "@/constants/assets";
 
-const InlineImage = ({ src, className = "", rotate = 0 }: { src: string; className?: string; rotate?: number }) => (
+const InlineImage = ({
+  src,
+  className = "",
+  rotate = 0,
+}: {
+  src: string;
+  className?: string;
+  rotate?: number;
+}) => (
   <motion.div
     className={`inline-flex items-center justify-center w-[1.3em] h-[1em] rounded-[24px] overflow-hidden translate-y-[0.1em] border-[4px] border-white shadow-lg mx-1 ${className}`}
     style={{ transform: `translateY(0.1em) rotate(${rotate}deg)` }}
@@ -14,7 +22,7 @@ const InlineImage = ({ src, className = "", rotate = 0 }: { src: string; classNa
       transition: {
         duration: 0.6,
         ease: "easeInOut",
-      }
+      },
     }}
   >
     <img src={src} className="w-full h-full object-cover" alt="Detail" />
@@ -43,12 +51,26 @@ const DesignedToMove: React.FC = () => {
       <div className="max-w-[1200px] mx-auto px-6 text-center">
         <div className="flex flex-col items-center gap-1 md:gap-4">
           {/* Row 1 */}
-          <div className="flex items-center flex-wrap justify-center text-[clamp(2.5rem,7vw,5.5rem)] font-bold tracking-[-0.04em] text-[#6B4A2D] leading-[1]">
-            <span>Designed to Move</span>
+          <div className="flex items-center flex-wrap justify-center text-[clamp(2.5rem,7vw,5.5rem)] font-bold tracking-[-0.04em] leading-[1]">
+            <span className="bg-gradient-to-r from-amber-700 via-amber-800 to-amber-900 bg-clip-text text-transparent">
+              Designed to Move
+            </span>
             <div className="inline-flex items-center ml-6 -space-x-5">
-              <InlineImage src={ASSETS.TICKERS.SIDE} className="z-30" rotate={-5} />
-              <InlineImage src={ASSETS.TICKERS.FIRST} className="z-20" rotate={0} />
-              <InlineImage src={ASSETS.TICKERS.SECOND} className="z-10" rotate={5} />
+              <InlineImage
+                src={ASSETS.TICKERS.SIDE}
+                className="z-30"
+                rotate={-5}
+              />
+              <InlineImage
+                src={ASSETS.TICKERS.FIRST}
+                className="z-20"
+                rotate={0}
+              />
+              <InlineImage
+                src={ASSETS.TICKERS.SECOND}
+                className="z-10"
+                rotate={5}
+              />
             </div>
           </div>
 
@@ -59,15 +81,27 @@ const DesignedToMove: React.FC = () => {
 
           {/* Row 3 */}
           <div className="flex items-center flex-wrap justify-center text-[clamp(2.5rem,7vw,5.5rem)] font-bold tracking-[-0.04em] leading-[1]">
-            <InlineImage src={ASSETS.TICKERS.MAIN} rotate={-8} className="mr-6 " />
-            <span className="text-[#6B4A2D]">Effortless Focus</span>
+            <InlineImage
+              src={ASSETS.TICKERS.MAIN}
+              rotate={-8}
+              className="mr-6 "
+            />
+            <span className="bg-gradient-to-r from-amber-700 via-amber-800 to-amber-900 bg-clip-text text-transparent">
+              Effortless Focus
+            </span>
           </div>
 
           {/* Row 4 */}
           <div className="flex items-center flex-wrap justify-center text-[clamp(2.5rem,7vw,5.5rem)] font-bold tracking-[-0.04em] leading-[1]">
             <span className="text-[#B8AFA1]">Made for</span>
-            <InlineImage src={ASSETS.TICKERS.MAIN2} rotate={8} className="mx-6" />
-            <span className="text-[#6B4A2D]">Real Life</span>
+            <InlineImage
+              src={ASSETS.TICKERS.MAIN2}
+              rotate={8}
+              className="mx-6"
+            />
+            <span className="bg-gradient-to-r from-amber-700 via-amber-800 to-amber-900 bg-clip-text text-transparent">
+              Real Life
+            </span>
           </div>
         </div>
       </div>

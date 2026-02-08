@@ -23,7 +23,7 @@ import {
   Layout,
 } from "lucide-react";
 import { useAppDispatch } from "@/lib/store/hooks";
-import { addItem } from "@/lib/store/features/cart/cartSlice";
+import { addToCart } from "@/lib/store/features/cart/cartSlice";
 import { toast } from "sonner";
 import ScrollSection from "@/components/common/ScrollSection";
 import { cn } from "@/lib/utils";
@@ -246,7 +246,7 @@ export default function ProductDetailPage({
 
   const handleAddToCart = () => {
     if (product) {
-      dispatch(addItem({ product: product as any, quantity }));
+      dispatch(addToCart({ product: product as any, quantity }));
       toast.success(`Added ${quantity} ${product.name} to cart`);
     }
   };

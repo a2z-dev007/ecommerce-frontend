@@ -1,19 +1,21 @@
-'use client';
+"use client";
 
-import React from 'react';
-import { useQuery } from '@tanstack/react-query';
-import { productsApi } from '@/features/products/api';
-import Navbar from '@/components/home/Navbar';
-import { motion } from 'framer-motion';
-import Link from 'next/link';
-import { QUERY_KEYS, ROUTES } from '@/lib/constants';
-import { formatPrice } from '@/lib/utils';
-import { ShoppingBag, ArrowRight, Star } from 'lucide-react';
-import { ASSETS } from '@/constants/assets';
-import ScrollSection, { ParallaxImage } from '@/components/common/ScrollSection';
-import { useAppDispatch } from '@/lib/store/hooks';
-import { addItem } from '@/lib/store/features/cart/cartSlice';
-import { toast } from 'sonner';
+import React from "react";
+import { useQuery } from "@tanstack/react-query";
+import { productsApi } from "@/features/products/api";
+import Navbar from "@/components/home/Navbar";
+import { motion } from "framer-motion";
+import Link from "next/link";
+import { QUERY_KEYS, ROUTES } from "@/lib/constants";
+import { formatPrice } from "@/lib/utils";
+import { ShoppingBag, ArrowRight, Star } from "lucide-react";
+import { ASSETS } from "@/constants/assets";
+import ScrollSection, {
+  ParallaxImage,
+} from "@/components/common/ScrollSection";
+import { useAppDispatch } from "@/lib/store/hooks";
+import { addToCart } from "@/lib/store/features/cart/cartSlice";
+import { toast } from "sonner";
 
 // Custom Product Card Component matching the new aesthetic
 const ProductCard = ({ product, index }: { product: any; index: number }) => {
@@ -22,7 +24,7 @@ const ProductCard = ({ product, index }: { product: any; index: number }) => {
   const handleAddToCart = (e: React.MouseEvent) => {
     e.preventDefault();
     e.stopPropagation();
-    dispatch(addItem({ product: product as any }));
+    dispatch(addToCart({ product: product as any, quantity: 1 }));
     toast.success(`Added ${product.name} to cart`);
   };
 
@@ -34,7 +36,10 @@ const ProductCard = ({ product, index }: { product: any; index: number }) => {
       transition={{ duration: 0.6, delay: index * 0.1 }}
       className="group relative bg-white rounded-2xl overflow-hidden shadow-sm hover:shadow-xl transition-all duration-500 flex flex-col h-full"
     >
-      <Link href={ROUTES.PRODUCT_DETAIL(product.slug)} className="flex-grow flex flex-col">
+      <Link
+        href={ROUTES.PRODUCT_DETAIL(product.slug)}
+        className="flex-grow flex flex-col"
+      >
         {/* Image Container */}
         <div className="aspect-[4/5] relative overflow-hidden bg-brand-beige/20">
           {product.stock <= 5 && product.stock > 0 && (
@@ -70,7 +75,7 @@ const ProductCard = ({ product, index }: { product: any; index: number }) => {
         <div className="p-6 flex flex-col flex-grow">
           <div className="flex justify-between items-start mb-2">
             <span className="text-xs font-bold text-brand-brown/40 uppercase tracking-widest line-clamp-1">
-              {product.category?.name || 'Accessories'}
+              {product.category?.name || "Accessories"}
             </span>
             <div className="flex flex-col items-end">
               <span className="text-brand-brown font-bold text-lg">
@@ -82,7 +87,7 @@ const ProductCard = ({ product, index }: { product: any; index: number }) => {
             {product.name}
           </h3>
           <p className="text-brand-brown/60 text-sm leading-relaxed mb-4 line-clamp-2 flex-grow">
-            {product.description || 'Experience premium quality and design.'}
+            {product.description || "Experience premium quality and design."}
           </p>
 
           <div className="pt-4 border-t border-brand-brown/5 flex items-center justify-between mt-auto">
@@ -150,7 +155,8 @@ export default function ProductsPage() {
               transition={{ duration: 0.8, delay: 0.2 }}
               className="text-white/90 text-lg md:text-xl max-w-2xl font-light"
             >
-              Explore our complete lineup of premium gear designed for the modern creator.
+              Explore our complete lineup of premium gear designed for the
+              modern creator.
             </motion.p>
           </div>
         </div>
@@ -162,7 +168,10 @@ export default function ProductsPage() {
             {isLoading ? (
               <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 md:gap-8">
                 {[...Array(8)].map((_, i) => (
-                  <div key={i} className="bg-white rounded-2xl h-[500px] animate-pulse relative overflow-hidden">
+                  <div
+                    key={i}
+                    className="bg-white rounded-2xl h-[500px] animate-pulse relative overflow-hidden"
+                  >
                     <div className="h-2/3 bg-gray-200"></div>
                     <div className="p-6 space-y-4">
                       <div className="h-4 bg-gray-200 rounded w-1/3"></div>
@@ -177,13 +186,21 @@ export default function ProductsPage() {
                 {data?.data && data.data.length > 0 ? (
                   <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 md:gap-8">
                     {data.data.map((product: any, index: number) => (
-                      <ProductCard key={product.id} product={product} index={index} />
+                      <ProductCard
+                        key={product.id}
+                        product={product}
+                        index={index}
+                      />
                     ))}
                   </div>
                 ) : (
                   <div className="text-center py-20">
-                    <h3 className="text-2xl font-bold text-brand-brown">No products found.</h3>
-                    <p className="text-brand-brown/60 mt-2">Check back later for new arrivals.</p>
+                    <h3 className="text-2xl font-bold text-brand-brown">
+                      No products found.
+                    </h3>
+                    <p className="text-brand-brown/60 mt-2">
+                      Check back later for new arrivals.
+                    </p>
                   </div>
                 )}
               </>

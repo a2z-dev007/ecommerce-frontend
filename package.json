@@ -34,6 +34,7 @@
     "react-dom": "^19.0.0",
     "react-hook-form": "^7.53.2",
     "react-redux": "^9.2.0",
+    "react-select": "^5.10.2",
     "react-slot-counter": "^3.3.2",
     "react-swipeable": "^7.0.2",
     "sonner": "^1.7.1",

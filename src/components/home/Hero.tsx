@@ -76,25 +76,47 @@ const Hero: React.FC = () => {
       className="relative h-[100dvh] w-full flex flex-col items-center justify-center overflow-hidden bg-[#1a1a1a]"
     >
       {/* Background Image Layer (Parallax) */}
-      <motion.div style={{ y: bgY }} className="absolute inset-0 z-0">
+      <motion.div
+        style={{ y: bgY }}
+        className="absolute inset-0 z-0 overflow-hidden"
+      >
         <img
           src="/assets/hero-bg.png"
           alt="Nature background"
-          className="w-full h-full object-cover brightness-[0.9] scale-115"
+          className="w-full h-full object-cover brightness-[0.8] scale-110"
         />
-        <div className="absolute inset-0 bg-black/10 backdrop-blur-[1px]"></div>
+        {/* Decorative Light Leak */}
+        <div className="absolute -top-[20%] -left-[10%] w-[60%] h-[60%] bg-amber-500/10 blur-[120px] rounded-full pointer-events-none" />
+        <div className="absolute top-[40%] -right-[10%] w-[40%] h-[40%] bg-brand-brown/10 blur-[100px] rounded-full pointer-events-none" />
+
+        {/* Grain/Noise Overlay */}
+        <div
+          className="absolute inset-0 opacity-[0.03] pointer-events-none mix-blend-overlay"
+          style={{
+            backgroundImage:
+              'url("https://res.cloudinary.com/dlbv8effr/image/upload/v1635447101/noise_tzo7px.png")',
+          }}
+        ></div>
+
+        <div className="absolute inset-0 bg-gradient-to-b from-black/20 via-transparent to-black/60 backdrop-blur-[0.5px]"></div>
       </motion.div>
 
       {/* Top Text: "A wearable workstation" (Centered above everything) */}
-      <div className="absolute top-[30%] md:top-[20%] z-30 w-full text-center">
-        <motion.p
-          initial={{ opacity: 0, y: -10 }}
+      <div className="absolute top-[25%] md:top-[18%] z-30 w-full text-center px-6">
+        <motion.div
+          initial={{ opacity: 0, y: -20 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 1, ease: "easeOut" }}
-          className="text-white text-base md:text-xl lg:text-[2vw] font-normal tracking-normal"
+          transition={{ duration: 1.2, ease: "easeOut" }}
+          className="flex flex-col items-center gap-3"
         >
-          A wearable workstation
-        </motion.p>
+          <div className="h-[1px] w-12 bg-white/30 mb-1" />
+          <p className="text-white/80 text-xs md:text-sm lg:text-[1vw] font-bold uppercase tracking-[0.4em]">
+            Precision Crafted
+          </p>
+          <p className="text-white text-base md:text-xl lg:text-[2.5vw] font-light tracking-tight italic">
+            A wearable workstation
+          </p>
+        </motion.div>
       </div>
 
       {/* Monolithic Background Text: ANYWHERE */}
@@ -104,6 +126,7 @@ const Hero: React.FC = () => {
             y: textTranslateY,
             scale: textScale,
             opacity: textOpacity,
+            textShadow: "0 20px 80px rgba(0,0,0,0.3)",
           }}
           initial={{ opacity: 0, scale: 0.95, y: 40 }}
           animate={{ opacity: 1, scale: 1, y: 0 }}
@@ -112,14 +135,46 @@ const Hero: React.FC = () => {
             delay: 0.1,
             ease: [0.22, 1, 0.36, 1],
           }}
-          className="text-[15vw] pb-[8rem] md:pb-[12.5rem] md:text-[18vw] lg:text-[15vw] font-black text-[#F2EFE9] leading-none tracking-[-0.04em] select-none uppercase text-center"
+          className="text-[14vw] pb-[8rem] md:pb-[14rem] md:text-[20vw] lg:text-[16vw] font-black leading-none tracking-[-0.05em] select-none uppercase text-center relative pointer-events-auto flex items-center justify-center z-10"
         >
-          ANYWHERE
+          <span className="absolute inset-0 text-white/10 blur-[1px] pointer-events-none flex items-center justify-center">
+            ANYWHERE
+          </span>
+          {"ANYWHERE".split("").map((letter, i) => (
+            <motion.span
+              key={i}
+              whileHover={{
+                scale: 1.2,
+                y: -20,
+                transition: { duration: 0.3, ease: "easeOut" },
+              }}
+              className="relative inline-block transition-all duration-300 bg-clip-text text-transparent cursor-default px-[0.02em] py-12 bg-white/0"
+              style={{
+                WebkitTextStroke: "1px rgba(242, 239, 233, 0.4)",
+                backgroundImage:
+                  "linear-gradient(to bottom, rgba(255,255,255,0.4), rgba(255,255,255,0.4))",
+              }}
+              onMouseEnter={(e) => {
+                const target = e.currentTarget as HTMLElement;
+                target.style.WebkitTextStroke = "0px";
+                target.style.backgroundImage =
+                  "linear-gradient(to right, #b45309, #92400e, #78350f)";
+              }}
+              onMouseLeave={(e) => {
+                const target = e.currentTarget as HTMLElement;
+                target.style.WebkitTextStroke = "1px rgba(242, 239, 233, 0.4)";
+                target.style.backgroundImage =
+                  "linear-gradient(to bottom, rgba(255,255,255,0.4), rgba(255,255,255,0.4))";
+              }}
+            >
+              {letter}
+            </motion.span>
+          ))}
         </motion.h1>
       </div>
 
       {/* Main Product Container (Grounded Bag) with Parallax */}
-      <div className="relative z-20 w-full max-w-7xl px-4 flex flex-col items-center md:mt-auto mt-64 xl:pt-[10rem] perspective-[1200px]">
+      <div className="relative z-20 w-full max-w-7xl px-4 flex flex-col items-center md:mt-auto mt-64 xl:pt-[10rem] perspective-[1200px] pointer-events-none">
         <motion.div
           style={{ y: bagParallax }}
           initial={{ y: 100, opacity: 0 }}
@@ -141,17 +196,30 @@ const Hero: React.FC = () => {
             className="w-full flex justify-center"
           >
             {/* Inner image for mouse-driven tilt and shift */}
-            <motion.img
-              src="/assets/bag.png"
-              alt="Kangpack Product"
-              className="w-[90%] md:w-[88%] lg:w-[93%] xl:w-[98%] h-auto object-contain drop-shadow-[0_60px_80px_rgba(0,0,0,0.6)]"
+            <motion.div
               style={{
                 rotateX: bagRotateX,
                 rotateY: bagRotateY,
                 x: bagMoveX,
                 y: bagMoveY,
               }}
-            />
+              className="relative w-[90%] md:w-[88%] lg:w-[93%] xl:w-[98%] max-w-[900px]"
+            >
+              <img
+                src="/assets/bag.png"
+                alt="Kangpack Product"
+                className="w-full h-auto object-contain drop-shadow-[0_40px_60px_rgba(0,0,0,0.5)] scale-105"
+              />
+              {/* Dynamic Shadow that follows the tilt */}
+              <motion.div
+                className="absolute -bottom-10 left-1/2 -translate-x-1/2 w-[60%] h-12 bg-black/40 blur-[40px] rounded-full -z-10"
+                style={{
+                  x: useTransform(springX, [-0.5, 0.5], [40, -40]),
+                  scaleX: useTransform(springY, [-0.5, 0.5], [0.8, 1.2]),
+                  opacity: useTransform(springY, [-0.5, 0.5], [0.3, 0.6]),
+                }}
+              />
+            </motion.div>
           </motion.div>
 
           {/* Mobile Only: CTA Button (Stacked below bag) */}
@@ -159,20 +227,18 @@ const Hero: React.FC = () => {
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 1.5 }}
-            className="flex md:hidden flex-col items-center gap-4 mt-2"
+            className="flex md:hidden flex-col items-center gap-6 mt-12 pointer-events-auto"
           >
-            <p className="text-white text-sm font-normal tracking-normal">
-              Work without limits
-            </p>
+            <div className="flex flex-col items-center gap-1">
+              <span className="text-white/40 text-[10px] uppercase tracking-[0.3em] font-bold">
+                Unveiling
+              </span>
+              <p className="text-white text-lg font-light italic tracking-tight">
+                Work without limits
+              </p>
+            </div>
             <Link href="/products">
-              <button className="flex items-center gap-3 bg-white px-1.5 py-1.5 pr-8 rounded-full shadow-lg">
-                <div className="w-10 h-10 bg-brand-brown rounded-full flex items-center justify-center text-white">
-                  <ArrowRight className="w-4 h-4" />
-                </div>
-                <span className="text-brand-brown font-bold text-xs tracking-wide uppercase">
-                  Shop Now
-                </span>
-              </button>
+              <PrimaryButton>Shop Now</PrimaryButton>
             </Link>
           </motion.div>
         </motion.div>
@@ -205,21 +271,25 @@ const Hero: React.FC = () => {
               transition={{ delay: 1 }}
               className="hidden md:flex flex-col items-center gap-3 group cursor-pointer pointer-events-auto"
             >
-              <div className="relative w-44 md:w-52 lg:w-56 aspect-video rounded-2xl md:rounded-3xl overflow-hidden border-2 border-white/20 shadow-[0_20px_50px_rgba(0,0,0,0.5)] group-hover:border-white/40 transition-all">
+              <div className="relative w-44 md:w-52 lg:w-60 aspect-video rounded-3xl overflow-hidden border border-white/10 shadow-[0_30px_60px_rgba(0,0,0,0.6)] group-hover:border-white/30 transition-all">
+                <div className="absolute inset-0 bg-brand-brown/10 z-10 pointer-events-none mix-blend-overlay"></div>
                 <img
-                  src="https://picsum.photos/seed/kang-action/500/300"
-                  className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-1000 brightness-[0.75]"
+                  src="https://picsum.photos/seed/kang-action/800/450"
+                  className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-1000 brightness-[0.6] sepia-[0.2]"
                   alt="Video thumbnail"
                 />
-                <div className="absolute inset-0 flex items-center justify-center">
-                  <div className="w-12 h-12 md:w-14 md:h-14 bg-white/10 backdrop-blur-md rounded-full flex items-center justify-center ring-1 ring-white/30 group-hover:scale-110 transition-transform">
-                    <Play className="w-4 h-4 md:w-5 md:h-5 text-white fill-white" />
+                <div className="absolute inset-0 flex items-center justify-center z-20">
+                  <div className="w-12 h-12 md:w-16 md:h-16 bg-white/10 backdrop-blur-xl rounded-full flex items-center justify-center ring-1 ring-white/30 group-hover:scale-110 transition-transform group-hover:bg-white/20">
+                    <Play className="w-5 h-5 md:w-6 md:h-6 text-white fill-white ml-1" />
                   </div>
                 </div>
               </div>
-              <p className="text-[9px] md:text-[10px] font-extrabold text-white uppercase tracking-[0.3em] opacity-70 group-hover:opacity-100 transition-all">
-                WATCH VIDEO
-              </p>
+              <div className="flex flex-col items-center gap-1">
+                <span className="w-1 h-1 bg-white/40 rounded-full animate-pulse"></span>
+                <p className="text-[9px] md:text-[10px] font-bold text-white uppercase tracking-[0.4em] opacity-40 group-hover:opacity-100 group-hover:tracking-[0.5em] transition-all duration-500">
+                  Experience Kangpack
+                </p>
+              </div>
             </motion.div>
           )}
         </AnimatePresence>

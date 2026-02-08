@@ -143,9 +143,9 @@ const OurProducts: React.FC = () => {
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
-              className="text-4xl md:text-6xl font-black text-[#6B4A2D] tracking-tighter mb-4"
+              className="text-4xl md:text-6xl font-black tracking-tighter mb-4 bg-gradient-to-r from-amber-700 via-amber-800 to-amber-900 bg-clip-text text-transparent"
             >
-              Explore Our <span className="text-brand-brown/40">Products.</span>
+              Explore Our <span className="opacity-40">Products.</span>
             </motion.h2>
             <motion.p
               initial={{ opacity: 0, y: 20 }}

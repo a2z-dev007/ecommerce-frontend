@@ -118,7 +118,7 @@ const WearableSection: React.FC = () => {
 
                     {/* Title */}
                     <h2 className="text-[clamp(1.5rem,5vw,4.5rem)] leading-[0.9] mb-3 md:mb-8 tracking-tighter">
-                      <span className="text-[#6B4A2D] font-black block">
+                      <span className="bg-gradient-to-r from-amber-700 via-amber-800 to-amber-900 bg-clip-text text-transparent font-black block">
                         {slides[currentSlide].title1}
                       </span>
                       <span className="text-[#B8AFA1] font-black block">
