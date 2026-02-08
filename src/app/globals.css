@@ -38,6 +38,11 @@
     --chart-3: 197 37% 24%;
     --chart-4: 43 74% 66%;
     --chart-5: 27 87% 67%;
+
+    /* Premium Gradient Tokens */
+    --gradient-primary: linear-gradient(135deg, #6B4A2D, #8B6A4E);
+    --gradient-hover: linear-gradient(135deg, #5A3E26, #6B4A2D);
+    --gradient-heading: linear-gradient(135deg, #3E2A1D, #6B4A2D, #A67C52);
   }
 
   .dark {
@@ -101,4 +106,30 @@
 
 .vertical-text {
   writing-mode: vertical-rl;
+}
+
+/* Premium Gradient Utilities */
+.heading-gradient {
+  background: var(--gradient-heading);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  display: inline-block;
+}
+
+.btn-premium {
+  background: var(--gradient-primary);
+  color: white;
+  transition: all 0.3s ease;
+  border: none;
+}
+
+.btn-premium:hover {
+  background: var(--gradient-hover);
+  transform: translateY(-2px);
+  box-shadow: 0 10px 20px rgba(107, 74, 45, 0.2);
+}
+
+.bg-brand-premium {
+  background: var(--gradient-primary);
 }

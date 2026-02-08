@@ -25,10 +25,7 @@ const InAction: React.FC = () => {
 
       {/* Heading */}
       <h2 className="text-[clamp(2.5rem,7vw,5rem)] leading-[1.1] mb-4 tracking-tight text-center">
-        <span className="bg-gradient-to-r from-amber-700 via-amber-800 to-amber-900 bg-clip-text text-transparent font-bold">
-          In{" "}
-        </span>
-        <span className="text-[#B8AFA1] font-bold">Action.</span>
+        <span className="heading-gradient font-bold">In Action.</span>
       </h2>
 
       {/* Description */}

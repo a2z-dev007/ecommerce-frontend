@@ -83,17 +83,13 @@ const OfficeAnywhere: React.FC = () => {
             </span>
           </motion.div>
 
-          {/* Heading */}
           <motion.h2
             initial={{ opacity: 0, y: 30 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: false }}
-            className="text-[clamp(2.5rem,7vw,5rem)] leading-[1.1] mb-4 tracking-tight"
+            className="text-[clamp(2.5rem,7vw,5rem)] leading-[1.1] mb-4 tracking-tight font-bold"
           >
-            <span className="bg-gradient-to-r from-amber-700 via-amber-800 to-amber-900 bg-clip-text text-transparent font-bold">
-              Your Office{" "}
-            </span>
-            <span className="text-[#B8AFA1] font-bold">Anywhere</span>
+            <span className="heading-gradient">Your Office Anywhere</span>
           </motion.h2>
 
           {/* Description */}

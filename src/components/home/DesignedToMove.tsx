@@ -52,9 +52,7 @@ const DesignedToMove: React.FC = () => {
         <div className="flex flex-col items-center gap-1 md:gap-4">
           {/* Row 1 */}
           <div className="flex items-center flex-wrap justify-center text-[clamp(2.5rem,7vw,5.5rem)] font-bold tracking-[-0.04em] leading-[1]">
-            <span className="bg-gradient-to-r from-amber-700 via-amber-800 to-amber-900 bg-clip-text text-transparent">
-              Designed to Move
-            </span>
+            <span className="heading-gradient">Designed to Move</span>
             <div className="inline-flex items-center ml-6 -space-x-5">
               <InlineImage
                 src={ASSETS.TICKERS.SIDE}
@@ -86,9 +84,7 @@ const DesignedToMove: React.FC = () => {
               rotate={-8}
               className="mr-6 "
             />
-            <span className="bg-gradient-to-r from-amber-700 via-amber-800 to-amber-900 bg-clip-text text-transparent">
-              Effortless Focus
-            </span>
+            <span className="heading-gradient">Effortless Focus</span>
           </div>
 
           {/* Row 4 */}
@@ -99,9 +95,7 @@ const DesignedToMove: React.FC = () => {
               rotate={8}
               className="mx-6"
             />
-            <span className="bg-gradient-to-r from-amber-700 via-amber-800 to-amber-900 bg-clip-text text-transparent">
-              Real Life
-            </span>
+            <span className="heading-gradient">Real Life</span>
           </div>
         </div>
       </div>

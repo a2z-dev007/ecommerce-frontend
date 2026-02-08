@@ -156,13 +156,13 @@ const Hero: React.FC = () => {
               }}
               onMouseEnter={(e) => {
                 const target = e.currentTarget as HTMLElement;
-                target.style.WebkitTextStroke = "0px";
-                target.style.backgroundImage =
-                  "linear-gradient(to right, #b45309, #92400e, #78350f)";
+                (target.style as any).webkitTextStroke = "0px";
+                target.style.backgroundImage = "var(--gradient-heading)";
               }}
               onMouseLeave={(e) => {
                 const target = e.currentTarget as HTMLElement;
-                target.style.WebkitTextStroke = "1px rgba(242, 239, 233, 0.4)";
+                (target.style as any).webkitTextStroke =
+                  "1px rgba(242, 239, 233, 0.4)";
                 target.style.backgroundImage =
                   "linear-gradient(to bottom, rgba(255,255,255,0.4), rgba(255,255,255,0.4))";
               }}
@@ -238,7 +238,7 @@ const Hero: React.FC = () => {
               </p>
             </div>
             <Link href="/products">
-              <PrimaryButton>Shop Now</PrimaryButton>
+              <PrimaryButton className="btn-premium">Shop Now</PrimaryButton>
             </Link>
           </motion.div>
         </motion.div>
@@ -257,7 +257,7 @@ const Hero: React.FC = () => {
             Work without limits
           </p>
           <Link href="/products">
-            <PrimaryButton>Shop Now</PrimaryButton>
+            <PrimaryButton className="btn-premium">Shop Now</PrimaryButton>
           </Link>
         </motion.div>
 

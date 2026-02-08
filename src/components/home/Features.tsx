@@ -49,7 +49,6 @@ const Features: React.FC = () => {
 
       <div className="max-w-7xl mx-auto relative z-10">
         <div className="flex flex-col md:flex-row md:justify-center mb-20">
-          {/* About Tag - Left Column */}
           <motion.div
             initial={{ opacity: 0, x: -30 }}
             whileInView={{ opacity: 1, x: 0 }}
@@ -63,7 +62,6 @@ const Features: React.FC = () => {
               </span>
             </div>
           </motion.div>
-
           {/* Dynamic Headline - Right Column */}
           <div className="w-full ">
             <h2 className="text-[clamp(1.5rem,4vw,3.2rem)] leading-[1.05] tracking-tight">
@@ -72,7 +70,7 @@ const Features: React.FC = () => {
                 whileInView={{ opacity: 1, scale: 1 }}
                 viewport={{ once: false }}
                 transition={{ duration: 0.8 }}
-                className="inline-block mb-2 bg-gradient-to-r from-amber-700 via-amber-800 to-amber-900 bg-clip-text text-transparent font-bold"
+                className="inline-block mb-2 heading-gradient font-bold"
               >
                 We turn mobility into productivity, redefining how modern
                 professionals work on the move.
@@ -104,13 +102,13 @@ const Features: React.FC = () => {
                 className="bg-white/40 backdrop-blur-sm p-6 rounded-2xl flex items-center gap-6 hover:bg-white/80 transition-all cursor-default group border border-white/20 shadow-sm"
               >
                 <div className="w-12 h-12 bg-white rounded-xl flex items-center justify-center shadow-md flex-shrink-0 group-hover:scale-110 transition-transform">
-                  <div className="text-brand-brown">{f.icon}</div>
+                  <div className="text-primary">{f.icon}</div>
                 </div>
                 <div>
-                  <h4 className="font-bold text-brand-brown mb-0.5 text-lg">
+                  <h4 className="font-bold text-primary mb-0.5 text-lg">
                     {f.title}
                   </h4>
-                  <p className="text-brand-brown/40 text-[13px] font-medium leading-tight">
+                  <p className="text-primary/40 text-[13px] font-medium leading-tight">
                     {f.desc}
                   </p>
                 </div>
@@ -120,7 +118,7 @@ const Features: React.FC = () => {
             <motion.button
               whileHover={{ scale: 1.02 }}
               whileTap={{ scale: 0.98 }}
-              className="bg-gradient-to-r from-amber-700 via-amber-800 to-amber-900 text-white p-7 rounded-2xl flex items-center justify-between group transition-all mt-1 shadow-xl border-none opacity-90 hover:opacity-100"
+              className="btn-premium p-7 rounded-2xl flex items-center justify-between group transition-all mt-1 shadow-xl border-none opacity-90 hover:opacity-100"
             >
               <span className="font-bold text-base tracking-wide uppercase">
                 More about us

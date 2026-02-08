@@ -53,12 +53,10 @@ const Pricing: React.FC = () => {
             </span>
           </div>
 
-          {/* Heading */}
           <h2 className="text-[clamp(2.5rem,7vw,5.5rem)] leading-[1] mb-6 tracking-tight">
-            <span className="bg-gradient-to-r from-amber-700 via-amber-800 to-amber-900 bg-clip-text text-transparent font-bold">
-              Choose Your{" "}
+            <span className="heading-gradient font-bold underline decoration-primary/10 underline-offset-[12px]">
+              Choose Your Edition
             </span>
-            <span className="text-[#B8AFA1] font-bold">Kangpack</span>
           </h2>
 
           <p className="light-text text-sm md:text-base max-w-2xl mx-auto leading-relaxed">
@@ -81,7 +79,7 @@ const Pricing: React.FC = () => {
             >
               {plan.tag && (
                 <div className="absolute -top-3 left-10">
-                  <span className="bg-gradient-to-r from-amber-700 via-amber-800 to-amber-900 text-white text-[10px] font-bold uppercase tracking-widest px-4 py-1.5 rounded-full shadow-lg border-none">
+                  <span className="btn-premium text-[10px] font-bold uppercase tracking-widest px-4 py-1.5 rounded-full shadow-lg border-none">
                     {plan.tag}
                   </span>
                 </div>
@@ -128,7 +126,7 @@ const Pricing: React.FC = () => {
                 ))}
               </div>
 
-              <PrimaryButton className="mt-auto pointer-events-none">
+              <PrimaryButton className="mt-auto pointer-events-none btn-premium">
                 Buy Now
               </PrimaryButton>
             </div>

@@ -38,17 +38,14 @@ const WhyChoose: React.FC = () => {
             </span>
           </motion.div>
 
-          {/* Heading */}
           <motion.h2
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: false }}
             className="text-[clamp(2.5rem,7vw,5rem)] leading-[1.1] mb-4 tracking-tight"
           >
-            <span className="bg-gradient-to-r from-amber-700 via-amber-800 to-amber-900 bg-clip-text text-transparent font-bold">
-              Why Choose{" "}
-            </span>
-            <span className="text-[#B8AFA1] font-bold">Kangpack?</span>
+            <span className="text-primary font-bold">Why Choose </span>
+            <span className="heading-gradient font-bold px-1">Kangpack?</span>
           </motion.h2>
 
           {/* Description */}
@@ -124,7 +121,7 @@ const WhyChoose: React.FC = () => {
                 initial={{ opacity: 0, x: 30 }}
                 whileInView={{ opacity: 1, x: 0 }}
                 viewport={{ once: false }}
-                className="bg-gradient-to-br from-amber-700 via-amber-800 to-amber-900 rounded-[24px] sm:rounded-[32px] flex items-center justify-between shadow-lg relative overflow-hidden h-[180px] sm:h-[180px] md:h-[200px] group px-6 sm:px-4 md:px-6 py-4 sm:py-5 border-none"
+                className="btn-premium rounded-[24px] sm:rounded-[32px] flex items-center justify-between shadow-lg relative overflow-hidden h-[180px] sm:h-[180px] md:h-[200px] group px-6 sm:px-4 md:px-6 py-4 sm:py-5 border-none"
               >
                 {/* Text Section - Left Side */}
                 <div className="relative z-10 flex-shrink-0">

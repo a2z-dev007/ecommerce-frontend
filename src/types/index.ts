@@ -13,6 +13,8 @@ export interface Product {
   isFeatured: boolean;
   tags?: string[];
   variants?: ProductVariant[];
+  specifications?: { name: string; value: string }[];
+  shortDescription?: string;
   createdAt: string;
   updatedAt: string;
 }

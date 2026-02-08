@@ -1,5 +1,6 @@
 "use client";
 
+import api from "@/lib/api";
 import React, { useState, useEffect } from "react";
 import { useAppDispatch, useAppSelector } from "@/lib/store/hooks";
 import {
@@ -7,6 +8,7 @@ import {
   setShippingAddress,
   setPaymentMethod,
   resetCheckout,
+  setProcessing,
 } from "@/lib/store/features/checkout/checkoutSlice";
 import { clearCart } from "@/lib/store/features/cart/cartSlice";
 import Navbar from "@/components/home/Navbar";
@@ -21,6 +23,8 @@ import {
   ArrowLeft,
   Loader2,
   ShoppingBag,
+  Eye,
+  EyeOff,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -93,9 +97,8 @@ export default function CheckoutPage() {
 
   const [formData, setFormData] = useState({
     email: user?.email || "",
-    fullName: user?.firstName
-      ? `${user.firstName} ${user.lastName || ""}`.trim()
-      : "",
+    firstName: user?.firstName || "",
+    lastName: user?.lastName || "",
     phone: "",
     addressLine1: "",
     city: "",
@@ -103,6 +106,23 @@ export default function CheckoutPage() {
     postalCode: "",
     country: "United States",
   });
+  const [createAccount, setCreateAccount] = useState(false);
+  const [password, setPassword] = useState("");
+  const [showPassword, setShowPassword] = useState(false);
+  const [orderSummary, setOrderSummary] = useState({ subtotal: 0, total: 0 });
+  const [selectedPaymentMethod, setSelectedPaymentMethod] = useState<
+    "razorpay" | "cod"
+  >("razorpay");
+
+  const loadRazorpay = () => {
+    return new Promise((resolve) => {
+      const script = document.createElement("script");
+      script.src = "https://checkout.razorpay.com/v1/checkout.js";
+      script.onload = () => resolve(true);
+      script.onerror = () => resolve(false);
+      document.body.appendChild(script);
+    });
+  };
 
   useEffect(() => {
     if (cartItems.length === 0 && currentStep !== 4) {
@@ -128,22 +148,79 @@ export default function CheckoutPage() {
     dispatch(setProcessing(true));
     try {
       const orderData = {
-        shippingAddress: formData,
-        billingAddress: formData, // Simplified for now
-        paymentMethod: "stripe", // Hardcoded for this iteration or map to selection
+        shippingAddress: {
+          ...formData,
+        },
+        billingAddress: {
+          ...formData,
+        },
+        paymentMethod: selectedPaymentMethod,
         shippingMethod: "Standard",
         email: formData.email,
         phone: formData.phone || "0000000000",
+        createAccount,
+        password: createAccount ? password : undefined,
       };
 
-      const response = await import("@/lib/api").then((mod) =>
-        mod.default.post("/orders", orderData),
-      );
+      const response = await api.post("/orders", orderData);
+      const order = response.data.data;
 
-      if (response.data.success) {
+      if (selectedPaymentMethod === "cod") {
+        setOrderSummary({ subtotal, total });
         dispatch(clearCart());
         dispatch(setStep(4));
         toast.success("Order placed successfully!");
+      } else if (selectedPaymentMethod === "razorpay") {
+        const res = await loadRazorpay();
+
+        if (!res) {
+          toast.error("Razorpay SDK failed to load. Are you online?");
+          return;
+        }
+
+        const options = {
+          key: process.env.NEXT_PUBLIC_RAZORPAY_KEY_ID,
+          amount: order.totalAmount * 100,
+          currency: order.currency || "INR",
+          name: "Kangpack",
+          description: "Premium Minimalist Gear",
+          order_id: order.razorpayOrderId,
+          handler: async function (response: any) {
+            try {
+              const verifyRes = await api.post(
+                `/orders/${order._id}/verify-razorpay`,
+                {
+                  razorpayOrderId: response.razorpay_order_id,
+                  razorpayPaymentId: response.razorpay_payment_id,
+                  razorpaySignature: response.razorpay_signature,
+                },
+              );
+
+              if (verifyRes.data.success) {
+                setOrderSummary({ subtotal, total });
+                dispatch(clearCart());
+                dispatch(setStep(4));
+                toast.success("Payment successful & order placed!");
+              }
+            } catch (err) {
+              console.error("Verification failed:", err);
+              toast.error(
+                "Payment verification failed. Please contact support.",
+              );
+            }
+          },
+          prefill: {
+            name: `${formData.firstName} ${formData.lastName}`,
+            email: formData.email,
+            contact: formData.phone,
+          },
+          theme: {
+            color: "#6B4A2D",
+          },
+        };
+
+        const paymentObject = new (window as any).Razorpay(options);
+        paymentObject.open();
       }
     } catch (error: any) {
       console.error("Order creation failed:", error);
@@ -155,45 +232,58 @@ export default function CheckoutPage() {
 
   if (currentStep === 4) {
     return (
-      <div className="min-h-screen bg-brand-beige flex flex-col items-center justify-center p-6 bg-[url('/assets/grid.svg')] bg-fixed">
-        <motion.div
-          initial={{ scale: 0.8, opacity: 0 }}
-          animate={{ scale: 1, opacity: 1 }}
-          className="bg-white p-12 rounded-[40px] shadow-2xl text-center max-w-lg w-full"
-        >
-          <div className="w-24 h-24 bg-green-100 text-green-600 rounded-full flex items-center justify-center mx-auto mb-8">
-            <CheckCircle size={48} />
-          </div>
-          <h1 className="text-4xl font-black text-[#6B4A2D] uppercase tracking-tighter mb-4">
-            Order Confirmed!
-          </h1>
-          <p className="text-[#8B7E6F] mb-10 leading-relaxed text-lg">
-            Thank you for your purchase. We've sent a confirmation email to{" "}
-            <span className="font-bold text-[#6B4A2D]">{formData.email}</span>.
-          </p>
-          <div className="bg-[#F5F5F0] p-6 rounded-2xl mb-10 text-left border border-[#6B4A2D]/5">
-            <h3 className="font-bold text-[#6B4A2D] uppercase tracking-widest text-xs mb-4">
-              Order Summary
-            </h3>
-            <div className="flex justify-between text-sm text-[#8B7E6F]">
-              <span>Items</span>
-              <span>${subtotal.toFixed(2)}</span>
-            </div>
-            <div className="flex justify-between text-lg font-bold text-[#6B4A2D] mt-2 pt-2 border-t border-dashed border-[#6B4A2D]/20">
-              <span>Total Paid</span>
-              <span>${total.toFixed(2)}</span>
-            </div>
-          </div>
-          <Button
-            onClick={() => {
-              dispatch(resetCheckout());
-              router.push("/");
-            }}
-            className="w-full bg-[#6B4A2D] hover:bg-[#6B4A2D]/90 text-white h-14 rounded-2xl text-lg font-bold uppercase tracking-widest"
+      <div className="min-h-screen bg-brand-beige flex flex-col bg-[url('/assets/grid.svg')] bg-fixed">
+        <Navbar solid />
+        <div className="flex-grow flex items-center justify-center p-6 pt-32">
+          <motion.div
+            initial={{ scale: 0.8, opacity: 0 }}
+            animate={{ scale: 1, opacity: 1 }}
+            className="bg-white p-12 rounded-[40px] shadow-2xl text-center max-w-lg w-full"
           >
-            Back to Home
-          </Button>
-        </motion.div>
+            <div className="w-24 h-24 bg-green-100 text-green-600 rounded-full flex items-center justify-center mx-auto mb-8">
+              <CheckCircle size={48} />
+            </div>
+            <h1 className="text-4xl font-black text-[#6B4A2D] uppercase tracking-tighter mb-4">
+              Order Confirmed!
+            </h1>
+            <p className="text-[#8B7E6F] mb-10 leading-relaxed text-lg">
+              Thank you for your purchase. We've sent a confirmation email to{" "}
+              <span className="font-bold text-[#6B4A2D]">{formData.email}</span>
+              .
+              {createAccount && (
+                <span className="block mt-4 p-4 bg-[#6B4A2D]/5 rounded-xl text-sm border border-[#6B4A2D]/10">
+                  <span className="font-bold text-[#6B4A2D]">
+                    Welcome to the family!
+                  </span>{" "}
+                  Your account was created successfully. Check your email for
+                  login details and verification instructions.
+                </span>
+              )}
+            </p>
+            <div className="bg-[#F5F5F0] p-6 rounded-2xl mb-10 text-left border border-[#6B4A2D]/5">
+              <h3 className="font-bold text-[#6B4A2D] uppercase tracking-widest text-xs mb-4">
+                Order Summary
+              </h3>
+              <div className="flex justify-between text-sm text-[#8B7E6F]">
+                <span>Items</span>
+                <span>${orderSummary.subtotal.toFixed(2)}</span>
+              </div>
+              <div className="flex justify-between text-lg font-bold text-[#6B4A2D] mt-2 pt-2 border-t border-dashed border-[#6B4A2D]/20">
+                <span>Total Paid</span>
+                <span>${orderSummary.total.toFixed(2)}</span>
+              </div>
+            </div>
+            <Button
+              onClick={() => {
+                dispatch(resetCheckout());
+                router.push("/");
+              }}
+              className="w-full bg-[#6B4A2D] hover:bg-[#6B4A2D]/90 text-white h-14 rounded-2xl text-lg font-bold uppercase tracking-widest"
+            >
+              Back to Home
+            </Button>
+          </motion.div>
+        </div>
       </div>
     );
   }
@@ -243,54 +333,74 @@ export default function CheckoutPage() {
                       Your Information
                     </h2>
                     {!isAuthenticated && (
-                      <div className="bg-[#6B4A2D]/5 p-6 rounded-2xl mb-8 flex items-center justify-between">
-                        <div>
-                          <p className="text-sm font-bold text-[#6B4A2D]">
-                            Already have an account?
-                          </p>
-                          <p className="text-xs text-[#6B4A2D]/60 mt-1">
-                            Log in for a faster checkout experience.
-                          </p>
+                      <div className="bg-[#6B4A2D]/5 p-6 rounded-2xl mb-8">
+                        <div className="flex items-center justify-between">
+                          <div>
+                            <p className="text-sm font-bold text-[#6B4A2D]">
+                              Checking out as a guest?
+                            </p>
+                            <p className="text-[10px] text-[#6B4A2D]/60 mt-2 uppercase tracking-widest font-medium leading-relaxed max-w-sm">
+                              You are welcome to checkout as a guest. Please
+                              note that{" "}
+                              <span className="text-[#6B4A2D] font-bold">
+                                order history and tracking
+                              </span>{" "}
+                              are only available to registered members.
+                            </p>
+                          </div>
+                          <Link href="/auth/login">
+                            <Button
+                              variant="outline"
+                              className="border-[#6B4A2D]/20 text-[#6B4A2D] hover:bg-[#6B4A2D] hover:text-white transition-all text-xs font-bold"
+                            >
+                              Log In
+                            </Button>
+                          </Link>
                         </div>
-                        <Link href="/auth/login">
-                          <Button
-                            variant="outline"
-                            className="border-[#6B4A2D]/20 text-[#6B4A2D] hover:bg-[#6B4A2D] hover:text-white transition-all"
-                          >
-                            Log In
-                          </Button>
-                        </Link>
                       </div>
                     )}
                     <form onSubmit={handleInfoSubmit} className="space-y-6">
                       <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                         <div className="space-y-2">
                           <Label className="text-[10px] font-black uppercase tracking-widest text-[#6B4A2D]/60">
-                            Full Name
+                            First Name
                           </Label>
                           <Input
-                            name="fullName"
-                            value={formData.fullName}
+                            name="firstName"
+                            value={formData.firstName}
                             onChange={handleInputChange}
                             required
                             className="h-14 rounded-xl border-[#6B4A2D]/10 focus:border-[#6B4A2D] transition-all"
-                            placeholder="John Doe"
+                            placeholder="John"
                           />
                         </div>
                         <div className="space-y-2">
                           <Label className="text-[10px] font-black uppercase tracking-widest text-[#6B4A2D]/60">
-                            Email Address
+                            Last Name
                           </Label>
                           <Input
-                            type="email"
-                            name="email"
-                            value={formData.email}
+                            name="lastName"
+                            value={formData.lastName}
                             onChange={handleInputChange}
                             required
                             className="h-14 rounded-xl border-[#6B4A2D]/10 focus:border-[#6B4A2D] transition-all"
-                            placeholder="john@example.com"
+                            placeholder="Doe"
                           />
                         </div>
+                      </div>
+                      <div className="space-y-2">
+                        <Label className="text-[10px] font-black uppercase tracking-widest text-[#6B4A2D]/60">
+                          Email Address
+                        </Label>
+                        <Input
+                          type="email"
+                          name="email"
+                          value={formData.email}
+                          onChange={handleInputChange}
+                          required
+                          className="h-14 rounded-xl border-[#6B4A2D]/10 focus:border-[#6B4A2D] transition-all"
+                          placeholder="john@example.com"
+                        />
                       </div>
                       <div className="space-y-2">
                         <Label className="text-[10px] font-black uppercase tracking-widest text-[#6B4A2D]/60">
@@ -343,6 +453,74 @@ export default function CheckoutPage() {
                           />
                         </div>
                       </div>
+
+                      {!isAuthenticated && (
+                        <div className="p-6 bg-[#F9F7F4] rounded-2xl border border-[#6B4A2D]/10 space-y-4">
+                          <div className="flex items-center space-x-3">
+                            <input
+                              type="checkbox"
+                              id="createAccount"
+                              checked={createAccount}
+                              onChange={(e) =>
+                                setCreateAccount(e.target.checked)
+                              }
+                              className="w-5 h-5 rounded border-[#6B4A2D]/20 text-[#6B4A2D] focus:ring-[#6B4A2D]"
+                            />
+                            <Label
+                              htmlFor="createAccount"
+                              className="text-sm font-bold text-[#6B4A2D] cursor-pointer"
+                            >
+                              Create an account for faster checkout & order
+                              tracking
+                            </Label>
+                          </div>
+
+                          <AnimatePresence>
+                            {createAccount && (
+                              <motion.div
+                                initial={{ height: 0, opacity: 0 }}
+                                animate={{ height: "auto", opacity: 1 }}
+                                exit={{ height: 0, opacity: 0 }}
+                                className="overflow-hidden space-y-2 pt-2"
+                              >
+                                <Label className="text-[10px] font-black uppercase tracking-widest text-[#6B4A2D]/60">
+                                  Set Account Password
+                                </Label>
+                                <div className="relative">
+                                  <Input
+                                    type={showPassword ? "text" : "password"}
+                                    value={password}
+                                    onChange={(e) =>
+                                      setPassword(e.target.value)
+                                    }
+                                    placeholder="••••••••"
+                                    className="h-14 rounded-xl border-[#6B4A2D]/10 focus:border-[#6B4A2D] pr-12"
+                                    required={createAccount}
+                                  />
+                                  <button
+                                    type="button"
+                                    onClick={() =>
+                                      setShowPassword(!showPassword)
+                                    }
+                                    className="absolute right-4 top-1/2 -translate-y-1/2 text-[#6B4A2D]/40 hover:text-[#6B4A2D]/60 transition-colors"
+                                  >
+                                    {showPassword ? (
+                                      <EyeOff size={18} />
+                                    ) : (
+                                      <Eye size={18} />
+                                    )}
+                                  </button>
+                                </div>
+                                <p className="text-[10px] text-[#6B4A2D]/40 font-medium">
+                                  Your checkout details will be used to create
+                                  your profile.
+                                </p>
+                              </motion.div>
+                            )}
+                          </AnimatePresence>
+                        </div>
+                      )}
+
                       <Button
                         type="submit"
                         className="w-full bg-[#6B4A2D] hover:bg-[#6B4A2D]/90 text-white h-14 rounded-2xl text-lg font-bold uppercase tracking-widest mt-8 group"
@@ -430,38 +608,96 @@ export default function CheckoutPage() {
                     </h2>
 
                     <div className="space-y-4 mb-10">
-                      <div className="p-6 rounded-2xl border-2 border-[#6B4A2D] bg-[#6B4A2D]/5 flex items-center justify-between">
+                      <div
+                        onClick={() => setSelectedPaymentMethod("razorpay")}
+                        className={`p-6 rounded-2xl border-2 transition-all cursor-pointer flex items-center justify-between ${
+                          selectedPaymentMethod === "razorpay"
+                            ? "border-[#6B4A2D] bg-[#6B4A2D]/5"
+                            : "border-[#6B4A2D]/10 hover:border-[#6B4A2D]/30"
+                        }`}
+                      >
                         <div className="flex items-center gap-4">
-                          <div className="w-5 h-5 rounded-full border-4 border-[#6B4A2D] bg-white" />
+                          <div
+                            className={`w-5 h-5 rounded-full border-2 transition-all flex items-center justify-center ${
+                              selectedPaymentMethod === "razorpay"
+                                ? "border-[#6B4A2D]"
+                                : "border-[#6B4A2D]/20"
+                            }`}
+                          >
+                            {selectedPaymentMethod === "razorpay" && (
+                              <div className="w-2.5 h-2.5 rounded-full bg-[#6B4A2D]" />
+                            )}
+                          </div>
                           <div className="flex items-center gap-3">
-                            <CreditCard size={20} className="text-[#6B4A2D]" />
-                            <p className="font-bold text-[#6B4A2D]">
-                              Stripe / Credit Card
+                            <CreditCard
+                              size={20}
+                              className={
+                                selectedPaymentMethod === "razorpay"
+                                  ? "text-[#6B4A2D]"
+                                  : "text-[#6B4A2D]/40"
+                              }
+                            />
+                            <p
+                              className={`font-bold ${
+                                selectedPaymentMethod === "razorpay"
+                                  ? "text-[#6B4A2D]"
+                                  : "text-[#6B4A2D]/60"
+                              }`}
+                            >
+                              Razorpay / UPI / Cards
                             </p>
                           </div>
                         </div>
                         <div className="flex gap-1">
-                          <div className="w-8 h-5 bg-[#6B4A2D]/10 rounded flex items-center justify-center text-[8px] font-bold">
-                            VISA
-                          </div>
-                          <div className="w-8 h-5 bg-[#6B4A2D]/10 rounded flex items-center justify-center text-[8px] font-bold">
-                            M/C
-                          </div>
+                          <img
+                            src="https://razorpay.com/assets/razorpay-glyph.svg"
+                            alt="Razorpay"
+                            className="w-5 h-5"
+                          />
                         </div>
                       </div>
-                      <div className="p-6 rounded-2xl border border-[#6B4A2D]/10 opacity-50 flex items-center justify-between cursor-not-allowed">
+
+                      <div
+                        onClick={() => setSelectedPaymentMethod("cod")}
+                        className={`p-6 rounded-2xl border-2 transition-all cursor-pointer flex items-center justify-between ${
+                          selectedPaymentMethod === "cod"
+                            ? "border-[#6B4A2D] bg-[#6B4A2D]/5"
+                            : "border-[#6B4A2D]/10 hover:border-[#6B4A2D]/30"
+                        }`}
+                      >
                         <div className="flex items-center gap-4">
-                          <div className="w-5 h-5 rounded-full border-2 border-[#6B4A2D]/20 bg-white" />
+                          <div
+                            className={`w-5 h-5 rounded-full border-2 transition-all flex items-center justify-center ${
+                              selectedPaymentMethod === "cod"
+                                ? "border-[#6B4A2D]"
+                                : "border-[#6B4A2D]/20"
+                            }`}
+                          >
+                            {selectedPaymentMethod === "cod" && (
+                              <div className="w-2.5 h-2.5 rounded-full bg-[#6B4A2D]" />
+                            )}
+                          </div>
                           <div className="flex items-center gap-3">
                             <ShoppingBag
                               size={20}
-                              className="text-[#6B4A2D]/40"
+                              className={
+                                selectedPaymentMethod === "cod"
+                                  ? "text-[#6B4A2D]"
+                                  : "text-[#6B4A2D]/40"
+                              }
                             />
-                            <p className="font-bold text-[#6B4A2D]/60">
+                            <p
+                              className={`font-bold ${
+                                selectedPaymentMethod === "cod"
+                                  ? "text-[#6B4A2D]"
+                                  : "text-[#6B4A2D]/60"
+                              }`}
+                            >
                               Cash on Delivery
                             </p>
                           </div>
                         </div>
+                        <Truck size={20} className="text-[#6B4A2D]/20" />
                       </div>
                     </div>
 

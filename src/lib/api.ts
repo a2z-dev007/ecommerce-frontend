@@ -36,6 +36,17 @@ const api = axios.create({
   withCredentials: true,
 });
 
+// Helper to get or create session ID for guest users
+function getSessionId(): string {
+  if (typeof window === 'undefined') return '';
+  let sessionId = localStorage.getItem('guest_session_id');
+  if (!sessionId) {
+    sessionId = crypto.randomUUID?.() || Math.random().toString(36).substring(2, 15);
+    localStorage.setItem('guest_session_id', sessionId);
+  }
+  return sessionId;
+}
+
 // Request interceptor
 api.interceptors.request.use(
   (config: InternalAxiosRequestConfig) => {
@@ -43,6 +54,12 @@ api.interceptors.request.use(
     if (token && config.headers) {
       config.headers.Authorization = `Bearer ${token}`;
     }
+    
+    // Always include session ID for cart/order guest tracking
+    if (config.headers) {
+      config.headers['x-session-id'] = getSessionId();
+    }
+    
     return config;
   },
   (error) => {

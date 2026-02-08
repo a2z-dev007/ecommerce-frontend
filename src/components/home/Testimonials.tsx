@@ -136,11 +136,8 @@ const Testimonials: React.FC = () => {
             </span>
           </div>
 
-          {/* Heading */}
           <h2 className="text-[clamp(2rem,7vw,5rem)] leading-[1.1] font-normal mb-4 tracking-tight">
-            <span className="bg-gradient-to-r from-amber-700 via-amber-800 to-amber-900 bg-clip-text text-transparent font-bold">
-              Trusted By{" "}
-            </span>
+            <span className="heading-gradient font-bold">Trusted By </span>
             <span className="text-[#B8AFA1] font-bold">Experts.</span>
           </h2>
 

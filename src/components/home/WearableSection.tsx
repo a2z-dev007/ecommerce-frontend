@@ -116,9 +116,8 @@ const WearableSection: React.FC = () => {
                       </span>
                     </div>
 
-                    {/* Title */}
                     <h2 className="text-[clamp(1.5rem,5vw,4.5rem)] leading-[0.9] mb-3 md:mb-8 tracking-tighter">
-                      <span className="bg-gradient-to-r from-amber-700 via-amber-800 to-amber-900 bg-clip-text text-transparent font-black block">
+                      <span className="heading-gradient font-black block">
                         {slides[currentSlide].title1}
                       </span>
                       <span className="text-[#B8AFA1] font-black block">
@@ -157,7 +156,9 @@ const WearableSection: React.FC = () => {
               {/* Footer and Navigation Indicators (Persistent) */}
               <div className="relative z-10 w-full flex items-center justify-between  md:mt-auto md:pt-10">
                 <Link href="/products">
-                  <PrimaryButton>Shop Now</PrimaryButton>
+                  <PrimaryButton className="btn-premium">
+                    Shop Now
+                  </PrimaryButton>
                 </Link>
 
                 <div className="flex gap-2">

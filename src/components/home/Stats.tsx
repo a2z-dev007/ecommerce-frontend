@@ -38,7 +38,7 @@ const Stats: React.FC = () => {
               viewport={{ once: true }}
               className="flex items-center gap-3"
             >
-              <div className="w-2.5 h-2.5 bg-gradient-to-br from-amber-700 via-amber-800 to-amber-900 rounded-[2px]" />
+              <div className="w-2.5 h-2.5 bg-brand-premium rounded-[2px]" />
               <span className="text-[11px] font-bold uppercase tracking-widest text-[#6B4A2D]/60 mt-0.5">
                 Stats & Facts
               </span>
@@ -54,7 +54,7 @@ const Stats: React.FC = () => {
               transition={{ duration: 0.8 }}
               className="text-[clamp(1.6rem,4.5vw,3.2rem)] leading-[1.1] tracking-tight text-left max-w-4xl"
             >
-              <span className="bg-gradient-to-r from-amber-700 via-amber-800 to-amber-900 bg-clip-text text-transparent font-bold">
+              <span className="heading-gradient font-bold underline decoration-primary/20 underline-offset-8">
                 We engineer freedom for modern professionals where mobility
                 meets real productivity.{" "}
               </span>

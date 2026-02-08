@@ -56,7 +56,7 @@ const TechSpecs: React.FC = () => {
               <span className="text-[#8B7E6F]">on the move.</span>
             </h3>
             <div className="mt-8">
-              <PrimaryButton>Buy Now</PrimaryButton>
+              <PrimaryButton className="btn-premium">Buy Now</PrimaryButton>
             </div>
           </motion.div>
         </div>
@@ -81,12 +81,10 @@ const TechSpecs: React.FC = () => {
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: false }}
-              className="text-[clamp(2.5rem,7vw,5.5rem)] leading-[0.95] tracking-tight flex flex-col"
+              className="text-[clamp(2.5rem,7vw,5.5rem)] leading-[0.95] tracking-tight flex flex-col font-bold"
             >
-              <span className="bg-gradient-to-r from-amber-700 via-amber-800 to-amber-900 bg-clip-text text-transparent font-bold">
-                Technical
-              </span>
-              <span className="text-[#B8AFA1] font-bold">Specifications</span>
+              <span className="heading-gradient">Technical</span>
+              <span className="text-[#B8AFA1]">Specifications</span>
             </motion.h2>
           </div>
 

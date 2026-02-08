@@ -110,13 +110,13 @@ const Navbar: React.FC<NavbarProps> = ({ darkText = false, solid = false }) => {
               <span
                 className={`${textColorClass} text-2xl font-black tracking-tighter uppercase flex items-center gap-1 transition-colors duration-300`}
               >
-                kang
+                <span>kang</span>
                 <span
                   className={`${isDark ? "text-[#6B4A2D]/40" : "text-white/40"} italic`}
                 >
                   _
                 </span>
-                pack
+                <span>pack</span>
               </span>
               <div
                 className={`absolute -top-1 left-7 w-3 h-3 ${isDark ? "bg-[#6B4A2D]/20" : "bg-white/20"} rounded-full blur-[2px]`}
@@ -221,7 +221,7 @@ const Navbar: React.FC<NavbarProps> = ({ darkText = false, solid = false }) => {
                 </Link>
                 <Link href="/auth/register">
                   <Button
-                    className={`rounded-full px-6 text-[11px] font-bold uppercase tracking-widest h-9 border-none ${isDark ? "bg-gradient-to-r from-amber-700 via-amber-800 to-amber-900 text-white" : "bg-white text-amber-800 hover:bg-white/90"}`}
+                    className={`rounded-full px-6 text-[11px] font-bold uppercase tracking-widest h-9 border-none btn-premium`}
                   >
                     Sign Up
                   </Button>
@@ -283,7 +283,7 @@ const Navbar: React.FC<NavbarProps> = ({ darkText = false, solid = false }) => {
               <div className="flex-shrink-0 flex justify-between items-center px-6 py-6 border-b border-white/5 relative z-20 bg-[#6B4A2D]/95 backdrop-blur-sm">
                 <Link href="/" onClick={() => setIsOpen(false)}>
                   <span className="text-white text-xl font-black tracking-tighter uppercase">
-                    ka<span className="text-white/40 italic">_</span>gpack
+                    kang<span className="text-white/40 italic">_</span>pack
                   </span>
                 </Link>
                 <motion.button
@@ -348,7 +348,7 @@ const Navbar: React.FC<NavbarProps> = ({ darkText = false, solid = false }) => {
                             onClick={() => setIsOpen(false)}
                             className="w-full"
                           >
-                            <Button className="w-full h-12 bg-gradient-to-r from-amber-700 via-amber-800 to-amber-900 text-white text-xs font-bold uppercase tracking-widest rounded-xl border-none">
+                            <Button className="w-full h-12 btn-premium text-xs font-bold uppercase tracking-widest rounded-xl border-none">
                               Sign Up
                             </Button>
                           </Link>
@@ -375,7 +375,7 @@ const Navbar: React.FC<NavbarProps> = ({ darkText = false, solid = false }) => {
                               onClick={() => setIsOpen(false)}
                               className="w-full"
                             >
-                              <Button className="w-full h-12 bg-gradient-to-r from-amber-700 via-amber-800 to-amber-900 text-white text-xs font-bold uppercase tracking-widest rounded-xl border-none">
+                              <Button className="w-full h-12 btn-premium text-xs font-bold uppercase tracking-widest rounded-xl border-none">
                                 Dashboard
                               </Button>
                             </Link>

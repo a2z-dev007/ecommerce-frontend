@@ -57,6 +57,13 @@ export default function LoginPage() {
       // Update Zustand store
       setUser(normalizedUser);
 
+      // Merge cart if guest had items
+      try {
+        await api.post("/carts/merge");
+      } catch (mergeError) {
+        console.error("Failed to merge cart:", mergeError);
+      }
+
       // Show success message
       toast.success("Welcome back!");
 
@@ -69,11 +76,28 @@ export default function LoginPage() {
         }
       }, 500);
     } catch (error: any) {
-      // Show error message
       const message =
         error.response?.data?.message ||
         "Login failed. Please check your credentials.";
-      toast.error(message);
+
+      if (message.includes("verify your email")) {
+        toast.error(message, {
+          action: {
+            label: "Resend Link",
+            onClick: async () => {
+              try {
+                await api.post("/auth/resend-verification", { email });
+                toast.success("Verification email resent!");
+              } catch (err) {
+                toast.error("Failed to resend. Please try again later.");
+              }
+            },
+          },
+          duration: 6000,
+        });
+      } else {
+        toast.error(message);
+      }
       setLoading(false);
     }
   };

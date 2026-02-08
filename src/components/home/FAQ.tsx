@@ -55,9 +55,8 @@ const FAQ: React.FC = () => {
           </div>
 
           <h2 className="text-[clamp(2.5rem,8vw,5.5rem)] md:text-[clamp(3rem,8vw,6rem)] leading-[0.95] mb-6 md:mb-8 tracking-tighter">
-            <span className="bg-gradient-to-r from-amber-700 via-amber-800 to-amber-900 bg-clip-text text-transparent font-bold">
-              Frequently{" "}
-            </span>
+            <span className="heading-gradient font-bold">FAQ's</span>
+            <br />
             <span className="text-[#B8AFA1] font-bold">Asked</span>
           </h2>
           <p className="light-text text-[15px] md:text-base leading-relaxed max-w-[320px] mb-10 lg:mb-0">
@@ -87,7 +86,7 @@ const FAQ: React.FC = () => {
                   </div>
                   <div className="flex-shrink-0 ml-4">
                     <div
-                      className={`w-7 h-7 md:w-8 md:h-8 rounded-full flex items-center justify-center transition-all duration-300 ${openIndex === i ? "bg-gradient-to-r from-amber-700 via-amber-800 to-amber-900 text-white" : "text-[#6B4A2D] border border-black/5"}`}
+                      className={`w-7 h-7 md:w-8 md:h-8 rounded-full flex items-center justify-center transition-all duration-300 ${openIndex === i ? "btn-premium" : "text-[#6B4A2D] border border-black/5"}`}
                     >
                       {openIndex === i ? (
                         <Minus className="w-4 h-4 md:w-5 md:h-5" />

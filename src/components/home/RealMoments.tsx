@@ -53,17 +53,13 @@ const RealMoments: React.FC = () => {
             </span>
           </motion.div>
 
-          {/* Heading */}
           <motion.h2
             initial={{ opacity: 0, y: 30 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: false }}
-            className="text-[clamp(2.5rem,7vw,5.5rem)] leading-[1] mb-6 tracking-tight"
+            className="text-[clamp(2.5rem,7vw,5.5rem)] leading-[1] mb-6 tracking-tight font-bold"
           >
-            <span className="bg-gradient-to-r from-amber-700 via-amber-800 to-amber-900 bg-clip-text text-transparent font-bold">
-              Designed for{" "}
-            </span>
-            <span className="text-[#B8AFA1] font-bold">Real Life</span>
+            <span className="heading-gradient">Designed for Real Life</span>
           </motion.h2>
 
           {/* Description */}
@@ -78,7 +74,7 @@ const RealMoments: React.FC = () => {
           </motion.p>
 
           {/* Action Button */}
-          <PrimaryButton>Shop Now</PrimaryButton>
+          <PrimaryButton className="btn-premium">Shop Now</PrimaryButton>
         </div>
       </div>
 

@@ -45,19 +45,19 @@ const GalleryThree: React.FC = () => {
   const frontColor = useTransform(
     scrollYProgress,
     [0, 0.15, 0.3],
-    ["#b7ad9f", "#b7ad9f", "#92400e"],
+    ["#b7ad9f", "#b7ad9f", "#6B4A2D"],
   );
 
   const backColor = useTransform(
     scrollYProgress,
     [0, 0.3, 0.45, 0.6],
-    ["#b7ad9f", "#b7ad9f", "#b7ad9f", "#92400e"],
+    ["#b7ad9f", "#b7ad9f", "#b7ad9f", "#6B4A2D"],
   );
 
   const sidewaysColor = useTransform(
     scrollYProgress,
     [0, 0.6, 0.75, 0.85],
-    ["#b7ad9f", "#b7ad9f", "#b7ad9f", "#92400e"],
+    ["#b7ad9f", "#b7ad9f", "#b7ad9f", "#6B4A2D"],
   );
 
   // Image 1 (Front) - Starts CENTER, then moves LEFT when Image 2 appears

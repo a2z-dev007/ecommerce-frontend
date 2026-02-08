@@ -140,25 +140,22 @@ const cartSlice = createSlice({
             state.error = action.payload as string;
         });
 
-        // Add to Cart
         builder.addCase(addToCart.fulfilled, (state, action) => {
-             // We can either refetch or update locally
-             const { product, quantity, variantId } = action.payload;
-             const existingItem = state.items.find(
-                 (item) => item.productId === product.id && item.variantId === variantId
-             );
- 
-             if (existingItem) {
-                 existingItem.quantity += quantity;
-             } else {
-                 state.items.push({
-                     productId: product.id,
-                     product,
-                     quantity,
-                     variantId,
-                 });
-             }
-             toast.success('Added to cart');
+            const { product, quantity, variantId } = action.payload;
+            const existingItem = state.items.find(
+                (item) => item.productId === product.id && item.variantId === variantId
+            );
+
+            if (existingItem) {
+                existingItem.quantity += quantity;
+            } else {
+                state.items.push({
+                    productId: product.id,
+                    product,
+                    quantity,
+                    variantId,
+                });
+            }
         });
 
         // Update Item

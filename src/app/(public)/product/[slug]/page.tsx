@@ -41,9 +41,9 @@ const ImageGallery = ({
   const [selectedIndex, setSelectedIndex] = useState(0);
 
   return (
-    <div className="space-y-4">
+    <div className="space-y-6">
       <motion.div
-        className="aspect-[4/5] md:aspect-square bg-gray-100 rounded-2xl overflow-hidden relative group"
+        className="aspect-[4/5] md:aspect-square bg-[#E8E2DA] rounded-[40px] overflow-hidden relative group shadow-2xl"
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         transition={{ duration: 0.5 }}
@@ -51,9 +51,9 @@ const ImageGallery = ({
         {images && images.length > 0 ? (
           <motion.img
             key={selectedIndex}
-            initial={{ opacity: 0, scale: 1.05 }}
-            animate={{ opacity: 1, scale: 1 }}
-            transition={{ duration: 0.4 }}
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ duration: 0.8 }}
             src={images[selectedIndex]}
             alt={`${title} - View ${selectedIndex + 1}`}
             className="w-full h-full object-cover"
@@ -66,7 +66,7 @@ const ImageGallery = ({
 
         {/* Image Navigation Hints (Desktop) */}
         {images && images.length > 1 && (
-          <div className="absolute inset-0 pointer-events-none flex justify-between items-center px-4 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+          <div className="absolute inset-0 pointer-events-none flex justify-between items-center px-8 opacity-0 group-hover:opacity-100 transition-opacity duration-500">
             <button
               onClick={(e) => {
                 e.stopPropagation();
@@ -74,9 +74,9 @@ const ImageGallery = ({
                   prev === 0 ? images.length - 1 : prev - 1,
                 );
               }}
-              className="w-10 h-10 bg-white/80 rounded-full flex items-center justify-center pointer-events-auto hover:bg-white transition-colors"
+              className="w-12 h-12 bg-white/20 hover:bg-white/90 backdrop-blur-xl rounded-full flex items-center justify-center pointer-events-auto transition-all duration-300 shadow-xl border border-white/30 text-brand-brown"
             >
-              <ChevronDown className="w-6 h-6 rotate-90 text-brand-brown" />
+              <ChevronDown className="w-6 h-6 rotate-90" />
             </button>
             <button
               onClick={(e) => {
@@ -85,9 +85,9 @@ const ImageGallery = ({
                   prev === images.length - 1 ? 0 : prev + 1,
                 );
               }}
-              className="w-10 h-10 bg-white/80 rounded-full flex items-center justify-center pointer-events-auto hover:bg-white transition-colors"
+              className="w-12 h-12 bg-white/20 hover:bg-white/90 backdrop-blur-xl rounded-full flex items-center justify-center pointer-events-auto transition-all duration-300 shadow-xl border border-white/30 text-brand-brown"
             >
-              <ChevronDown className="w-6 h-6 -rotate-90 text-brand-brown" />
+              <ChevronDown className="w-6 h-6 -rotate-90" />
             </button>
           </div>
         )}
@@ -95,16 +95,16 @@ const ImageGallery = ({
 
       {/* Thumbnails */}
       {images && images.length > 1 && (
-        <div className="flex gap-4 overflow-x-auto pb-2 scrollbar-hide">
+        <div className="flex gap-4 overflow-x-auto py-2 scrollbar-hide px-2">
           {images.map((image, idx) => (
             <button
               key={idx}
               onClick={() => setSelectedIndex(idx)}
               className={cn(
-                "relative w-24 aspect-square rounded-lg overflow-hidden flex-shrink-0 transition-all duration-300 border-2",
+                "relative w-24 aspect-square rounded-2xl overflow-hidden flex-shrink-0 transition-all duration-500 border-2",
                 selectedIndex === idx
-                  ? "border-[#6B4A2D] opacity-100"
-                  : "border-transparent opacity-60 hover:opacity-100",
+                  ? "border-[#6B4A2D] scale-105 shadow-xl"
+                  : "border-transparent opacity-40 hover:opacity-100 grayscale hover:grayscale-0",
               )}
             >
               <img
@@ -130,20 +130,20 @@ const QuantitySelector = ({
   max: number;
 }) => {
   return (
-    <div className="flex items-center border border-[#6B4A2D]/20 rounded-full p-1 bg-white">
+    <div className="flex items-center border-2 border-[#6B4A2D]/10 rounded-2xl p-1 bg-white/50 backdrop-blur-sm group-hover:border-[#6B4A2D]/30 transition-colors">
       <button
         onClick={() => setQuantity(Math.max(1, quantity - 1))}
-        className="w-10 h-10 flex items-center justify-center rounded-full hover:bg-[#6B4A2D]/5 text-[#6B4A2D] transition-colors"
+        className="w-12 h-12 flex items-center justify-center rounded-xl hover:bg-brand-premium hover:text-white text-[#6B4A2D] transition-all duration-300 shadow-sm"
         disabled={quantity <= 1}
       >
         <Minus className="w-4 h-4" />
       </button>
-      <span className="w-12 text-center font-bold text-[#6B4A2D]">
+      <span className="w-14 text-center font-black text-xl text-[#6B4A2D]">
         {quantity}
       </span>
       <button
         onClick={() => setQuantity(Math.min(max, quantity + 1))}
-        className="w-10 h-10 flex items-center justify-center rounded-full hover:bg-[#6B4A2D]/5 text-[#6B4A2D] transition-colors"
+        className="w-12 h-12 flex items-center justify-center rounded-xl hover:bg-brand-premium hover:text-white text-[#6B4A2D] transition-all duration-300 shadow-sm"
         disabled={quantity >= max}
       >
         <Plus className="w-4 h-4" />
@@ -214,35 +214,16 @@ export default function ProductDetailPage({
   const [quantity, setQuantity] = useState(1);
   const dispatch = useAppDispatch();
 
-  // Dummy Data for demonstration (kept as is)
-  const isLoading = false;
-  const product = {
-    id: "dummy-1",
-    name: "Kangpack New Edition",
-    description:
-      "The ultimate wearable workstation designed for professionals who need to work anywhere. Featuring a lightweight ergonomic design, integrated desk surface, and premium materials.",
-    price: 199.0,
-    compareAtPrice: 249.0,
-    images: [
-      "/assets/tickers/main.jpeg",
-      "/assets/tickers/main2.jpeg",
-      "/assets/tickers/first.jpeg",
-      "/assets/tickers/side.jpeg",
-    ],
-    category: {
-      name: "Wearable Desk",
-      id: "cat-1",
-      slug: "wearable-desk",
-      isActive: true,
-    },
-    stock: 12,
-    sku: "KPK-001-BLK",
-    slug: "kangpack-new-edition",
-    isActive: true,
-    isFeatured: true,
-    createdAt: new Date().toISOString(),
-    updatedAt: new Date().toISOString(),
-  };
+  // Fetch actual product data
+  const {
+    data: product,
+    isLoading,
+    error,
+  } = useQuery({
+    queryKey: [QUERY_KEYS.PRODUCT, slug],
+    queryFn: () => productsApi.getProduct(slug),
+    enabled: !!slug,
+  });
 
   const handleAddToCart = () => {
     if (product) {
@@ -254,32 +235,43 @@ export default function ProductDetailPage({
   if (isLoading) {
     return (
       <div className="min-h-screen bg-brand-beige flex items-center justify-center">
-        <div className="animate-pulse flex flex-col items-center">
-          <div className="h-12 w-12 rounded-full border-2 border-[#6B4A2D] border-t-transparent animate-spin mb-4" />
-          <p className="text-[#6B4A2D] font-medium tracking-widest uppercase text-sm">
-            Loading Product...
-          </p>
+        <div className="flex flex-col items-center">
+          <div className="h-16 w-16 rounded-full border-4 border-[#6B4A2D]/20 border-t-[#6B4A2D] animate-spin mb-8" />
+          <motion.p
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            className="text-[#6B4A2D] font-bold tracking-[0.3em] uppercase text-xs"
+          >
+            Curating Excellence...
+          </motion.p>
         </div>
       </div>
     );
   }
 
-  if (!product) {
+  if (error || !product) {
     return (
-      <div className="min-h-screen bg-brand-beige flex flex-col items-center justify-center font-sans">
-        <Navbar />
-        <h1 className="text-4xl font-bold text-[#6B4A2D] mb-4">
-          Product Not Found
-        </h1>
-        <p className="text-[#8B7E6F] mb-8">
-          The product you are looking for does not exist or has been moved.
-        </p>
-        <a
-          href="/products"
-          className="bg-[#6B4A2D] text-white px-8 py-3 rounded-full font-bold uppercase tracking-widest hover:bg-opacity-90 transition-all"
+      <div className="min-h-screen bg-brand-beige flex flex-col items-center justify-center font-sans px-6 text-center">
+        <Navbar solid />
+        <motion.div
+          initial={{ opacity: 0, scale: 0.9 }}
+          animate={{ opacity: 1, scale: 1 }}
+          className="max-w-md"
         >
-          Back to Products
-        </a>
+          <h1 className="text-5xl font-black text-[#6B4A2D] mb-6 uppercase tracking-tighter">
+            Not Found
+          </h1>
+          <p className="text-[#8B7E6F] mb-12 text-lg font-light leading-relaxed">
+            The masterpiece you're looking for has moved beyond our current
+            reach. Perhaps another edition awaits?
+          </p>
+          <Link
+            href="/products"
+            className="btn-premium px-12 py-4 rounded-2xl font-black uppercase tracking-[0.2em] text-sm shadow-2xl inline-block"
+          >
+            Explore Collection
+          </Link>
+        </motion.div>
       </div>
     );
   }
@@ -289,15 +281,14 @@ export default function ProductDetailPage({
       <Navbar solid />
 
       <main className="flex-grow">
-        {/* Simple Hero Header */}
-        <div className="relative h-[40vh] min-h-[300px] overflow-hidden">
-          <div className="absolute inset-0 bg-[#6B4A2D]/80 z-10" />
+        <div className="relative h-[45vh] md:h-[55vh] min-h-[400px] overflow-hidden">
+          <div className="absolute inset-0 bg-gradient-to-b from-[#3E2A1D]/90 via-[#6B4A2D]/80 to-brand-beige z-10" />
           <ScrollSection className="h-full">
-            <div className="absolute inset-0 opacity-40 grayscale">
+            <div className="absolute inset-0 opacity-30 grayscale hover:grayscale-0 transition-all duration-1000">
               <img
                 src={product.images[0]}
                 alt="Hero Background"
-                className="w-full h-full object-cover"
+                className="w-full h-full object-cover scale-110"
               />
             </div>
           </ScrollSection>
@@ -309,43 +300,55 @@ export default function ProductDetailPage({
               transition={{ duration: 0.6 }}
               className="inline-flex items-center gap-2 bg-white/10 px-4 py-2 rounded-full backdrop-blur-sm mb-6 border border-white/20"
             >
-              <span className="text-xs font-bold tracking-widest text-white uppercase">
-                {product.category?.name}
+              <Award className="w-3.5 h-3.5 text-white" />
+              <span className="text-[10px] font-bold tracking-[0.2em] text-white uppercase">
+                Premium Selection
               </span>
             </motion.div>
             <motion.h1
               initial={{ opacity: 0, y: 30 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.8, delay: 0.1 }}
-              className="text-4xl md:text-6xl font-black text-white uppercase tracking-tighter"
+              className="text-5xl md:text-8xl font-black text-white uppercase tracking-tighter"
             >
-              Shop Details
+              <span className="opacity-50">LATEST</span> EDITION
             </motion.h1>
+            <motion.p
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              transition={{ delay: 0.4 }}
+              className="text-white/60 text-sm md:text-base mt-6 tracking-widest uppercase font-medium"
+            >
+              Crafted for the modern nomad
+            </motion.p>
           </div>
         </div>
 
-        <div className="px-6 md:px-12 max-w-[1400px] mx-auto -mt-20 relative z-30">
-          <div className="bg-white rounded-3xl p-6 md:p-12 shadow-xl">
-            {/* Breadcrumbs */}
-            <nav className="flex items-center gap-2 text-xs md:text-sm text-[#8B7E6F] mb-8 uppercase tracking-wider font-medium">
-              <a href="/" className="hover:text-[#6B4A2D] transition-colors">
-                Home
-              </a>
-              <span>/</span>
-              <a
-                href="/products"
-                className="hover:text-[#6B4A2D] transition-colors"
-              >
-                Products
-              </a>
-              <span>/</span>
-              <span className="text-[#6B4A2D] font-bold">{product.name}</span>
-            </nav>
+        <div className="w-full relative z-30">
+          <div className="max-w-[1600px] mx-auto px-6 md:px-12 py-12 md:py-24">
+            <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 xl:gap-24">
+              {/* Left Column: Images (Responsive Sticky) */}
+              <div className="lg:col-span-7 relative">
+                <div className="lg:sticky lg:top-32 space-y-8">
+                  {/* Breadcrumbs - Moved inside for better local context */}
+                  <nav className="flex items-center gap-2 text-[10px] md:text-xs text-[#8B7E6F] mb-4 uppercase tracking-[0.2em] font-bold">
+                    <a
+                      href="/"
+                      className="hover:text-[#6B4A2D] transition-colors"
+                    >
+                      Home
+                    </a>
+                    <span className="opacity-30">/</span>
+                    <a
+                      href="/products"
+                      className="hover:text-[#6B4A2D] transition-colors"
+                    >
+                      Store
+                    </a>
+                    <span className="opacity-30">/</span>
+                    <span className="text-[#6B4A2D]">{product.name}</span>
+                  </nav>
 
-            <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 xl:gap-24">
-              {/* Left Column: Images */}
-              <div className="relative">
-                <div className="sticky top-32">
                   <ImageGallery
                     images={product.images || []}
                     title={product.name}
@@ -354,149 +357,170 @@ export default function ProductDetailPage({
               </div>
 
               {/* Right Column: Details */}
-              <div className="flex flex-col h-full">
-                {/* Header Info */}
-                <div className="mb-8 border-b border-[#6B4A2D]/10 pb-8">
-                  <div className="flex items-center gap-4 mb-4">
-                    <span className="px-3 py-1 bg-[#D4CEC4]/30 text-[#6B4A2D] text-[10px] font-bold uppercase tracking-wider rounded-full">
-                      {product.category?.name || "Accessories"}
-                    </span>
-                    {product.stock < 5 && product.stock > 0 && (
-                      <span className="px-3 py-1 bg-red-100 text-red-600 text-[10px] font-bold uppercase tracking-wider rounded-full">
-                        Only {product.stock} left
+              <div className="lg:col-span-5 flex flex-col h-full">
+                <div className="space-y-12">
+                  {/* Header Info */}
+                  <div className="border-b border-[#6B4A2D]/10 pb-12">
+                    <motion.div
+                      initial={{ opacity: 0, x: 20 }}
+                      animate={{ opacity: 1, x: 0 }}
+                      className="flex items-center gap-4 mb-8"
+                    >
+                      <span className="px-4 py-1.5 bg-brand-premium text-white text-[10px] font-bold uppercase tracking-[0.2em] rounded-lg shadow-lg">
+                        {product.category?.name || "Accessories"}
                       </span>
-                    )}
-                  </div>
+                      {product.stock < 5 && product.stock > 0 && (
+                        <span className="px-4 py-1.5 bg-red-100/50 text-red-600 text-[10px] font-bold uppercase tracking-[0.2em] rounded-lg">
+                          Limited Stock: {product.stock}
+                        </span>
+                      )}
+                    </motion.div>
 
-                  <h1 className="text-4xl md:text-5xl font-black text-[#6B4A2D] tracking-tight mb-4 leading-[1.1]">
-                    {product.name}
-                  </h1>
+                    <h1 className="text-5xl md:text-7xl font-black text-[#6B4A2D] tracking-tighter mb-8 leading-[0.95] uppercase">
+                      {product.name.split(" ").map((word, i) => (
+                        <span key={i} className={i === 0 ? "" : "opacity-40"}>
+                          {word}{" "}
+                        </span>
+                      ))}
+                    </h1>
 
-                  <div className="flex items-end gap-6 mb-6">
-                    <span className="text-3xl font-bold text-[#6B4A2D]">
-                      {formatPrice(product.price)}
-                    </span>
-                    {product.compareAtPrice && (
-                      <span className="text-xl text-[#8B7E6F]/60 line-through mb-1">
-                        {formatPrice(product.compareAtPrice)}
+                    <div className="flex items-center gap-8 mb-8">
+                      <span className="text-4xl font-bold heading-gradient">
+                        {formatPrice(product.price)}
                       </span>
-                    )}
-                  </div>
-
-                  <p className="text-[#8B7E6F] text-lg leading-relaxed">
-                    {product.description}
-                  </p>
-                </div>
-
-                {/* Actions */}
-                <div className="mb-10 space-y-6">
-                  <div className="flex flex-col sm:flex-row gap-6">
-                    <div className="space-y-3">
-                      <span className="text-xs font-bold text-[#6B4A2D]/60 uppercase tracking-widest">
-                        Quantity
-                      </span>
-                      <QuantitySelector
-                        quantity={quantity}
-                        setQuantity={setQuantity}
-                        max={product.stock}
-                      />
+                      {product.compareAtPrice && (
+                        <span className="text-2xl text-[#8B7E6F]/40 line-through font-light">
+                          {formatPrice(product.compareAtPrice)}
+                        </span>
+                      )}
                     </div>
-                    <div className="space-y-3 flex-grow">
-                      <span className="text-xs font-bold text-[#6B4A2D]/60 uppercase tracking-widest invisible">
-                        Action
-                      </span>
-                      <div className="flex gap-4">
-                        <button
-                          onClick={handleAddToCart}
-                          disabled={product.stock === 0}
-                          className="flex-grow bg-[#6B4A2D] text-white h-[50px] rounded-full font-bold uppercase tracking-widest text-sm hover:bg-opacity-90 transition-all disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2 shadow-lg shadow-[#6B4A2D]/20"
+
+                    <p className="text-[#8B7E6F] text-xl leading-relaxed font-light">
+                      {product.description}
+                    </p>
+                  </div>
+
+                  {/* Actions Area - More tactile */}
+                  <div className="space-y-10 group/actions">
+                    <div className="flex flex-col sm:flex-row gap-8 items-end">
+                      <div className="space-y-4 w-full sm:w-auto">
+                        <span className="text-[10px] font-bold text-[#6B4A2D]/40 uppercase tracking-[0.3em]">
+                          Select Quantity
+                        </span>
+                        <QuantitySelector
+                          quantity={quantity}
+                          setQuantity={setQuantity}
+                          max={product.stock}
+                        />
+                      </div>
+                      <div className="flex-grow w-full">
+                        <div className="flex gap-4">
+                          <button
+                            onClick={handleAddToCart}
+                            disabled={product.stock === 0}
+                            className="flex-grow btn-premium h-[64px] rounded-2xl font-black uppercase tracking-[0.2em] text-sm flex items-center justify-center gap-3 shadow-2xl active:scale-95 transition-all disabled:opacity-50"
+                          >
+                            <ShoppingBag className="w-5 h-5" />
+                            {product.stock === 0
+                              ? "Unavailable"
+                              : "Secure One Now"}
+                          </button>
+                          <button className="w-[64px] h-[64px] flex-shrink-0 border-2 border-[#6B4A2D]/10 rounded-2xl flex items-center justify-center text-[#6B4A2D] hover:bg-white hover:shadow-xl transition-all active:scale-90">
+                            <Heart className="w-6 h-6" />
+                          </button>
+                        </div>
+                      </div>
+                    </div>
+
+                    {/* Quick Trust Cards */}
+                    <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                      <div className="p-6 bg-white/40 backdrop-blur-sm rounded-2xl border border-[#6B4A2D]/5 flex flex-col items-center text-center gap-3">
+                        <Truck className="w-6 h-6 text-brand-premium" />
+                        <span className="text-[10px] font-bold uppercase tracking-widest text-[#6B4A2D]">
+                          Priority Shipping
+                        </span>
+                      </div>
+                      <div className="p-6 bg-white/40 backdrop-blur-sm rounded-2xl border border-[#6B4A2D]/5 flex flex-col items-center text-center gap-3">
+                        <ShieldCheck className="w-6 h-6 text-brand-premium" />
+                        <span className="text-[10px] font-bold uppercase tracking-widest text-[#6B4A2D]">
+                          Lifetime Warranty
+                        </span>
+                      </div>
+                      <div className="p-6 bg-white/40 backdrop-blur-sm rounded-2xl border border-[#6B4A2D]/5 flex flex-col items-center text-center gap-3">
+                        <RefreshCw className="w-6 h-6 text-brand-premium" />
+                        <span className="text-[10px] font-bold uppercase tracking-widest text-[#6B4A2D]">
+                          30 Day Trial
+                        </span>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div className="space-y-4">
+                    <AccordionItem title="Description" defaultOpen icon={Award}>
+                      <div className="space-y-4">
+                        {product.shortDescription && (
+                          <p className="font-medium text-[#6B4A2D] leading-relaxed">
+                            {product.shortDescription}
+                          </p>
+                        )}
+                        <p className="font-light leading-relaxed">
+                          {product.description}
+                        </p>
+                      </div>
+                    </AccordionItem>
+
+                    {product.specifications &&
+                      product.specifications.length > 0 && (
+                        <AccordionItem
+                          title="Technical Blueprint"
+                          icon={Layout}
                         >
-                          <ShoppingBag className="w-5 h-5" />
-                          {product.stock === 0 ? "Out of Stock" : "Add to Cart"}
-                        </button>
-                        <button className="w-[50px] h-[50px] flex-shrink-0 border border-[#6B4A2D]/20 rounded-full flex items-center justify-center text-[#6B4A2D] hover:bg-[#6B4A2D]/5 transition-colors">
-                          <Heart className="w-5 h-5" />
-                        </button>
-                      </div>
-                    </div>
-                  </div>
+                          <div className="grid grid-cols-2 gap-y-8 gap-x-12 py-6">
+                            {product.specifications.map((spec, idx) => (
+                              <div
+                                key={idx}
+                                className="space-y-2 border-l border-[#6B4A2D]/10 pl-4"
+                              >
+                                <span className="text-[10px] uppercase tracking-[0.2em] text-[#8B7E6F]/60 font-black">
+                                  {spec.name}
+                                </span>
+                                <p className="text-sm font-bold text-[#6B4A2D]">
+                                  {spec.value}
+                                </p>
+                              </div>
+                            ))}
+                          </div>
+                        </AccordionItem>
+                      )}
 
-                  {/* Trust Badges */}
-                  <div className="grid grid-cols-2 md:grid-cols-3 gap-4 pt-6">
-                    <div className="flex items-center gap-3 text-sm text-[#6B4A2D]/80">
-                      <div className="w-8 h-8 rounded-full bg-[#D4CEC4]/30 flex items-center justify-center flex-shrink-0">
-                        <Truck className="w-4 h-4" />
-                      </div>
-                      <span className="font-medium">Free Shipping</span>
-                    </div>
-                    <div className="flex items-center gap-3 text-sm text-[#6B4A2D]/80">
-                      <div className="w-8 h-8 rounded-full bg-[#D4CEC4]/30 flex items-center justify-center flex-shrink-0">
-                        <ShieldCheck className="w-4 h-4" />
-                      </div>
-                      <span className="font-medium">2 Year Warranty</span>
-                    </div>
-                    <div className="flex items-center gap-3 text-sm text-[#6B4A2D]/80">
-                      <div className="w-8 h-8 rounded-full bg-[#D4CEC4]/30 flex items-center justify-center flex-shrink-0">
-                        <RefreshCw className="w-4 h-4" />
-                      </div>
-                      <span className="font-medium">30 Day Returns</span>
-                    </div>
+                    <AccordionItem title="Global Logistics" icon={Truck}>
+                      <p className="font-light leading-relaxed">
+                        We offer Complimentary Express Shipping worldwide. Your
+                        Kangpack is tracked from our workshop to your door,
+                        arriving in premium eco-conscious packaging within 3-5
+                        business days.
+                      </p>
+                    </AccordionItem>
                   </div>
-                </div>
-
-                {/* Detailed Information (Accordions) */}
-                <div className="mt-auto">
-                  <AccordionItem title="Description" defaultOpen>
-                    <p>{product.description}</p>
-                    <p className="mt-4">
-                      Each Kangpack is crafted with precision to ensure maximum
-                      durability and comfort. Designed for the modern nomad, it
-                      features distinct compartments for all your essentials.
-                    </p>
-                  </AccordionItem>
-                  <AccordionItem title="Specifications">
-                    <ul className="space-y-2 list-disc pl-5">
-                      <li>
-                        Material: Premium Water-resistant Nylon / Eco-friendly
-                        Fabrics
-                      </li>
-                      <li>Dimensions: 18" x 12" x 6"</li>
-                      <li>Weight: 1.8 lbs (0.8 kg)</li>
-                      <li>Laptop Compartment: Fits up to 16" MacBook Pro</li>
-                      <li>Zippers: YKK AquaGuard®</li>
-                    </ul>
-                  </AccordionItem>
-                  <AccordionItem title="Shipping & Returns">
-                    <p>
-                      We offer free standard shipping on all orders over $100.
-                      Orders are typically processed within 1-2 business days.
-                    </p>
-                    <p className="mt-2">
-                      If you are not completely satisfied with your purchase,
-                      you may return it within 30 days for a full refund or
-                      exchange, provided the items are in their original
-                      condition.
-                    </p>
-                  </AccordionItem>
                 </div>
               </div>
             </div>
           </div>
         </div>
 
-        {/* Feature Highlights Section */}
-        <section className="py-24 px-6 md:px-12 bg-transparent">
+        <section className="py-24 px-6 md:px-12 bg-[#F9F7F4]">
           <div className="max-w-7xl mx-auto">
             <div className="text-center mb-16">
-              <h2 className="text-3xl md:text-4xl font-bold text-[#6B4A2D] mb-4">
+              <h2 className="text-4xl md:text-6xl font-black text-[#6B4A2D] mb-6 tracking-tighter uppercase">
+                <span className="opacity-40 block text-sm tracking-[0.4em] mb-4">
+                  Engineering
+                </span>
                 Why you'll love it
               </h2>
-              <p className="text-[#8B7E6F]">
-                Engineered for performance, designed for life.
-              </p>
+              <div className="w-20 h-1 bg-brand-premium mx-auto rounded-full" />
             </div>
 
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-12">
               {[
                 {
                   title: "Ergonomic Design",
@@ -514,42 +538,53 @@ export default function ProductDetailPage({
                   icon: Zap,
                 },
               ].map((item, i) => (
-                <div
+                <motion.div
                   key={i}
-                  className="bg-white p-8 rounded-2xl shadow-sm hover:shadow-md transition-shadow"
+                  whileHover={{ y: -10 }}
+                  className="bg-white/40 backdrop-blur-md p-10 rounded-[30px] border border-[#6B4A2D]/5 shadow-sm hover:shadow-2xl transition-all duration-500"
                 >
-                  <div className="w-12 h-12 bg-[#6B4A2D]/10 rounded-xl flex items-center justify-center mb-6 text-[#6B4A2D]">
-                    <item.icon className="w-6 h-6" />
+                  <div className="w-16 h-16 bg-brand-premium rounded-2xl flex items-center justify-center mb-8 text-white shadow-lg">
+                    <item.icon className="w-8 h-8" />
                   </div>
-                  <h3 className="text-xl font-bold text-[#6B4A2D] mb-3">
+                  <h3 className="text-2xl font-bold text-[#6B4A2D] mb-4 tracking-tight">
                     {item.title}
                   </h3>
-                  <p className="text-[#8B7E6F] leading-relaxed text-sm">
+                  <p className="text-[#8B7E6F] leading-relaxed font-light">
                     {item.desc}
                   </p>
-                </div>
+                </motion.div>
               ))}
             </div>
           </div>
         </section>
 
         {/* Customer Reviews Section */}
-        <section className="py-24 px-6 md:px-12 bg-white">
-          <div className="max-w-7xl mx-auto">
-            <div className="flex items-center justify-between mb-12">
-              <h2 className="text-3xl md:text-4xl font-bold text-[#6B4A2D]">
-                Customer Reviews
+        <section className="py-32 px-6 md:px-12 bg-white">
+          <div className="max-w-7xl mx-auto text-center">
+            <div className="flex flex-col items-center mb-16">
+              <h2 className="text-4xl md:text-6xl font-black text-[#6B4A2D] tracking-tighter uppercase mb-6">
+                Client Verdict
               </h2>
-              <div className="flex items-center gap-2">
-                <div className="flex text-yellow-400 gap-1">
+              <div className="flex items-center gap-4 bg-brand-beige/30 px-6 py-3 rounded-2xl border border-brand-brown/5">
+                <div className="flex text-amber-600 gap-1">
                   {[...Array(5)].map((_, i) => (
                     <Star key={i} className="w-5 h-5 fill-current" />
                   ))}
                 </div>
-                <span className="font-bold text-[#6B4A2D]">4.9/5</span>
-                <span className="text-[#8B7E6F] text-sm">(120 Reviews)</span>
+                <span className="font-black text-2xl text-brand-brown">
+                  4.9/5
+                </span>
+                <span className="text-[#8B7E6F] font-bold text-sm tracking-widest uppercase">
+                  (120 Reviews)
+                </span>
               </div>
             </div>
+
+            <p className="text-brand-brown/60 text-lg max-w-2xl mx-auto font-light leading-relaxed">
+              Our community of modern professionals worldwide rely on Kangpack
+              for their daily portability. Join the thousands who have already
+              upgraded their mobility.
+            </p>
           </div>
         </section>
       </main>
