@@ -1,20 +1,106 @@
 export interface Product {
   id: string;
+  _id?: string;
   name: string;
   slug: string;
   description: string;
+  shortDescription?: string;
+  
+  // Pricing & Discounts
   price: number;
   compareAtPrice?: number;
+  cost?: number;
+  discountType?: 'percentage' | 'fixed' | 'none';
+  discountValue?: number;
+  discountStartDate?: string;
+  discountEndDate?: string;
+  finalPrice?: number;
+  isOnSale?: boolean;
+  
+  // Media
   images: string[];
+  videos?: string[];
+  
+  // Category & Organization
   category: Category;
+  subcategories?: Category[];
+  brand?: string;
+  tags?: string[];
+  
+  // Inventory
   stock: number;
+  lowStockThreshold?: number;
+  trackQuantity?: boolean;
+  allowBackorder?: boolean;
+  backorderLimit?: number;
+  inventoryPolicy?: 'deny' | 'continue';
+  stockStatus?: 'in_stock' | 'low_stock' | 'out_of_stock' | 'on_backorder';
+  
+  // Product Details
   sku: string;
+  condition?: 'new' | 'refurbished' | 'used';
+  weight?: number;
+  weightUnit?: 'kg' | 'g' | 'lb' | 'oz';
+  dimensions?: {
+    length: number;
+    width: number;
+    height: number;
+    unit?: 'cm' | 'm' | 'in' | 'ft';
+  };
+  
+  // Status & Visibility
   isActive: boolean;
   isFeatured: boolean;
-  tags?: string[];
+  isNew?: boolean;
+  isBestseller?: boolean;
+  isDigital?: boolean;
+  requiresShipping?: boolean;
+  
+  // Shipping & Tax
+  freeShipping?: boolean;
+  shippingClass?: string;
+  taxable?: boolean;
+  taxClass?: string;
+  
+  // Variants & Attributes
   variants?: ProductVariant[];
+  attributes?: { name: string; values: string[] }[];
+  
+  // Reviews & Ratings
+  ratings?: {
+    average: number;
+    count: number;
+  };
+  reviewsEnabled?: boolean;
+  
+  // Additional Info
   specifications?: { name: string; value: string }[];
-  shortDescription?: string;
+  warranty?: string;
+  returnPolicy?: string;
+  
+  // SEO
+  seo?: {
+    metaTitle?: string;
+    metaDescription?: string;
+    metaKeywords?: string;
+    canonicalUrl?: string;
+  };
+  
+  // Analytics
+  salesCount?: number;
+  viewCount?: number;
+  wishlistCount?: number;
+  
+  // Availability
+  availableFrom?: string;
+  availableUntil?: string;
+  
+  // Related Products
+  relatedProducts?: string[];
+  crossSellProducts?: string[];
+  upSellProducts?: string[];
+  
+  // Timestamps
   createdAt: string;
   updatedAt: string;
 }

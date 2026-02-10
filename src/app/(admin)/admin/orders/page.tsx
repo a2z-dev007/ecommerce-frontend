@@ -1,31 +1,36 @@
-'use client';
+"use client";
 
-import { useEffect, useState } from 'react';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
-import { Badge } from '@/components/ui/badge';
-import { useAdminOrders, useUpdateOrderStatus } from '@/features/admin/queries';
-import { Skeleton } from '@/components/ui/skeleton';
-import { Search, Eye, Package, Truck, MoreHorizontal } from 'lucide-react';
-import { formatCurrency, formatDate } from '@/lib/utils';
+import { useEffect, useState } from "react";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Badge } from "@/components/ui/badge";
+import { useAdminOrders, useUpdateOrderStatus } from "@/features/admin/queries";
+import { Skeleton } from "@/components/ui/skeleton";
+import { Search, Eye, Package, Truck, MoreHorizontal } from "lucide-react";
+import { formatCurrency, formatDate } from "@/lib/utils";
 import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuTrigger,
-} from '@/components/ui/dropdown-menu';
-import { OrderDetailsModal } from '@/features/admin/components/OrderDetailsModal';
-import { ORDER_STATUS } from '@/lib/constants';
+} from "@/components/ui/dropdown-menu";
+import { OrderDetailsModal } from "@/features/admin/components/OrderDetailsModal";
+import { ORDER_STATUS } from "@/lib/constants";
 
 export default function AdminOrders() {
   const [page, setPage] = useState(1);
-  const [search, setSearch] = useState('');
-  const [statusFilter, setStatusFilter] = useState('all');
+  const [search, setSearch] = useState("");
+  const [statusFilter, setStatusFilter] = useState("all");
   const [selectedOrder, setSelectedOrder] = useState<any>(null);
   const [isDetailsModalOpen, setDetailsModalOpen] = useState(false);
 
-  const { data, isLoading } = useAdminOrders({ page, limit: 10, search, status: statusFilter !== 'all' ? statusFilter : undefined });
+  const { data, isLoading } = useAdminOrders({
+    page,
+    limit: 10,
+    search,
+    status: statusFilter !== "all" ? statusFilter : undefined,
+  });
   const { mutate: updateStatus } = useUpdateOrderStatus();
 
   const orders = data?.data || [];
@@ -34,17 +39,17 @@ export default function AdminOrders() {
   const getStatusColor = (status: string) => {
     switch (status) {
       case ORDER_STATUS.PENDING:
-        return 'secondary';
+        return "secondary";
       case ORDER_STATUS.PROCESSING:
-        return 'default';
+        return "default";
       case ORDER_STATUS.SHIPPED:
-        return 'default';
+        return "default";
       case ORDER_STATUS.DELIVERED:
-        return 'outline'; // Delivered could be default with different styling
+        return "outline"; // Delivered could be default with different styling
       case ORDER_STATUS.CANCELLED:
-        return 'destructive';
+        return "destructive";
       default:
-        return 'secondary';
+        return "secondary";
     }
   };
 
@@ -62,7 +67,9 @@ export default function AdminOrders() {
       <div className="flex items-center justify-between">
         <div>
           <h1 className="text-3xl font-bold">Orders</h1>
-          <p className="text-muted-foreground">Manage customer orders and fulfillment</p>
+          <p className="text-muted-foreground">
+            Manage customer orders and fulfillment
+          </p>
         </div>
       </div>
 
@@ -80,10 +87,17 @@ export default function AdminOrders() {
               />
             </div>
             <div className="flex flex-wrap gap-2">
-              {['all', 'pending', 'processing', 'shipped', 'delivered', 'cancelled'].map((status) => (
+              {[
+                "all",
+                "pending",
+                "processing",
+                "shipped",
+                "delivered",
+                "cancelled",
+              ].map((status) => (
                 <Button
                   key={status}
-                  variant={statusFilter === status ? 'default' : 'outline'}
+                  variant={statusFilter === status ? "default" : "outline"}
                   size="sm"
                   onClick={() => setStatusFilter(status)}
                   className="capitalize"
@@ -112,13 +126,17 @@ export default function AdminOrders() {
             <div className="text-center py-12">
               <Package className="mx-auto h-12 w-12 text-muted-foreground" />
               <h3 className="mt-4 text-lg font-semibold">No orders found</h3>
-              <p className="text-muted-foreground">Orders will appear here once customers place them.</p>
+              <p className="text-muted-foreground">
+                Orders will appear here once customers place them.
+              </p>
             </div>
           ) : (
             <div className="space-y-4">
               {orders.map((order: any) => (
-
-                <div key={order._id} className="border rounded-lg p-4 hover:bg-muted/50 transition-colors group">
+                <div
+                  key={order._id}
+                  className="border rounded-lg p-4 hover:bg-muted/50 transition-colors group"
+                >
                   <div className="flex flex-col md:flex-row md:items-start justify-between gap-4">
                     <div className="flex items-start gap-4 flex-1">
                       <div className="p-2 bg-primary/10 rounded-lg text-primary">
@@ -126,33 +144,63 @@ export default function AdminOrders() {
                       </div>
                       <div className="flex-1">
                         <div>
-                          <p className="font-bold text-lg">Order #{order.orderNumber || order._id.slice(-6).toUpperCase()}</p>
+                          <p className="font-bold text-lg">
+                            Order #
+                            {order.orderNumber ||
+                              order._id.slice(-6).toUpperCase()}
+                          </p>
                           {/* <Badge variant={getStatusColor(order.status) as any} className="capitalize">
                             status : {order.status}
                           </Badge> */}
-                          <Badge variant={getStatusColor(order.status) as any} className="capitalize">
+                          <Badge
+                            variant={getStatusColor(order.status) as any}
+                            className="capitalize"
+                          >
                             {order.status}
                           </Badge>
-                          <Badge variant={order.paymentStatus === 'paid' ? 'default' : 'secondary'} className="capitalize bg-green-50 text-green-700 hover:bg-green-50">
-                            Payment status : {order.paymentStatus || 'pending'}
+                          <Badge
+                            variant={
+                              order.paymentStatus === "paid"
+                                ? "default"
+                                : "secondary"
+                            }
+                            className="capitalize bg-green-50 text-green-700 hover:bg-green-50"
+                          >
+                            Payment status : {order.paymentStatus || "pending"}
+                          </Badge>
+                          <Badge variant="outline" className="capitalize ml-2">
+                            {order.paymentMethod === "cod"
+                              ? "Cash on Delivery"
+                              : "Online Payment"}
                           </Badge>
                         </div>
                         <p className="text-sm text-muted-foreground mt-1">
-                          {order.user?.name || 'Guest'} • {formatDate(order.createdAt)}
+                          {order.user?.name || "Guest"} •{" "}
+                          {formatDate(order.createdAt)}
                         </p>
                         <p className="text-sm font-medium mt-1">
-                          {order.items?.length || 0} items • {formatCurrency(order.totalAmount)}
+                          {order.items?.length || 0} items •{" "}
+                          {formatCurrency(order.totalAmount)}
                         </p>
                         {order.trackingNumber && (
                           <div className="flex items-center gap-2 mt-2 px-2 py-1 bg-muted rounded w-fit text-xs">
                             <Truck className="h-3 w-3" />
-                            <span>Tracking: <span className="font-mono font-bold">{order.trackingNumber}</span></span>
+                            <span>
+                              Tracking:{" "}
+                              <span className="font-mono font-bold">
+                                {order.trackingNumber}
+                              </span>
+                            </span>
                           </div>
                         )}
                       </div>
                     </div>
                     <div className="flex md:flex-col gap-2 justify-end">
-                      <Button variant="default" size="sm" onClick={() => openDetailsModal(order)}>
+                      <Button
+                        variant="default"
+                        size="sm"
+                        onClick={() => openDetailsModal(order)}
+                      >
                         <Eye className="h-4 w-4 mr-2" />
                         Details
                       </Button>
@@ -163,10 +211,18 @@ export default function AdminOrders() {
                           </Button>
                         </DropdownMenuTrigger>
                         <DropdownMenuContent align="end">
-                          {['pending', 'processing', 'shipped', 'delivered', 'cancelled'].map((status) => (
+                          {[
+                            "pending",
+                            "processing",
+                            "shipped",
+                            "delivered",
+                            "cancelled",
+                          ].map((status) => (
                             <DropdownMenuItem
                               key={status}
-                              onClick={() => updateStatus({ id: order._id, status })}
+                              onClick={() =>
+                                updateStatus({ id: order._id, status })
+                              }
                               className="capitalize"
                               disabled={order.status === status}
                             >
@@ -186,13 +242,15 @@ export default function AdminOrders() {
           {pagination && pagination.pages > 1 && (
             <div className="flex items-center justify-between mt-6 pt-6 border-t">
               <p className="text-sm text-muted-foreground">
-                Showing {((page - 1) * 10) + 1} to {Math.min(page * 10, pagination.total)} of {pagination.total} orders
+                Showing {(page - 1) * 10 + 1} to{" "}
+                {Math.min(page * 10, pagination.total)} of {pagination.total}{" "}
+                orders
               </p>
               <div className="flex gap-2">
                 <Button
                   variant="outline"
                   size="sm"
-                  onClick={() => setPage(p => Math.max(1, p - 1))}
+                  onClick={() => setPage((p) => Math.max(1, p - 1))}
                   disabled={page === 1}
                 >
                   Previous
@@ -200,7 +258,7 @@ export default function AdminOrders() {
                 <Button
                   variant="outline"
                   size="sm"
-                  onClick={() => setPage(p => p + 1)}
+                  onClick={() => setPage((p) => p + 1)}
                   disabled={page >= pagination.pages}
                 >
                   Next

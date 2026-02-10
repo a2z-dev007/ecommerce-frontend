@@ -88,12 +88,14 @@ export default function CheckoutPage() {
   const cartItems = useAppSelector((state) => state.cart.items);
   const { isAuthenticated, user } = useAuth();
 
+  // Calculate totals based on backend logic
   const subtotal = cartItems.reduce(
     (sum, item) => sum + item.product.price * item.quantity,
     0,
   );
-  const shipping = 0; // Free shipping
-  const total = subtotal + shipping;
+  const tax = subtotal * 0.1; // 10% Tax
+  const shipping = cartItems.length > 0 ? 10 : 0; // Standard Shipping
+  const total = subtotal + tax + shipping;
 
   const [formData, setFormData] = useState({
     email: user?.email || "",
@@ -109,7 +111,13 @@ export default function CheckoutPage() {
   const [createAccount, setCreateAccount] = useState(false);
   const [password, setPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
-  const [orderSummary, setOrderSummary] = useState({ subtotal: 0, total: 0 });
+  const [orderSummary, setOrderSummary] = useState({
+    subtotal: 0,
+    tax: 0,
+    shipping: 0,
+    total: 0,
+    items: [] as any[],
+  });
   const [selectedPaymentMethod, setSelectedPaymentMethod] = useState<
     "razorpay" | "cod"
   >("razorpay");
@@ -125,6 +133,14 @@ export default function CheckoutPage() {
   };
 
   useEffect(() => {
+    // If we are at the final step but there are items in the cart (new order started)
+    // or if we just landed on checkout and it's in step 4 from a previous session
+    if (currentStep === 4 && cartItems.length > 0) {
+      dispatch(resetCheckout());
+    }
+  }, [cartItems.length, currentStep, dispatch]);
+
+  useEffect(() => {
     if (cartItems.length === 0 && currentStep !== 4) {
       router.push("/");
     }
@@ -136,6 +152,10 @@ export default function CheckoutPage() {
 
   const handleInfoSubmit = (e: React.FormEvent) => {
     e.preventDefault();
+    if (!formData.phone) {
+      toast.error("Phone number is required");
+      return;
+    }
     dispatch(setShippingAddress(formData as any));
     dispatch(setStep(2));
   };
@@ -157,7 +177,7 @@ export default function CheckoutPage() {
         paymentMethod: selectedPaymentMethod,
         shippingMethod: "Standard",
         email: formData.email,
-        phone: formData.phone || "0000000000",
+        phone: formData.phone,
         createAccount,
         password: createAccount ? password : undefined,
       };
@@ -166,7 +186,18 @@ export default function CheckoutPage() {
       const order = response.data.data;
 
       if (selectedPaymentMethod === "cod") {
-        setOrderSummary({ subtotal, total });
+        setOrderSummary({
+          subtotal,
+          tax,
+          shipping,
+          total,
+          items: cartItems.map((item) => ({
+            name: item.product.name,
+            price: item.product.price,
+            quantity: item.quantity,
+            image: item.product.images?.[0],
+          })),
+        });
         dispatch(clearCart());
         dispatch(setStep(4));
         toast.success("Order placed successfully!");
@@ -197,7 +228,18 @@ export default function CheckoutPage() {
               );
 
               if (verifyRes.data.success) {
-                setOrderSummary({ subtotal, total });
+                setOrderSummary({
+                  subtotal,
+                  tax,
+                  shipping,
+                  total,
+                  items: cartItems.map((item) => ({
+                    name: item.product.name,
+                    price: item.product.price,
+                    quantity: item.quantity,
+                    image: item.product.images?.[0],
+                  })),
+                });
                 dispatch(clearCart());
                 dispatch(setStep(4));
                 toast.success("Payment successful & order placed!");
@@ -264,13 +306,42 @@ export default function CheckoutPage() {
               <h3 className="font-bold text-[#6B4A2D] uppercase tracking-widest text-xs mb-4">
                 Order Summary
               </h3>
-              <div className="flex justify-between text-sm text-[#8B7E6F]">
-                <span>Items</span>
-                <span>${orderSummary.subtotal.toFixed(2)}</span>
+              <div className="space-y-4 mb-6">
+                {orderSummary.items.map((item, idx) => (
+                  <div key={idx} className="flex gap-4 items-center">
+                    <div className="w-12 h-12 bg-white rounded-lg p-1 border border-[#6B4A2D]/5 flex-shrink-0">
+                      <img
+                        src={item.image || "/placeholder.png"}
+                        alt={item.name}
+                        className="w-full h-full object-cover rounded-md"
+                      />
+                    </div>
+                    <div className="flex-1 text-sm text-[#6B4A2D]">
+                      <p className="font-bold line-clamp-1">{item.name}</p>
+                      <p className="text-[10px] text-[#8B7E6F] uppercase tracking-widest">
+                        Qty: {item.quantity} • {formatPrice(item.price)}
+                      </p>
+                    </div>
+                  </div>
+                ))}
               </div>
-              <div className="flex justify-between text-lg font-bold text-[#6B4A2D] mt-2 pt-2 border-t border-dashed border-[#6B4A2D]/20">
-                <span>Total Paid</span>
-                <span>${orderSummary.total.toFixed(2)}</span>
+              <div className="space-y-2 pt-4 border-t border-dashed border-[#6B4A2D]/20">
+                <div className="flex justify-between text-xs text-[#8B7E6F]">
+                  <span>Subtotal</span>
+                  <span>{formatPrice(orderSummary.subtotal)}</span>
+                </div>
+                <div className="flex justify-between text-xs text-[#8B7E6F]">
+                  <span>Shipping</span>
+                  <span>{formatPrice(orderSummary.shipping)}</span>
+                </div>
+                <div className="flex justify-between text-xs text-[#8B7E6F]">
+                  <span>Tax (10%)</span>
+                  <span>{formatPrice(orderSummary.tax)}</span>
+                </div>
+                <div className="flex justify-between text-lg font-bold text-[#6B4A2D] mt-2 pt-2 border-t border-[#6B4A2D]/10">
+                  <span>Total Paid</span>
+                  <span>{formatPrice(orderSummary.total)}</span>
+                </div>
               </div>
             </div>
             <Button
@@ -400,6 +471,19 @@ export default function CheckoutPage() {
                           required
                           className="h-14 rounded-xl border-[#6B4A2D]/10 focus:border-[#6B4A2D] transition-all"
                           placeholder="john@example.com"
+                        />
+                      </div>
+                      <div className="space-y-2">
+                        <Label className="text-[10px] font-black uppercase tracking-widest text-[#6B4A2D]/60">
+                          Phone Number
+                        </Label>
+                        <Input
+                          name="phone"
+                          value={formData.phone}
+                          onChange={handleInputChange}
+                          required
+                          className="h-14 rounded-xl border-[#6B4A2D]/10 focus:border-[#6B4A2D] transition-all"
+                          placeholder="9998887776"
                         />
                       </div>
                       <div className="space-y-2">
@@ -782,8 +866,14 @@ export default function CheckoutPage() {
                   </div>
                   <div className="flex justify-between text-sm text-[#8B7E6F]">
                     <span>Shipping</span>
-                    <span className="text-green-600 font-bold uppercase text-xs">
-                      Free
+                    <span className="font-bold text-[#6B4A2D]">
+                      {formatPrice(shipping)}
+                    </span>
+                  </div>
+                  <div className="flex justify-between text-sm text-[#8B7E6F]">
+                    <span>Tax (10%)</span>
+                    <span className="font-bold text-[#6B4A2D]">
+                      {formatPrice(tax)}
                     </span>
                   </div>
                   <div className="flex justify-between text-xl font-black text-[#6B4A2D] border-t border-[#6B4A2D]/10 pt-4 uppercase tracking-tighter">
