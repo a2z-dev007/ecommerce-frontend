@@ -124,6 +124,10 @@ export default function CheckoutPage() {
 
   const loadRazorpay = () => {
     return new Promise((resolve) => {
+      if (window.Razorpay) {
+        resolve(true);
+        return;
+      }
       const script = document.createElement("script");
       script.src = "https://checkout.razorpay.com/v1/checkout.js";
       script.onload = () => resolve(true);
@@ -261,7 +265,7 @@ export default function CheckoutPage() {
           },
         };
 
-        const paymentObject = new (window as any).Razorpay(options);
+        const paymentObject = new window.Razorpay(options);
         paymentObject.open();
       }
     } catch (error: any) {
@@ -302,7 +306,7 @@ export default function CheckoutPage() {
                 </span>
               )}
             </p>
-            <div className="bg-[#F5F5F0] p-6 rounded-2xl mb-10 text-left border border-[#6B4A2D]/5">
+            <div className="bg-white p-6 rounded-2xl mb-10 text-left border border-[#6B4A2D]/5">
               <h3 className="font-bold text-[#6B4A2D] uppercase tracking-widest text-xs mb-4">
                 Order Summary
               </h3>
@@ -373,9 +377,9 @@ export default function CheckoutPage() {
                   ? dispatch(setStep(currentStep - 1))
                   : router.back()
               }
-              className="flex items-center gap-2 text-[#6B4A2D]/60 hover:text-[#6B4A2D] font-bold uppercase tracking-widest text-[10px] mb-4 transition-colors"
+              className="flex items-center gap-2 text-[#6B4A2D]/60 hover:text-[#6B4A2D] font-bold uppercase tracking-widest text-md mb-4 transition-colors"
             >
-              <ArrowLeft size={16} />
+              <ArrowLeft size={20} />
               Back
             </button>
             <h1 className="text-4xl md:text-5xl font-black text-[#6B4A2D] uppercase tracking-tighter">
@@ -395,7 +399,7 @@ export default function CheckoutPage() {
                     initial={{ x: -20, opacity: 0 }}
                     animate={{ x: 0, opacity: 1 }}
                     exit={{ x: 20, opacity: 0 }}
-                    className="bg-white p-8 md:p-12 rounded-[32px] shadow-sm border border-[#6B4A2D]/5"
+                    className="bg-[#fff] p-8 md:p-12 rounded-[32px] shadow-sm border border-[#6B4A2D]/5"
                   >
                     <h2 className="text-2xl font-black text-[#6B4A2D] uppercase tracking-tighter mb-8 flex items-center gap-3">
                       <span className="w-8 h-8 rounded-lg bg-[#6B4A2D]/5 flex items-center justify-center text-sm">
@@ -822,7 +826,7 @@ export default function CheckoutPage() {
 
             {/* Right Column: Order Summary */}
             <div className="lg:col-span-5 xl:col-span-4">
-              <div className="bg-[#FFFBF6] border border-[#6B4A2D]/10 p-8 rounded-[32px] sticky top-32">
+              <div className="bg-[#FFF] border border-[#6B4A2D]/10 p-8 rounded-[32px] sticky top-32">
                 <h2 className="text-lg font-black text-[#6B4A2D] uppercase tracking-tighter mb-6">
                   Order Summary
                 </h2>
@@ -842,14 +846,14 @@ export default function CheckoutPage() {
                       </div>
                       <div className="flex-1">
                         <div className="flex justify-between">
-                          <h4 className="font-bold text-[#6B4A2D] text-sm line-clamp-1">
+                          <h4 className="font-bold text-[#6B4A2D] text-md line-clamp-1">
                             {item.product.name}
                           </h4>
-                          <span className="font-bold text-[#6B4A2D] text-sm">
-                            ${(item.product.price * item.quantity).toFixed(2)}
+                          <span className="font-bold text-[#6B4A2D] text-md">
+                            ₹{(item.product.price * item.quantity).toFixed(2)}
                           </span>
                         </div>
-                        <p className="text-[10px] text-[#6B4A2D]/60 mt-1 uppercase tracking-widest">
+                        <p className="text-sm text-[#6B4A2D]/60 mt-1 uppercase tracking-widest">
                           Qty: {item.quantity}
                         </p>
                       </div>

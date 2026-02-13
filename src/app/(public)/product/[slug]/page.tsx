@@ -423,7 +423,7 @@ export default function ProductDetailPage({
                             <ShoppingBag className="w-5 h-5" />
                             {product.stock === 0
                               ? "Unavailable"
-                              : "Secure One Now"}
+                              : "Add to cart"}
                           </button>
                           <button className="w-[64px] h-[64px] flex-shrink-0 border-2 border-[#6B4A2D]/10 rounded-2xl flex items-center justify-center text-[#6B4A2D] hover:bg-white hover:shadow-xl transition-all active:scale-90">
                             <Heart className="w-6 h-6" />

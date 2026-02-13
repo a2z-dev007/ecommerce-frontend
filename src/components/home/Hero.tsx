@@ -135,12 +135,12 @@ const Hero: React.FC = () => {
             delay: 0.1,
             ease: [0.22, 1, 0.36, 1],
           }}
-          className="text-[14vw] pb-[8rem] md:pb-[14rem] md:text-[20vw] lg:text-[16vw] font-black leading-none tracking-[-0.05em] select-none uppercase text-center relative pointer-events-auto flex items-center justify-center z-10"
+          className="text-[14vw] pb-[8rem] md:pb-[14rem] xl:pb-[2rem] 2xl:pb-[14rem] md:text-[20vw] lg:text-[16vw] xl:text-[10vw] 2xl:text-[16vw] font-black leading-none tracking-[-0.05em] select-none uppercase text-center relative pointer-events-auto flex items-center justify-center z-10"
         >
           <span className="absolute inset-0 text-white/10 blur-[1px] pointer-events-none flex items-center justify-center">
             ANYWHERE
           </span>
-          {"ANYWHERE".split("").map((letter, i) => (
+          {"WORK".split("").map((letter, i) => (
             <motion.span
               key={i}
               whileHover={{
@@ -174,7 +174,7 @@ const Hero: React.FC = () => {
       </div>
 
       {/* Main Product Container (Grounded Bag) with Parallax */}
-      <div className="relative z-20 w-full max-w-7xl px-4 flex flex-col items-center md:mt-auto mt-64 xl:pt-[10rem] perspective-[1200px] pointer-events-none">
+      <div className="relative z-20 w-full max-w-7xl px-4 flex flex-col items-center md:mt-auto mt-64 xl:pt-[1rem] 2xl:pt-[10rem] perspective-[1200px] pointer-events-none">
         <motion.div
           style={{ y: bagParallax }}
           initial={{ y: 100, opacity: 0 }}
@@ -203,7 +203,7 @@ const Hero: React.FC = () => {
                 x: bagMoveX,
                 y: bagMoveY,
               }}
-              className="relative w-[90%] md:w-[88%] lg:w-[93%] xl:w-[98%] max-w-[900px]"
+              className="relative w-[90%] md:w-[88%] lg:w-[93%] xl:w-[80%] 2xl:w-[98%] max-w-[900px] xl:max-w-[700px] 2xl:max-w-[900px]"
             >
               <img
                 src="/assets/bag.png"
@@ -245,7 +245,7 @@ const Hero: React.FC = () => {
       </div>
 
       {/* Bottom Interface Elements (Desktop Only) */}
-      <div className="hidden md:flex absolute bottom-8 md:bottom-12 left-0 right-0 z-40 px-6 md:px-12 lg:px-16 flex-row items-end justify-between pointer-events-none">
+      <div className="hidden md:flex absolute bottom-8 md:bottom-12 xl:bottom-8 2xl:bottom-12 left-0 right-0 z-40 px-6 md:px-12 lg:px-16 flex-row items-end justify-between pointer-events-none">
         {/* Left Side: Shop CTA */}
         <motion.div
           initial={{ x: -20, opacity: 0 }}

@@ -72,7 +72,7 @@ const GalleryThree: React.FC = () => {
     [0.75, 0.75, 1],
   );
   const image1Y = useTransform(scrollYProgress, [0, 0.05, 0.25], [120, 120, 0]);
-  const image1X = useTransform(scrollYProgress, [0.3, 0.5], [-120, -450]); // Desktop: Moves further LEFT
+  const image1X = useTransform(scrollYProgress, [0.3, 0.5], [-120, -280]); // Desktop: Moves further LEFT
   const image1XMobile = useTransform(scrollYProgress, [0.3, 0.5], [-60, -180]); // Mobile: Less movement
   const image1RotateX = useTransform(scrollYProgress, [0.05, 0.25], [0, 0]);
   const image1RotateY = useTransform(
@@ -98,7 +98,7 @@ const GalleryThree: React.FC = () => {
   const image2X = useTransform(
     scrollYProgress,
     [0.3, 0.5, 0.65],
-    [100, 0, -250],
+    [100, 0, -180],
   ); // Desktop: Moves LEFT for image 3
   const image2XMobile = useTransform(
     scrollYProgress,
@@ -147,7 +147,7 @@ const GalleryThree: React.FC = () => {
     <div ref={containerRef} className="relative" style={{ height: "400vh" }}>
       {/* Sticky container that stays fixed while scrolling */}
       <div className="sticky top-0 h-screen flex items-center justify-center overflow-hidden">
-        <section className="w-full py-12 sm:py-16 md:py-32 px-4 sm:px-6">
+        <section className="w-full py-12 sm:py-16 md:py-32 xl:py-16 2xl:py-32 px-4 sm:px-6">
           <div className="max-w-7xl mx-auto">
             {/* Header */}
             <div className="text-center mb-8 sm:mb-12 md:mb-20 flex flex-col items-center">
@@ -176,7 +176,7 @@ const GalleryThree: React.FC = () => {
 
             {/* Images Grid - Cinematic 3D Choreographed Animation */}
             <div
-              className="relative flex items-center justify-center max-w-6xl mx-auto h-[280px] sm:h-[320px] md:h-[450px]"
+              className="relative flex items-center justify-center max-w-6xl mx-auto h-[280px] sm:h-[320px] md:h-[450px] xl:h-[350px] 2xl:h-[450px]"
               style={{ perspective: "1500px" }}
             >
               {/* Image 1 - Front - Starts CENTER, moves LEFT when Image 2 appears */}
@@ -191,7 +191,7 @@ const GalleryThree: React.FC = () => {
                   rotateZ: image1RotateZ,
                   transformStyle: "preserve-3d",
                 }}
-                className="absolute left-1/2 -translate-x-1/2 w-[45%] sm:w-[40%] md:w-[500px] h-[65%] sm:h-[70%] md:h-[340px] rounded-xl sm:rounded-2xl md:rounded-3xl overflow-hidden shadow-[0_15px_40px_rgba(0,0,0,0.15)] md:shadow-[0_25px_70px_rgba(0,0,0,0.2)] z-10 cursor-pointer will-change-transform"
+                className="absolute left-1/2 -translate-x-1/2 w-[45%] sm:w-[40%] md:w-[500px] xl:w-[400px] 2xl:w-[500px] h-[65%] sm:h-[70%] md:h-[340px] xl:h-[280px] 2xl:h-[340px] rounded-xl sm:rounded-2xl md:rounded-3xl overflow-hidden shadow-[0_15px_40px_rgba(0,0,0,0.15)] md:shadow-[0_25px_70px_rgba(0,0,0,0.2)] z-10 cursor-pointer will-change-transform"
                 onClick={() => openLightbox(images, 0)}
               >
                 <img
@@ -213,7 +213,7 @@ const GalleryThree: React.FC = () => {
                   rotateZ: image2RotateZ,
                   transformStyle: "preserve-3d",
                 }}
-                className="absolute left-1/2 -translate-x-1/2 w-[52%] sm:w-[48%] md:w-[520px] h-[75%] sm:h-[78%] md:h-[370px] rounded-xl sm:rounded-2xl md:rounded-3xl overflow-hidden shadow-[0_18px_50px_rgba(0,0,0,0.2)] md:shadow-[0_30px_80px_rgba(0,0,0,0.25)] z-20 cursor-pointer will-change-transform"
+                className="absolute left-1/2 -translate-x-1/2 w-[52%] sm:w-[48%] md:w-[520px] xl:w-[420px] 2xl:w-[520px] h-[75%] sm:h-[78%] md:h-[370px] xl:h-[300px] 2xl:h-[370px] rounded-xl sm:rounded-2xl md:rounded-3xl overflow-hidden shadow-[0_18px_50px_rgba(0,0,0,0.2)] md:shadow-[0_30px_80px_rgba(0,0,0,0.25)] z-20 cursor-pointer will-change-transform"
                 onClick={() => openLightbox(images, 1)}
               >
                 <img
@@ -235,7 +235,7 @@ const GalleryThree: React.FC = () => {
                   rotateZ: image3RotateZ,
                   transformStyle: "preserve-3d",
                 }}
-                className="absolute left-1/2 -translate-x-1/2 w-[60%] sm:w-[55%] md:w-[540px] h-[85%] sm:h-[88%] md:h-[410px] rounded-xl sm:rounded-2xl md:rounded-3xl overflow-hidden shadow-[0_20px_60px_rgba(0,0,0,0.25)] md:shadow-[0_35px_90px_rgba(0,0,0,0.3)] z-30 cursor-pointer will-change-transform"
+                className="absolute left-1/2 -translate-x-1/2 w-[60%] sm:w-[55%] md:w-[540px] xl:w-[440px] 2xl:w-[540px] h-[85%] sm:h-[88%] md:h-[410px] xl:h-[340px] 2xl:h-[410px] rounded-xl sm:rounded-2xl md:rounded-3xl overflow-hidden shadow-[0_20px_60px_rgba(0,0,0,0.25)] md:shadow-[0_35px_90px_rgba(0,0,0,0.3)] z-30 cursor-pointer will-change-transform"
                 onClick={() => openLightbox(images, 2)}
               >
                 <img

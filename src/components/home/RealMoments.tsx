@@ -36,7 +36,7 @@ const RealMoments: React.FC = () => {
   } = useLightbox();
 
   return (
-    <section className="py-20 md:py-32 overflow-hidden bg-[#FDFCFB]">
+    <section className="py-20 md:py-32 xl:py-8 2xl:py-32 overflow-hidden bg-[#FDFCFB]">
       <div className="max-w-7xl mx-auto px-6 ">
         {/* Header */}
         <div className="text-center flex flex-col items-center  mb-16">
@@ -57,7 +57,7 @@ const RealMoments: React.FC = () => {
             initial={{ opacity: 0, y: 30 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: false }}
-            className="text-[clamp(2.5rem,7vw,5.5rem)] leading-[1] mb-6 tracking-tight font-bold"
+            className="text-[clamp(2.5rem,5vw,5.5rem)] xl:text-[2rem] 2xl:text-[5.5rem] leading-[1] mb-6 tracking-tight font-bold"
           >
             <span className="heading-gradient">Designed for Real Life</span>
           </motion.h2>
@@ -103,10 +103,10 @@ const RealMoments: React.FC = () => {
           {images.map((img, index) => (
             <SwiperSlide
               key={index}
-              className="!flex justify-center items-center !w-[300px] md:!w-[450px] cursor-pointer"
+              className="!flex justify-center items-center !w-[300px] md:!w-[450px] xl:!w-[280px] 2xl:!w-[450px] cursor-pointer"
               onClick={() => openLightbox(images, index)}
             >
-              <div className="relative aspect-[4/5] rounded-[24px] md:rounded-[40px] overflow-hidden shadow-2xl border-[8px] border-white mx-auto">
+              <div className="relative aspect-[4/5] xl:aspect-[3/4] rounded-[24px] md:rounded-[40px] overflow-hidden shadow-2xl border-[8px] border-white mx-auto">
                 <ParallaxImage
                   src={img}
                   alt={`Real Moment ${index + 1}`}

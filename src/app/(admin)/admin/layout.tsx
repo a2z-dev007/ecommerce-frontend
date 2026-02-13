@@ -68,8 +68,8 @@ const navigationGroups = [
       { name: "Orders", href: ROUTES.ADMIN_ORDERS, icon: ShoppingCart },
       { name: "Customers", href: ROUTES.ADMIN_CUSTOMERS, icon: Users },
       { name: "Coupons", href: ROUTES.ADMIN_COUPONS, icon: Tag },
-      { name: "Gallery", href: "#", icon: ImageIcon },
-      { name: "Report", href: "#", icon: BarChart3 },
+      // { name: "Gallery", href: "#", icon: ImageIcon },
+      // { name: "Report", href: "#", icon: BarChart3 },
     ],
   },
   {
@@ -79,13 +79,13 @@ const navigationGroups = [
       { name: "CMS Pages", href: "/admin/cms", icon: FileText },
     ],
   },
-  {
-    title: "SUPPORT",
-    items: [
-      { name: "Help Center", href: "#", icon: HelpCircle },
-      { name: "Privacy Policy", href: "#", icon: ShieldCheck },
-    ],
-  },
+  // {
+  //   title: "SUPPORT",
+  //   items: [
+  //     { name: "Help Center", href: "#", icon: HelpCircle },
+  //     { name: "Privacy Policy", href: "#", icon: ShieldCheck },
+  //   ],
+  // },
 ];
 
 export default function AdminLayout({

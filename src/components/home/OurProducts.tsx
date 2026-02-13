@@ -53,7 +53,7 @@ const ProductCard: React.FC<{
       className="group relative bg-white rounded-2xl overflow-hidden shadow-sm hover:shadow-xl transition-all duration-500"
     >
       {/* Image Container */}
-      <div className="aspect-[4/5] relative overflow-hidden bg-brand-beige/20">
+      <div className="aspect-[4/5] xl:aspect-[1.8/1] 2xl:aspect-[4/5] relative overflow-hidden bg-brand-beige/20">
         <div className="absolute top-4 left-4 z-10 flex gap-2">
           {product.tags.map((tag, i) => (
             <span
@@ -86,29 +86,32 @@ const ProductCard: React.FC<{
       </div>
 
       {/* Content */}
-      <div className="p-6">
+      <div className="p-6 xl:p-2 2xl:p-6">
         <div className="flex justify-between items-start mb-2">
-          <span className="text-xs font-bold text-brand-brown/40 uppercase tracking-widest">
+          <span className="text-xs xl:text-[10px] font-bold text-brand-brown/40 uppercase tracking-widest">
             {product.category}
           </span>
-          <span className="text-brand-brown font-bold text-lg">
+          <span className="text-brand-brown font-bold text-lg xl:text-sm">
             {product.price}
           </span>
         </div>
-        <h3 className="text-xl font-bold text-brand-brown mb-2 group-hover:text-brand-accent transition-colors">
+        <h3 className="text-xl xl:text-base font-bold text-brand-brown mb-2 xl:mb-1 group-hover:text-brand-accent transition-colors">
           {product.title}
         </h3>
-        <p className="text-brand-brown/60 text-sm leading-relaxed mb-4">
+        <p className="text-brand-brown/60 text-sm xl:text-[10px] leading-relaxed mb-4 xl:mb-2">
           {product.description}
         </p>
-        <div className="pt-4 border-t border-brand-brown/5 flex items-center justify-between">
+        <div className="pt-4 xl:pt-2 border-t border-brand-brown/5 flex items-center justify-between">
           <div className="flex gap-1 text-[#D4CEC4]">
             {[...Array(5)].map((_, i) => (
-              <Star key={i} className="w-4 h-4 fill-current" />
+              <Star
+                key={i}
+                className="w-4 h-4 xl:w-2.5 xl:h-2.5 fill-current"
+              />
             ))}
           </div>
           <button className="p-2 rounded-full hover:bg-brand-beige transition-colors text-brand-brown">
-            <ShoppingBag className="w-5 h-5" />
+            <ShoppingBag className="w-5 h-5 xl:w-4 xl:h-4" />
           </button>
         </div>
       </div>
@@ -120,13 +123,13 @@ const OurProducts: React.FC = () => {
   return (
     <section
       id="products"
-      className="py-24 md:py-32 bg-brand-beige/30 relative overflow-hidden"
+      className="py-24 md:py-32 xl:py-12 2xl:py-32 bg-brand-beige/30 relative overflow-hidden"
     >
       {/* Background Decoration */}
       <div className="absolute top-0 right-0 w-1/2 h-1/2 bg-gradient-to-b from-[#D4CEC4]/10 to-transparent -z-10 rounded-full blur-3xl transform translate-x-1/2 -translate-y-1/2"></div>
 
       <div className="max-w-7xl mx-auto px-6 md:px-12">
-        <div className="flex flex-col md:flex-row justify-between items-end mb-16 gap-8">
+        <div className="flex flex-col md:flex-row justify-between items-end mb-16 xl:mb-8 2xl:mb-16 gap-8">
           <div className="max-w-2xl">
             <motion.div
               initial={{ opacity: 0, x: -20 }}
@@ -143,7 +146,7 @@ const OurProducts: React.FC = () => {
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
-              className="text-4xl md:text-6xl font-black tracking-tighter mb-4 heading-gradient"
+              className="text-4xl md:text-6xl xl:text-4xl 2xl:text-6xl font-black tracking-tighter mb-4 heading-gradient"
             >
               Explore Our <span>Products.</span>
             </motion.h2>
@@ -172,7 +175,7 @@ const OurProducts: React.FC = () => {
           </motion.div>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 xl:gap-6 2xl:gap-8">
           {products.map((product, index) => (
             <ProductCard key={product.id} product={product} index={index} />
           ))}

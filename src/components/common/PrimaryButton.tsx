@@ -56,8 +56,7 @@ const PrimaryButton: React.FC<PrimaryButtonProps> = ({
       initial="initial"
       className={cn(
         "group relative flex items-center p-1.5 pr-8 rounded-full shadow-lg transition-all duration-300 w-fit overflow-hidden isolate",
-        !mainColor &&
-          "bg-gradient-to-r from-amber-700 via-amber-800 to-amber-900",
+        !mainColor && "bg-gradient-variant-2",
         className,
       )}
       style={mainColor ? { backgroundColor: mainColor } : {}}
