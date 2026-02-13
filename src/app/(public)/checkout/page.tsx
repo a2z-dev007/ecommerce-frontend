@@ -33,6 +33,9 @@ import { useAuth } from "@/hooks/use-auth";
 import { useRouter } from "next/navigation";
 import { formatPrice } from "@/lib/utils";
 import { toast } from "sonner";
+import Lottie from "react-lottie";
+import Confetti from "react-confetti-boom";
+import successLottie from "@/assets/lottie/success-tick.json";
 
 // --- Sub-components ---
 
@@ -87,6 +90,11 @@ export default function CheckoutPage() {
     useAppSelector((state) => state.checkout);
   const cartItems = useAppSelector((state) => state.cart.items);
   const { isAuthenticated, user } = useAuth();
+  const [isMounted, setIsMounted] = useState(false);
+
+  useEffect(() => {
+    setIsMounted(true);
+  }, []);
 
   // Calculate totals based on backend logic
   const subtotal = cartItems.reduce(
@@ -223,7 +231,7 @@ export default function CheckoutPage() {
           handler: async function (response: any) {
             try {
               const verifyRes = await api.post(
-                `/orders/${order._id}/verify-razorpay`,
+                `/orders/${order.id}/verify-razorpay`,
                 {
                   razorpayOrderId: response.razorpay_order_id,
                   razorpayPaymentId: response.razorpay_payment_id,
@@ -277,86 +285,142 @@ export default function CheckoutPage() {
   };
 
   if (currentStep === 4) {
+    const lottieOptions = {
+      loop: false,
+      autoplay: true,
+      animationData: successLottie,
+      rendererSettings: {
+        preserveAspectRatio: "xMidYMid slice",
+      },
+    };
+
     return (
-      <div className="min-h-screen bg-brand-beige flex flex-col bg-[url('/assets/grid.svg')] bg-fixed">
+      <div className="min-h-screen bg-brand-beige flex flex-col bg-[url('/assets/grid.svg')] bg-fixed overflow-hidden">
         <Navbar solid />
-        <div className="flex-grow flex items-center justify-center p-6 pt-32">
+        <Confetti
+          mode="fall"
+          particleCount={120}
+          colors={["#6B4A2D", "#A67C52", "#F5F5F0", "#10B981", "#FFD700"]}
+        />
+
+        <div className="flex-grow flex items-center justify-center p-4 md:p-8 pt-32 relative z-10">
           <motion.div
-            initial={{ scale: 0.8, opacity: 0 }}
-            animate={{ scale: 1, opacity: 1 }}
-            className="bg-white p-12 rounded-[40px] shadow-2xl text-center max-w-lg w-full"
+            initial={{ scale: 0.9, opacity: 0, y: 20 }}
+            animate={{ scale: 1, opacity: 1, y: 0 }}
+            transition={{ type: "spring", duration: 0.8 }}
+            className="max-w-4xl w-full bg-white rounded-[48px] shadow-[0_40px_100px_-20px_rgba(107,74,45,0.2)] border border-[#6B4A2D]/5 flex flex-col relative overflow-hidden"
           >
-            <div className="w-24 h-24 bg-green-100 text-green-600 rounded-full flex items-center justify-center mx-auto mb-8">
-              <CheckCircle size={48} />
-            </div>
-            <h1 className="text-4xl font-black text-[#6B4A2D] uppercase tracking-tighter mb-4">
-              Order Confirmed!
-            </h1>
-            <p className="text-[#8B7E6F] mb-10 leading-relaxed text-lg">
-              Thank you for your purchase. We've sent a confirmation email to{" "}
-              <span className="font-bold text-[#6B4A2D]">{formData.email}</span>
-              .
-              {createAccount && (
-                <span className="block mt-4 p-4 bg-[#6B4A2D]/5 rounded-xl text-sm border border-[#6B4A2D]/10">
-                  <span className="font-bold text-[#6B4A2D]">
-                    Welcome to the family!
-                  </span>{" "}
-                  Your account was created successfully. Check your email for
-                  login details and verification instructions.
+            {/* Top Section: Celebration */}
+            <div className="p-8 md:p-16 text-center border-b border-[#6B4A2D]/5">
+              <div className="w-48 h-48 mx-auto -mt-10 mb-4 flex items-center justify-center">
+                {isMounted && (
+                  <Lottie
+                    options={lottieOptions}
+                    height={200}
+                    width={200}
+                    isClickToPauseDisabled={true}
+                  />
+                )}
+              </div>
+              <h1 className="text-4xl md:text-5xl font-black text-[#6B4A2D] uppercase tracking-tighter mb-2">
+                Order Confirmed!
+              </h1>
+              <p className="text-[#8B7E6F] mb-8 leading-relaxed text-lg max-w-md mx-auto">
+                Thank you for your purchase. We've sent a confirmation email to{" "}
+                <br />
+                <span className="font-bold text-[#6B4A2D] break-all">
+                  {formData.email}
                 </span>
-              )}
-            </p>
-            <div className="bg-white p-6 rounded-2xl mb-10 text-left border border-[#6B4A2D]/5">
-              <h3 className="font-bold text-[#6B4A2D] uppercase tracking-widest text-xs mb-4">
-                Order Summary
-              </h3>
-              <div className="space-y-4 mb-6">
+              </p>
+              <div className="flex flex-wrap items-center justify-center gap-4">
+                <Button
+                  onClick={() => {
+                    dispatch(resetCheckout());
+                    router.push("/");
+                  }}
+                  className="bg-[#6B4A2D] hover:bg-[#5A3E26] text-white px-8 h-12 rounded-xl text-sm font-bold uppercase tracking-widest shadow-lg shadow-[#6B4A2D]/20 transition-all hover:scale-[1.05]"
+                >
+                  Home
+                </Button>
+                <Button
+                  variant="outline"
+                  onClick={() => router.push("/profile/orders")}
+                  className="border-2 border-[#6B4A2D]/10 hover:border-[#6B4A2D] text-[#6B4A2D] px-8 h-12 rounded-xl text-sm font-bold uppercase tracking-widest transition-all"
+                >
+                  View Orders
+                </Button>
+              </div>
+            </div>
+
+            {/* Horizontal Order Summary Area */}
+            <div className="bg-[#FFFBF6]/50 p-6 md:p-10">
+              <div className="flex items-center justify-between mb-6 px-2">
+                <h3 className="font-black text-[#6B4A2D] uppercase tracking-tighter text-sm">
+                  Order Summary
+                </h3>
+                <span className="text-[10px] font-bold text-[#6B4A2D]/40 uppercase tracking-widest">
+                  {orderSummary.items.length}{" "}
+                  {orderSummary.items.length === 1 ? "Item" : "Items"}
+                </span>
+              </div>
+
+              {/* Individual Items - Horizontal Scroll */}
+              <div className="flex gap-4 overflow-x-auto pb-6 px-2 scrollbar-thin">
                 {orderSummary.items.map((item, idx) => (
-                  <div key={idx} className="flex gap-4 items-center">
-                    <div className="w-12 h-12 bg-white rounded-lg p-1 border border-[#6B4A2D]/5 flex-shrink-0">
+                  <div
+                    key={idx}
+                    className="flex-shrink-0 w-64 bg-white p-4 rounded-3xl border border-[#6B4A2D]/5 shadow-sm flex items-center gap-4 group transition-shadow hover:shadow-md"
+                  >
+                    <div className="w-16 h-16 bg-brand-beige rounded-xl overflow-hidden border border-[#6B4A2D]/5 flex-shrink-0">
                       <img
                         src={item.image || "/placeholder.png"}
                         alt={item.name}
-                        className="w-full h-full object-cover rounded-md"
+                        className="w-full h-full object-cover transition-transform group-hover:scale-110"
                       />
                     </div>
-                    <div className="flex-1 text-sm text-[#6B4A2D]">
-                      <p className="font-bold line-clamp-1">{item.name}</p>
-                      <p className="text-[10px] text-[#8B7E6F] uppercase tracking-widest">
-                        Qty: {item.quantity} • {formatPrice(item.price)}
+                    <div className="min-w-0">
+                      <p className="font-bold text-[#6B4A2D] text-sm truncate">
+                        {item.name}
                       </p>
+                      <div className="flex items-center gap-2 mt-1">
+                        <span className="text-[10px] font-bold text-[#6B4A2D]/40 uppercase">
+                          Qty: {item.quantity}
+                        </span>
+                        <span className="w-1 h-1 rounded-full bg-[#6B4A2D]/10" />
+                        <span className="text-xs font-bold text-[#A67C52]">
+                          {formatPrice(item.price)}
+                        </span>
+                      </div>
                     </div>
                   </div>
                 ))}
               </div>
-              <div className="space-y-2 pt-4 border-t border-dashed border-[#6B4A2D]/20">
-                <div className="flex justify-between text-xs text-[#8B7E6F]">
-                  <span>Subtotal</span>
-                  <span>{formatPrice(orderSummary.subtotal)}</span>
+
+              {/* Totals Section */}
+              <div className="mt-6 pt-6 border-t border-[#6B4A2D]/5 flex flex-col md:flex-row justify-between items-center gap-8 px-2">
+                <div className="flex items-center gap-4">
+                  <div className="w-12 h-12 bg-emerald-50 rounded-2xl flex items-center justify-center text-emerald-600 shadow-inner">
+                    <CheckCircle size={24} />
+                  </div>
+                  <div>
+                    <p className="text-[10px] font-black text-[#6B4A2D]/40 uppercase tracking-widest">
+                      Payment Status
+                    </p>
+                    <p className="font-bold text-[#6B4A2D]">
+                      Paid via {selectedPaymentMethod.toUpperCase()}
+                    </p>
+                  </div>
                 </div>
-                <div className="flex justify-between text-xs text-[#8B7E6F]">
-                  <span>Shipping</span>
-                  <span>{formatPrice(orderSummary.shipping)}</span>
-                </div>
-                <div className="flex justify-between text-xs text-[#8B7E6F]">
-                  <span>Tax (10%)</span>
-                  <span>{formatPrice(orderSummary.tax)}</span>
-                </div>
-                <div className="flex justify-between text-lg font-bold text-[#6B4A2D] mt-2 pt-2 border-t border-[#6B4A2D]/10">
-                  <span>Total Paid</span>
-                  <span>{formatPrice(orderSummary.total)}</span>
+                <div className="text-center md:text-right">
+                  <p className="text-[10px] font-black text-[#6B4A2D]/40 uppercase tracking-widest mb-1">
+                    Total Paid
+                  </p>
+                  <p className="text-4xl font-black text-[#6B4A2D] uppercase tracking-tighter leading-none">
+                    {formatPrice(orderSummary.total)}
+                  </p>
                 </div>
               </div>
             </div>
-            <Button
-              onClick={() => {
-                dispatch(resetCheckout());
-                router.push("/");
-              }}
-              className="w-full bg-[#6B4A2D] hover:bg-[#6B4A2D]/90 text-white h-14 rounded-2xl text-lg font-bold uppercase tracking-widest"
-            >
-              Back to Home
-            </Button>
           </motion.div>
         </div>
       </div>

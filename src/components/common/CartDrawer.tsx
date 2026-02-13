@@ -5,8 +5,8 @@ import { motion, AnimatePresence } from "framer-motion";
 import { X, Minus, Plus, Trash2, ShoppingBag, ArrowRight } from "lucide-react";
 import { useAppDispatch, useAppSelector } from "@/lib/store/hooks";
 import {
-  removeItem,
-  updateQuantity,
+  removeCartItem,
+  updateCartItem,
 } from "@/lib/store/features/cart/cartSlice";
 import { Button } from "@/components/ui/button";
 import { useRouter } from "next/navigation";
@@ -113,7 +113,7 @@ export default function CartDrawer({ isOpen, onClose }: CartDrawerProps) {
                           <button
                             onClick={() =>
                               dispatch(
-                                removeItem({
+                                removeCartItem({
                                   productId: item.productId,
                                   variantId: item.variantId,
                                 }),
@@ -134,7 +134,7 @@ export default function CartDrawer({ isOpen, onClose }: CartDrawerProps) {
                           <button
                             onClick={() =>
                               dispatch(
-                                updateQuantity({
+                                updateCartItem({
                                   productId: item.productId,
                                   quantity: item.quantity - 1,
                                   variantId: item.variantId,
@@ -152,7 +152,7 @@ export default function CartDrawer({ isOpen, onClose }: CartDrawerProps) {
                           <button
                             onClick={() =>
                               dispatch(
-                                updateQuantity({
+                                updateCartItem({
                                   productId: item.productId,
                                   quantity: item.quantity + 1,
                                   variantId: item.variantId,

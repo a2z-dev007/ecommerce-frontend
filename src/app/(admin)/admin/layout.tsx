@@ -36,11 +36,14 @@ import {
 } from "lucide-react";
 import { useLogout } from "@/features/auth/queries";
 import { useAuth } from "@/hooks/use-auth";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Input } from "@/components/ui/input";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import Image from "next/image";
 import { ASSETS } from "@/assets";
+import { useQuery, useQueryClient } from "@tanstack/react-query";
+import { QUERY_KEYS } from "@/lib/constants";
+import { authApi } from "@/lib/auth";
 
 const navigationGroups = [
   {
@@ -94,16 +97,61 @@ export default function AdminLayout({
   children: React.ReactNode;
 }) {
   const pathname = usePathname();
-  const { user } = useAuth();
+  const queryClient = useQueryClient();
+  const { user, isAuthenticated, setUser } = useAuth();
   const { mutate: logout } = useLogout();
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const [expandedItems, setExpandedItems] = useState<string[]>(["Ecommerce"]);
+
+  // Verify session on mount
+  const {
+    data: userData,
+    isLoading: isVerifying,
+    isError,
+  } = useQuery({
+    queryKey: [QUERY_KEYS.USER],
+    queryFn: authApi.getCurrentUser,
+    retry: false,
+    staleTime: 5 * 60 * 1000,
+  });
+
+  useEffect(() => {
+    if (!isVerifying) {
+      if (userData) {
+        setUser(userData);
+      } else if (isError) {
+        setUser(null);
+      }
+    }
+  }, [userData, isError, isVerifying, setUser]);
+
+  useEffect(() => {
+    if (!isVerifying) {
+      if (!isAuthenticated) {
+        window.location.href = ROUTES.LOGIN;
+      } else if (user?.role !== "admin" && user?.role !== "staff") {
+        window.location.href = ROUTES.HOME;
+      }
+    }
+  }, [isAuthenticated, user, isVerifying]);
 
   const toggleExpand = (name: string) => {
     setExpandedItems((prev) =>
       prev.includes(name) ? prev.filter((i) => i !== name) : [...prev, name],
     );
   };
+
+  if (isVerifying) {
+    return (
+      <div className="h-screen w-screen flex items-center justify-center bg-brand-beige">
+        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-[#6B4A2D]"></div>
+      </div>
+    );
+  }
+
+  if (!isAuthenticated || (user?.role !== "admin" && user?.role !== "staff")) {
+    return null;
+  }
 
   return (
     <div className="flex h-screen bg-[#F0F5FA] dark:bg-slate-950 font-sans">

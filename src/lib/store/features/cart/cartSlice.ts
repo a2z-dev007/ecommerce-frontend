@@ -65,7 +65,7 @@ export const removeCartItem = createAsyncThunk(
     async ({ productId, variantId }: { productId: string; variantId?: string }, { rejectWithValue }) => {
         try {
             await api.delete(`/carts/items/${productId}`, {
-               data: { variantId }
+               params: { variantId }
             });
             return { productId, variantId };
         } catch (error: any) {
@@ -143,7 +143,7 @@ const cartSlice = createSlice({
         builder.addCase(addToCart.fulfilled, (state, action) => {
             const { product, quantity, variantId } = action.payload;
             const existingItem = state.items.find(
-                (item) => item.productId === product.id && item.variantId === variantId
+                (item) => item.productId === product.id && (item.variantId || null) === (variantId || null)
             );
 
             if (existingItem) {
@@ -161,18 +161,24 @@ const cartSlice = createSlice({
         // Update Item
         builder.addCase(updateCartItem.fulfilled, (state, action) => {
             const { productId, quantity, variantId } = action.payload;
-            const item = state.items.find(
-                (item) => item.productId === productId && item.variantId === variantId
-            );
-            if (item) {
-                item.quantity = quantity;
+            if (quantity <= 0) {
+                state.items = state.items.filter(
+                    (item) => !(item.productId === productId && (item.variantId || null) === (variantId || null))
+                );
+            } else {
+                const item = state.items.find(
+                    (item) => item.productId === productId && (item.variantId || null) === (variantId || null)
+                );
+                if (item) {
+                    item.quantity = quantity;
+                }
             }
         });
 
         // Remove Item
         builder.addCase(removeCartItem.fulfilled, (state, action) => {
              state.items = state.items.filter(
-                (item) => !(item.productId === action.payload.productId && item.variantId === action.payload.variantId)
+                (item) => !(item.productId === action.payload.productId && (item.variantId || null) === (action.payload.variantId || null))
             );
             toast.success('Removed from cart');
         });

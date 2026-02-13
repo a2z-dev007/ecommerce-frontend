@@ -92,7 +92,7 @@ export function CouponModal({ isOpen, onClose, coupon }: CouponModalProps) {
   const onSubmit = (values: CouponFormValues) => {
     if (isEditing) {
       updateCoupon(
-        { id: coupon._id, data: values },
+        { id: coupon.id || coupon._id, data: values },
         {
           onSuccess: () => {
             onClose();

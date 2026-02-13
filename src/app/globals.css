@@ -177,3 +177,20 @@
   transform: translateY(-2px);
   box-shadow: 0 10px 20px rgba(107, 74, 45, 0.2);
 }
+
+.scrollbar-thin::-webkit-scrollbar {
+  width: 4px;
+}
+
+.scrollbar-thin::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.scrollbar-thin::-webkit-scrollbar-thumb {
+  background: rgba(107, 74, 45, 0.1);
+  border-radius: 10px;
+}
+
+.scrollbar-thin::-webkit-scrollbar-thumb:hover {
+  background: rgba(107, 74, 45, 0.2);
+}

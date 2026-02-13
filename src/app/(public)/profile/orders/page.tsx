@@ -1,4 +1,4 @@
-"use client";
+import { useState } from "react";
 
 import {
   Card,
@@ -9,17 +9,25 @@ import {
 } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import { formatPrice, formatDate } from "@/lib/utils";
+import { formatPrice, formatDate, formatDateTime } from "@/lib/utils";
 import { Eye, Package, Truck, CheckCircle, Clock } from "lucide-react";
 import { ROUTES } from "@/lib/constants";
 
 import { useOrders } from "@/features/orders/queries";
 import { Skeleton } from "@/components/ui/skeleton";
 import Link from "next/link";
+import { OrderDetailsModal } from "@/features/admin/components/OrderDetailsModal";
 
 export default function OrdersPage() {
+  const [selectedOrder, setSelectedOrder] = useState<any>(null);
+  const [isSheetOpen, setIsSheetOpen] = useState(false);
   const { data, isLoading } = useOrders({ page: 1, limit: 10 });
   const orders = data?.data || [];
+
+  const handleViewDetails = (order: any) => {
+    setSelectedOrder(order);
+    setIsSheetOpen(true);
+  };
 
   const getStatusIcon = (status: string) => {
     switch (status) {
@@ -120,7 +128,7 @@ export default function OrdersPage() {
                           <span className="flex items-center gap-1">
                             <Clock className="h-3.5 w-3.5" />
                             <span className="hidden xs:inline">Placed on</span>
-                            {formatDate(order.createdAt)}
+                            {formatDateTime(order.createdAt)}
                           </span>
                           <span className="h-1 w-1 rounded-full bg-gray-300" />
                           <span>
@@ -165,6 +173,7 @@ export default function OrdersPage() {
                         variant="outline"
                         size="sm"
                         className="rounded-full shadow-sm hover:bg-gray-50 border-gray-200"
+                        onClick={() => handleViewDetails(order)}
                       >
                         <Eye className="mr-2 h-4 w-4" />
                         View Details
@@ -177,6 +186,13 @@ export default function OrdersPage() {
           ))
         )}
       </div>
+
+      <OrderDetailsModal
+        isOpen={isSheetOpen}
+        onClose={() => setIsSheetOpen(false)}
+        order={selectedOrder}
+        isAdmin={false}
+      />
     </div>
   );
 }
