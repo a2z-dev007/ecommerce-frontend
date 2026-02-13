@@ -40,7 +40,7 @@ const Features: React.FC = () => {
   ];
 
   return (
-    <section className="bg-brand-beige pt-10 pb-16 xl:pt-8 xl:pb-12 px-6 md:px-16 relative overflow-hidden">
+    <section className="bg-brand-beige py-24 md:py-32 xl:py-48 2xl:py-60 px-6 md:px-16 relative overflow-hidden">
       {/* Background Blobs */}
       <div className="absolute top-0 left-0 w-full h-full pointer-events-none opacity-40">
         <div className="absolute top-[10%] left-[-5%] w-[40%] h-[60%] bg-[#E8E2DA] rounded-full blur-[100px] transform -rotate-12"></div>
@@ -62,9 +62,8 @@ const Features: React.FC = () => {
               </span>
             </div>
           </motion.div>
-          {/* Dynamic Headline - Right Column */}
           <div className="w-full ">
-            <h2 className="text-[clamp(1.5rem,4vw,3.2rem)] xl:text-[2rem] leading-[1.05] tracking-tight">
+            <h2 className="text-[clamp(1.8rem,5vw,3.5rem)] md:text-[3rem] xl:text-[3.5rem] 2xl:text-[4.5rem] leading-[1.05] tracking-tight">
               <motion.span
                 initial={{ opacity: 0, scale: 0.98 }}
                 whileInView={{ opacity: 1, scale: 1 }}
@@ -101,14 +100,14 @@ const Features: React.FC = () => {
                 transition={{ delay: i * 0.1 }}
                 className="bg-white/40 backdrop-blur-sm p-6 xl:p-4 rounded-2xl flex items-center gap-6 xl:gap-4 hover:bg-white/80 transition-all cursor-default group border border-white/20 shadow-sm"
               >
-                <div className="w-12 h-12 xl:w-10 xl:h-10 bg-white rounded-xl flex items-center justify-center shadow-md flex-shrink-0 group-hover:scale-110 transition-transform">
+                <div className="w-12 h-12 xl:w-16 xl:h-16 bg-white rounded-xl flex items-center justify-center shadow-md flex-shrink-0 group-hover:scale-110 transition-transform">
                   <div className="text-primary">{f.icon}</div>
                 </div>
                 <div>
-                  <h4 className="font-bold text-primary mb-0.5 text-lg xl:text-base">
+                  <h4 className="font-bold text-primary mb-1 text-lg xl:text-xl">
                     {f.title}
                   </h4>
-                  <p className="text-primary/40 text-[13px] font-medium leading-tight">
+                  <p className="text-primary/40 text-[14px] xl:text-base font-medium leading-tight">
                     {f.desc}
                   </p>
                 </div>
@@ -132,7 +131,7 @@ const Features: React.FC = () => {
             initial={{ opacity: 0, scale: 0.95 }}
             whileInView={{ opacity: 1, scale: 1 }}
             viewport={{ once: false }}
-            className="lg:w-[48%] xl:h-[380px] rounded-2xl overflow-hidden shadow-2xl relative cursor-pointer"
+            className="lg:w-[48%] xl:h-[600px] rounded-2xl overflow-hidden shadow-2xl relative cursor-pointer"
             onClick={() => openLightbox([side2.src], 0)}
           >
             <ParallaxImage

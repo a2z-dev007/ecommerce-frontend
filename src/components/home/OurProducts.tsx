@@ -53,7 +53,7 @@ const ProductCard: React.FC<{
       className="group relative bg-white rounded-2xl overflow-hidden shadow-sm hover:shadow-xl transition-all duration-500"
     >
       {/* Image Container */}
-      <div className="aspect-[4/5] xl:aspect-[1.8/1] 2xl:aspect-[4/5] relative overflow-hidden bg-brand-beige/20">
+      <div className="aspect-[4/5] relative overflow-hidden bg-brand-beige/20">
         <div className="absolute top-4 left-4 z-10 flex gap-2">
           {product.tags.map((tag, i) => (
             <span
@@ -85,20 +85,19 @@ const ProductCard: React.FC<{
         </div>
       </div>
 
-      {/* Content */}
-      <div className="p-6 xl:p-2 2xl:p-6">
-        <div className="flex justify-between items-start mb-2">
-          <span className="text-xs xl:text-[10px] font-bold text-brand-brown/40 uppercase tracking-widest">
+      <div className="p-6 md:p-8 xl:p-10 2xl:p-12">
+        <div className="flex justify-between items-start mb-4">
+          <span className="text-xs md:text-sm font-bold text-brand-brown/40 uppercase tracking-widest">
             {product.category}
           </span>
-          <span className="text-brand-brown font-bold text-lg xl:text-sm">
+          <span className="text-brand-brown font-bold text-xl md:text-2xl">
             {product.price}
           </span>
         </div>
-        <h3 className="text-xl xl:text-base font-bold text-brand-brown mb-2 xl:mb-1 group-hover:text-brand-accent transition-colors">
+        <h3 className="text-2xl md:text-3xl font-bold text-brand-brown mb-3 group-hover:text-brand-accent transition-colors">
           {product.title}
         </h3>
-        <p className="text-brand-brown/60 text-sm xl:text-[10px] leading-relaxed mb-4 xl:mb-2">
+        <p className="text-brand-brown/60 text-base md:text-lg leading-relaxed mb-6">
           {product.description}
         </p>
         <div className="pt-4 xl:pt-2 border-t border-brand-brown/5 flex items-center justify-between">
@@ -123,7 +122,7 @@ const OurProducts: React.FC = () => {
   return (
     <section
       id="products"
-      className="py-24 md:py-32 xl:py-12 2xl:py-32 bg-brand-beige/30 relative overflow-hidden"
+      className="py-24 md:py-32 xl:py-48 2xl:py-60 bg-brand-beige/30 relative overflow-hidden"
     >
       {/* Background Decoration */}
       <div className="absolute top-0 right-0 w-1/2 h-1/2 bg-gradient-to-b from-[#D4CEC4]/10 to-transparent -z-10 rounded-full blur-3xl transform translate-x-1/2 -translate-y-1/2"></div>
@@ -146,7 +145,7 @@ const OurProducts: React.FC = () => {
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
-              className="text-4xl md:text-6xl xl:text-4xl 2xl:text-6xl font-black tracking-tighter mb-4 heading-gradient"
+              className="text-[clamp(1.8rem,6vw,4rem)] md:text-[4.5rem] xl:text-[5.5rem] 2xl:text-[6.5rem] font-black tracking-tighter mb-6 xl:mb-8 heading-gradient"
             >
               Explore Our <span>Products.</span>
             </motion.h2>

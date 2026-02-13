@@ -79,10 +79,10 @@ const WearableSection: React.FC = () => {
   return (
     <div
       ref={containerRef}
-      className="relative h-[400vh] lg:h-[300vh] xl:h-[250vh] bg-brand-beige"
+      className="relative h-[400vh] lg:h-[350vh] xl:h-[300vh] bg-brand-beige"
     >
-      <div className="sticky top-0 h-screen w-full flex items-center justify-center overflow-hidden py-2 md:py-12 xl:py-2 2xl:py-12 px-4 md:px-6">
-        <div className="max-w-7xl mx-auto w-full grid grid-cols-1 lg:grid-cols-2 gap-3 md:gap-6 h-full md:max-h-[800px] xl:max-h-[550px] py-4 md:py-0">
+      <div className="sticky top-0 h-screen w-full flex items-center justify-center overflow-hidden py-12 md:py-20 xl:py-24 2xl:py-32 px-4 md:px-6">
+        <div className="max-w-7xl mx-auto w-full grid grid-cols-1 lg:grid-cols-2 gap-6 md:gap-10 h-full md:max-h-[850px] xl:max-h-[800px] py-4 md:py-0">
           {/* Left Content Card */}
           <div className="relative h-auto min-h-[50%] md:h-[65%] lg:h-full bg-[#F2EFE9] shadow-2xl rounded-[20px] md:rounded-[40px] flex flex-col justify-between items-start overflow-hidden order-2 lg:order-1">
             {/* Dot Grid Background Pattern (Persistent) */}
@@ -107,7 +107,7 @@ const WearableSection: React.FC = () => {
                 >
                   <div className="w-full">
                     {/* Badge */}
-                    <div className="flex items-center w-max gap-2 mb-4 md:mb-8 xl:mb-2 2xl:mb-8 bg-[#D4CEC4] px-3 py-1.5 md:px-4 md:py-2 rounded-lg">
+                    <div className="flex items-center w-max gap-2 mb-6 md:mb-8 xl:mb-10 bg-[#D4CEC4] px-3 py-1.5 md:px-4 md:py-2 rounded-lg">
                       <div className="text-[#6B4A2D] scale-75 md:scale-100">
                         {slides[currentSlide].icon}
                       </div>
@@ -116,7 +116,7 @@ const WearableSection: React.FC = () => {
                       </span>
                     </div>
 
-                    <h2 className="text-[clamp(1.5rem,5vw,4.5rem)] xl:text-[3rem] leading-[0.9] mb-3 md:mb-8 xl:mb-2 2xl:mb-8 tracking-tighter">
+                    <h2 className="text-[clamp(1.8rem,5vw,3.5rem)] md:text-[3rem] xl:text-[3.5rem] 2xl:text-[4rem] leading-[0.95] mb-6 md:mb-8 xl:mb-10 tracking-tighter">
                       <span className="heading-gradient font-black block">
                         {slides[currentSlide].title1}
                       </span>
@@ -126,7 +126,7 @@ const WearableSection: React.FC = () => {
                     </h2>
 
                     {/* Description */}
-                    <p className="light-text mb-4 md:mb-10 xl:mb-4 2xl:mb-10 max-w-md leading-relaxed text-[13px] md:text-lg opacity-80">
+                    <p className="light-text mb-8 md:mb-10 xl:mb-12 max-w-lg leading-relaxed text-[15px] md:text-lg opacity-80">
                       {slides[currentSlide].description}
                     </p>
 

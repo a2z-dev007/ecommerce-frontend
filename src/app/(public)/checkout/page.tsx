@@ -116,6 +116,7 @@ export default function CheckoutPage() {
     postalCode: "",
     country: "United States",
   });
+
   const [createAccount, setCreateAccount] = useState(false);
   const [password, setPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
@@ -126,6 +127,7 @@ export default function CheckoutPage() {
     total: 0,
     items: [] as any[],
   });
+
   const [selectedPaymentMethod, setSelectedPaymentMethod] = useState<
     "razorpay" | "cod"
   >("razorpay");

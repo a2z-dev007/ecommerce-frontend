@@ -42,7 +42,7 @@ const Pricing: React.FC = () => {
   ];
 
   return (
-    <section className="bg-transparent py-24 md:py-32 xl:py-12 2xl:py-32 px-6 overflow-hidden relative">
+    <section className="bg-transparent py-24 md:py-32 xl:py-48 2xl:py-60 px-6 overflow-hidden relative">
       <div className="max-w-7xl mx-auto relative z-10">
         <div className="text-center flex flex-col items-center mb-16">
           {/* Badge */}
@@ -53,7 +53,7 @@ const Pricing: React.FC = () => {
             </span>
           </div>
 
-          <h2 className="text-[clamp(2.5rem,7vw,5.5rem)] xl:text-[2.5rem] 2xl:text-[5.5rem] leading-[1] mb-6 tracking-tight">
+          <h2 className="text-[clamp(1.8rem,6vw,4rem)] md:text-[4.5rem] xl:text-[5.5rem] 2xl:text-[6.5rem] leading-[1] mb-8 xl:mb-12 tracking-tight">
             <span className="heading-gradient font-bold underline decoration-primary/10 underline-offset-[12px]">
               Choose Your Edition
             </span>
@@ -69,7 +69,7 @@ const Pricing: React.FC = () => {
             <div
               key={plan.id}
               onClick={() => setActivePlan(plan.id)}
-              className={`relative cursor-pointer transition-all duration-500 rounded-[40px] p-8 md:p-12 xl:p-5 2xl:p-12 border-[2px] shadow-sm flex flex-col h-full
+              className={`relative cursor-pointer transition-all duration-500 rounded-[40px] p-8 md:p-12 xl:p-14 2xl:p-16 border-[2px] shadow-sm flex flex-col h-full
                 ${
                   activePlan === plan.id
                     ? "bg-[#EAE5DC] border-[#6B4A2D]/20 border-dashed border-[3px] shadow-md scale-[1.02]"
@@ -85,12 +85,12 @@ const Pricing: React.FC = () => {
                 </div>
               )}
 
-              <h3 className="text-2xl xl:text-xl font-bold mb-4 xl:mb-2 text-[#2D241E]">
+              <h3 className="text-2xl md:text-3xl xl:text-4xl font-bold mb-6 xl:mb-8 text-[#2D241E]">
                 {plan.name}
               </h3>
 
-              <div className="mb-6 xl:mb-3">
-                <span className="text-4xl md:text-5xl xl:text-3xl 2xl:text-5xl font-bold text-[#6B4A2D]">
+              <div className="mb-8 xl:mb-10">
+                <span className="text-4xl md:text-5xl xl:text-6xl 2xl:text-7xl font-bold text-[#6B4A2D]">
                   ₹{plan.price}
                 </span>
               </div>

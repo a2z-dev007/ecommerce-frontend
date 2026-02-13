@@ -84,7 +84,7 @@ export const Footer: React.FC = () => {
               <ul className="space-y-4 text-[#8B7E6F] text-[14px]">
                 <li>
                   <a
-                    href="/terms"
+                    href="/terms-and-conditions"
                     className="hover:text-[#6B4A2D] transition-colors font-medium"
                   >
                     Terms & Conditions
@@ -92,7 +92,7 @@ export const Footer: React.FC = () => {
                 </li>
                 <li>
                   <a
-                    href="/privacy"
+                    href="/privacy-policy"
                     className="hover:text-[#6B4A2D] transition-colors font-medium"
                   >
                     Privacy Policy
@@ -100,7 +100,7 @@ export const Footer: React.FC = () => {
                 </li>
                 <li>
                   <a
-                    href="/shipping"
+                    href="/shipping-and-returns"
                     className="hover:text-[#6B4A2D] transition-colors font-medium"
                   >
                     Shipping & Returns
