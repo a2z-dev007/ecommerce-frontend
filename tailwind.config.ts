@@ -45,39 +45,39 @@ const config: Config = {
         /* =====================
            EXISTING (unchanged)
         ====================== */
-        border: "hsl(var(--border))",
-        input: "hsl(var(--input))",
-        ring: "hsl(var(--ring))",
-        background: "hsl(var(--background))",
-        foreground: "hsl(var(--foreground))",
+        border: "hsl(var(--border) / <alpha-value>)",
+        input: "hsl(var(--input) / <alpha-value>)",
+        ring: "hsl(var(--ring) / <alpha-value>)",
+        background: "hsl(var(--background) / <alpha-value>)",
+        foreground: "hsl(var(--foreground) / <alpha-value>)",
 
         primary: {
-          DEFAULT: "hsl(var(--primary))",
-          foreground: "hsl(var(--primary-foreground))",
+          DEFAULT: "hsl(var(--primary) / <alpha-value>)",
+          foreground: "hsl(var(--primary-foreground) / <alpha-value>)",
         },
         secondary: {
-          DEFAULT: "hsl(var(--secondary))",
-          foreground: "hsl(var(--secondary-foreground))",
+          DEFAULT: "hsl(var(--secondary) / <alpha-value>)",
+          foreground: "hsl(var(--secondary-foreground) / <alpha-value>)",
         },
         destructive: {
-          DEFAULT: "hsl(var(--destructive))",
-          foreground: "hsl(var(--destructive-foreground))",
+          DEFAULT: "hsl(var(--destructive) / <alpha-value>)",
+          foreground: "hsl(var(--destructive-foreground) / <alpha-value>)",
         },
         muted: {
-          DEFAULT: "hsl(var(--muted))",
-          foreground: "hsl(var(--muted-foreground))",
+          DEFAULT: "hsl(var(--muted) / <alpha-value>)",
+          foreground: "hsl(var(--muted-foreground) / <alpha-value>)",
         },
         accent: {
-          DEFAULT: "hsl(var(--accent))",
-          foreground: "hsl(var(--accent-foreground))",
+          DEFAULT: "hsl(var(--accent) / <alpha-value>)",
+          foreground: "hsl(var(--accent-foreground) / <alpha-value>)",
         },
         popover: {
-          DEFAULT: "hsl(var(--popover))",
-          foreground: "hsl(var(--popover-foreground))",
+          DEFAULT: "hsl(var(--popover) / <alpha-value>)",
+          foreground: "hsl(var(--popover-foreground) / <alpha-value>)",
         },
         card: {
-          DEFAULT: "hsl(var(--card))",
-          foreground: "hsl(var(--card-foreground))",
+          DEFAULT: "hsl(var(--card) / <alpha-value>)",
+          foreground: "hsl(var(--card-foreground) / <alpha-value>)",
         },
         'brand-beige': 'hsl(var(--secondary))',
         'brand-brown': 'hsl(var(--primary))',
@@ -85,40 +85,49 @@ const config: Config = {
         /* =====================
            ✅ BADGE DESIGN TOKENS
         ====================== */
+        /* =====================
+           ✅ BADGE DESIGN TOKENS
+           Updated to use CSS variables for theme consistency
+        ====================== */
         brand: {
-          DEFAULT: "#2563EB",
-          softer: "#DBEAFE",
+          DEFAULT: "hsl(var(--primary) / <alpha-value>)",
+          softer: "hsl(var(--primary) / 0.15)",
         },
 
         danger: {
-          DEFAULT: "#DC2626",
-          soft: "#FEE2E2",
+          DEFAULT: "hsl(var(--error) / <alpha-value>)",
+          soft: "hsl(var(--error) / 0.15)",
         },
 
         success: {
-          DEFAULT: "#16A34A",
-          soft: "#DCFCE7",
+          DEFAULT: "hsl(var(--success) / <alpha-value>)",
+          soft: "hsl(var(--success) / 0.15)",
         },
 
         warning: {
-          DEFAULT: "#D97706",
-          soft: "#FEF3C7",
+          DEFAULT: "hsl(var(--warning) / <alpha-value>)",
+          soft: "hsl(var(--warning) / 0.15)",
+        },
+        
+        info: {
+          DEFAULT: "hsl(var(--info) / <alpha-value>)",
+          soft: "hsl(var(--info) / 0.15)",
         },
 
         neutral: {
-          primary: "#6B7280",
-          "primary-soft": "#E5E7EB",
-          secondary: "#9CA3AF",
-          "secondary-medium": "#E5E7EB",
+          primary: "hsl(var(--muted-foreground) / <alpha-value>)",
+          "primary-soft": "hsl(var(--muted) / 0.5)",
+          secondary: "hsl(var(--muted-foreground) / 0.8)",
+          "secondary-medium": "hsl(var(--muted) / <alpha-value>)",
         },
 
         /* Text tokens */
-        "fg-brand-strong": "#1E40AF",
-        "fg-danger-strong": "#991B1B",
-        "fg-success-strong": "#14532D",
-        "fg-warning": "#92400E",
+        "fg-brand-strong": "hsl(var(--primary))",
+        "fg-danger-strong": "hsl(var(--error))",
+        "fg-success-strong": "hsl(var(--success))",
+        "fg-warning": "hsl(var(--warning))",
 
-        heading: "#111827",
+        heading: "hsl(var(--foreground))",
       },
 
       borderRadius: {

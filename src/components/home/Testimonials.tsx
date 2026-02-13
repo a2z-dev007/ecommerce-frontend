@@ -70,7 +70,7 @@ const Testimonials: React.FC = () => {
 
   const TestimonialCard = ({ testimonial }: { testimonial: Testimonial }) => (
     <motion.div
-      className="flex-shrink-0 cursor-pointer w-[280px] sm:w-[320px] md:w-[420px] bg-[#EEEAE2] rounded-2xl p-6 md:p-8 shadow-[0_2px_12px_rgba(0,0,0,0.06)] border-[3px] border-[#6B4A2D]/10 border-dashed transition-all duration-300"
+      className="flex-shrink-0 cursor-pointer w-[280px] sm:w-[320px] md:w-[420px] xl:w-[300px] 2xl:w-[420px] bg-[#EEEAE2] rounded-2xl p-6 md:p-8 xl:p-4 2xl:p-8 shadow-[0_2px_12px_rgba(0,0,0,0.06)] border-[3px] border-[#6B4A2D]/10 border-dashed transition-all duration-300"
       onHoverStart={() => setIsPaused(true)}
       onHoverEnd={() => setIsPaused(false)}
       whileHover={{
@@ -82,13 +82,13 @@ const Testimonials: React.FC = () => {
       transition={{ duration: 0.3 }}
     >
       {/* Header - Avatar and X Icon */}
-      <div className="flex items-start justify-between mb-6">
+      <div className="flex items-start justify-between mb-6 xl:mb-3">
         {/* Avatar */}
         <div className="flex-shrink-0">
           <img
             src={testimonial.avatar}
             alt={testimonial.name}
-            className="w-14 h-14 rounded-full object-cover ring-2 ring-white"
+            className="w-14 h-14 xl:w-10 xl:h-10 rounded-full object-cover ring-2 ring-white"
           />
         </div>
 
@@ -101,17 +101,20 @@ const Testimonials: React.FC = () => {
       </div>
 
       {/* Stars */}
-      <div className="flex gap-1 mb-6">
+      <div className="flex gap-1 mb-6 xl:mb-3">
         {[...Array(testimonial.rating)].map((_, i) => (
-          <Star key={i} className="w-5 h-5 fill-[#D0BB74] text-[#D0BB74]" />
+          <Star
+            key={i}
+            className="w-5 h-5 xl:w-4 xl:h-4 fill-[#D0BB74] text-[#D0BB74]"
+          />
         ))}
       </div>
 
       {/* Testimonial Text */}
-      <p className="text-[#63615E]/80 text-base leading-relaxed mb-4">
+      <p className="text-[#63615E]/80 text-base xl:text-sm leading-relaxed mb-4 xl:mb-2">
         {testimonial.text}
       </p>
-      <div className="w-full h-[1px] bg-[#6B4A2D]/10 mb-4" />
+      <div className="w-full h-[1px] bg-[#6B4A2D]/10 mb-4 xl:mb-3" />
       {/* Author Info */}
       <div>
         <h4 className="text-[#63615E] font-semibold text-base">
@@ -124,7 +127,7 @@ const Testimonials: React.FC = () => {
   );
 
   return (
-    <section className="py-12 md:py-32 overflow-hidden">
+    <section className="py-12 md:py-32 xl:py-8 2xl:py-32 overflow-hidden">
       <div className="max-w-7xl mx-auto px-6 mb-16">
         {/* Header */}
         <div className="text-center">
@@ -136,7 +139,7 @@ const Testimonials: React.FC = () => {
             </span>
           </div>
 
-          <h2 className="text-[clamp(2rem,7vw,5rem)] leading-[1.1] font-normal mb-4 tracking-tight">
+          <h2 className="text-[clamp(2rem,5vw,5rem)] xl:text-[3rem] 2xl:text-[5rem] leading-[1.1] font-normal mb-4 tracking-tight">
             <span className="heading-gradient font-bold">Trusted By </span>
             <span className="text-[#B8AFA1] font-bold">Experts.</span>
           </h2>

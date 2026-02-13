@@ -177,10 +177,8 @@ export default function AdminProducts() {
         {/* Header Section */}
         <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
           <div className="space-y-1">
-            <h1 className="text-3xl font-bold bg-gradient-to-r from-slate-900 to-slate-700 bg-clip-text text-transparent">
-              Products
-            </h1>
-            <p className="text-slate-600 text-lg">
+            <h1 className="text-3xl font-bold text-foreground">Products</h1>
+            <p className="text-muted-foreground text-lg">
               Manage your product catalog with ease
             </p>
           </div>
@@ -191,7 +189,7 @@ export default function AdminProducts() {
             </Button>
             <Button
               onClick={openAddModal}
-              className="bg-gradient-to-r from-blue-600 to-blue-700 hover:from-blue-700 hover:to-blue-800 shadow-lg"
+              className="bg-gradient-variant-2 text-primary-foreground hover:opacity-90 shadow-lg border-0"
             >
               <Plus className="mr-2 h-4 w-4" />
               Add Product
@@ -201,86 +199,86 @@ export default function AdminProducts() {
 
         {/* Stats Cards */}
         <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
-          <Card className="border-0 shadow-md bg-white/80 backdrop-blur-sm">
+          <Card className="border shadow-md bg-card">
             <CardContent className="p-6">
               <div className="flex items-center justify-between">
                 <div>
-                  <p className="text-sm font-medium text-slate-600">
+                  <p className="text-sm font-medium text-muted-foreground">
                     Total Products
                   </p>
                   {isLoading ? (
                     <Skeleton className="h-8 w-16 mt-1" />
                   ) : (
-                    <p className="text-2xl font-bold text-slate-900">
+                    <p className="text-2xl font-bold text-foreground">
                       {stats.total}
                     </p>
                   )}
                 </div>
-                <div className="h-12 w-12 bg-blue-100 rounded-lg flex items-center justify-center">
-                  <Package className="h-6 w-6 text-blue-600" />
+                <div className="h-12 w-12 bg-gradient-variant-2 rounded-lg flex items-center justify-center">
+                  <Package className="h-6 w-6 text-primary-foreground" />
                 </div>
               </div>
             </CardContent>
           </Card>
-          <Card className="border-0 shadow-md bg-white/80 backdrop-blur-sm">
+          <Card className="border shadow-md bg-card">
             <CardContent className="p-6">
               <div className="flex items-center justify-between">
                 <div>
-                  <p className="text-sm font-medium text-slate-600">
+                  <p className="text-sm font-medium text-muted-foreground">
                     Active Products
                   </p>
                   {isLoading ? (
                     <Skeleton className="h-8 w-16 mt-1" />
                   ) : (
-                    <p className="text-2xl font-bold text-green-600">
+                    <p className="text-2xl font-bold text-foreground">
                       {stats.active}
                     </p>
                   )}
                 </div>
-                <div className="h-12 w-12 bg-green-100 rounded-lg flex items-center justify-center">
-                  <Eye className="h-6 w-6 text-green-600" />
+                <div className="h-12 w-12 bg-gradient-variant-2 rounded-lg flex items-center justify-center">
+                  <Eye className="h-6 w-6 text-primary-foreground" />
                 </div>
               </div>
             </CardContent>
           </Card>
-          <Card className="border-0 shadow-md bg-white/80 backdrop-blur-sm">
+          <Card className="border shadow-md bg-card">
             <CardContent className="p-6">
               <div className="flex items-center justify-between">
                 <div>
-                  <p className="text-sm font-medium text-slate-600">
+                  <p className="text-sm font-medium text-muted-foreground">
                     Low Stock
                   </p>
                   {isLoading ? (
                     <Skeleton className="h-8 w-16 mt-1" />
                   ) : (
-                    <p className="text-2xl font-bold text-orange-600">
+                    <p className="text-2xl font-bold text-foreground">
                       {stats.lowStock}
                     </p>
                   )}
                 </div>
-                <div className="h-12 w-12 bg-orange-100 rounded-lg flex items-center justify-center">
-                  <Package className="h-6 w-6 text-orange-600" />
+                <div className="h-12 w-12 bg-gradient-variant-2 rounded-lg flex items-center justify-center">
+                  <Package className="h-6 w-6 text-primary-foreground" />
                 </div>
               </div>
             </CardContent>
           </Card>
-          <Card className="border-0 shadow-md bg-white/80 backdrop-blur-sm">
+          <Card className="border shadow-md bg-card">
             <CardContent className="p-6">
               <div className="flex items-center justify-between">
                 <div>
-                  <p className="text-sm font-medium text-slate-600">
+                  <p className="text-sm font-medium text-muted-foreground">
                     Out of Stock
                   </p>
                   {isLoading ? (
                     <Skeleton className="h-8 w-16 mt-1" />
                   ) : (
-                    <p className="text-2xl font-bold text-red-600">
+                    <p className="text-2xl font-bold text-foreground">
                       {stats.outOfStock}
                     </p>
                   )}
                 </div>
-                <div className="h-12 w-12 bg-red-100 rounded-lg flex items-center justify-center">
-                  <Package className="h-6 w-6 text-red-600" />
+                <div className="h-12 w-12 bg-gradient-variant-2 rounded-lg flex items-center justify-center">
+                  <Package className="h-6 w-6 text-primary-foreground" />
                 </div>
               </div>
             </CardContent>
@@ -288,7 +286,7 @@ export default function AdminProducts() {
         </div>
 
         {/* Search and Filters */}
-        <Card className="border-0 shadow-lg bg-white/90 backdrop-blur-sm">
+        <Card className="border shadow-lg bg-card">
           <CardContent className="p-6">
             <div className="flex flex-col sm:flex-row items-start sm:items-center gap-4">
               <div className="relative flex-1 max-w-md">
@@ -297,7 +295,7 @@ export default function AdminProducts() {
                   placeholder="Search products by name or SKU..."
                   value={search}
                   onChange={(e) => setSearch(e.target.value)}
-                  className="pl-10 border-slate-200 focus:border-blue-500 focus:ring-blue-500/20"
+                  className="pl-10 border-border focus:border-primary focus:ring-primary/20"
                 />
               </div>
               <Button variant="outline" size="sm" className="hidden sm:flex">
@@ -305,16 +303,16 @@ export default function AdminProducts() {
                 Filters
               </Button>
               {selectedProducts.length > 0 && (
-                <div className="flex items-center gap-2 p-3 bg-slate-50 rounded-lg border border-slate-200">
-                  <span className="text-sm font-medium text-slate-700">
+                <div className="flex items-center gap-2 p-3 bg-muted/30 rounded-lg border border-border">
+                  <span className="text-sm font-medium text-foreground">
                     {selectedProducts.length} selected
                   </span>
-                  <div className="h-4 w-px bg-slate-300" />
+                  <div className="h-4 w-px bg-border" />
                   <Button
                     variant="outline"
                     size="sm"
                     onClick={handleBulkActivate}
-                    className="text-green-600 hover:text-green-700"
+                    className="text-success hover:text-success/80"
                   >
                     Activate
                   </Button>
@@ -322,7 +320,7 @@ export default function AdminProducts() {
                     variant="outline"
                     size="sm"
                     onClick={handleBulkDeactivate}
-                    className="text-orange-600 hover:text-orange-700"
+                    className="text-warning hover:text-warning/80"
                   >
                     Deactivate
                   </Button>
@@ -331,7 +329,7 @@ export default function AdminProducts() {
                     size="sm"
                     onClick={handleBulkDelete}
                     disabled={isBulkDeleting}
-                    className="text-red-600 hover:text-red-700"
+                    className="text-destructive hover:text-destructive/80"
                   >
                     <Trash2 className="h-4 w-4" />
                   </Button>
@@ -342,14 +340,14 @@ export default function AdminProducts() {
         </Card>
 
         {/* Products Table */}
-        <Card className="border-0 shadow-lg bg-white/90 backdrop-blur-sm">
+        <Card className="border shadow-lg bg-card">
           <CardHeader className="pb-4">
-            <CardTitle className="text-xl font-semibold text-slate-900">
+            <CardTitle className="text-xl font-semibold text-foreground">
               Product Catalog
               {isLoading ? (
                 <Skeleton className="ml-2 h-4 w-20 inline-block" />
               ) : (
-                <span className="ml-2 text-sm font-normal text-slate-500">
+                <span className="ml-2 text-sm font-normal text-muted-foreground">
                   ({stats.total} total)
                 </span>
               )}
@@ -374,13 +372,13 @@ export default function AdminProducts() {
               </div>
             ) : products.length === 0 ? (
               <div className="text-center py-16 px-6">
-                <div className="mx-auto h-24 w-24 bg-slate-100 rounded-full flex items-center justify-center mb-6">
-                  <Package className="h-12 w-12 text-slate-400" />
+                <div className="mx-auto h-24 w-24 bg-muted/50 rounded-full flex items-center justify-center mb-6">
+                  <Package className="h-12 w-12 text-muted-foreground" />
                 </div>
-                <h3 className="text-xl font-semibold text-slate-900 mb-2">
+                <h3 className="text-xl font-semibold text-foreground mb-2">
                   No products found
                 </h3>
-                <p className="text-slate-600 mb-6 max-w-sm mx-auto">
+                <p className="text-muted-foreground mb-6 max-w-sm mx-auto">
                   {search
                     ? "Try adjusting your search terms or filters."
                     : "Get started by creating your first product."}
@@ -388,7 +386,7 @@ export default function AdminProducts() {
                 {!search && (
                   <Button
                     onClick={openAddModal}
-                    className="bg-gradient-to-r from-blue-600 to-blue-700"
+                    className="bg-gradient-variant-2 text-primary-foreground hover:opacity-90 border-0"
                   >
                     <Plus className="mr-2 h-4 w-4" />
                     Add Your First Product
@@ -398,22 +396,22 @@ export default function AdminProducts() {
             ) : (
               <div className="divide-y divide-slate-100">
                 {/* Table Header */}
-                <div className="flex items-center gap-4 px-6 py-4 bg-slate-50/50 border-b border-slate-200">
+                <div className="flex items-center gap-4 px-6 py-4 bg-muted/20 border-b border-border">
                   <Checkbox
                     checked={
                       selectedProducts.length === products.length &&
                       products.length > 0
                     }
                     onCheckedChange={handleSelectAll}
-                    className="border-slate-300"
+                    className="border-input"
                   />
-                  <div className="flex-1 grid grid-cols-5 gap-4 text-sm font-semibold text-slate-700">
+                  <div className="flex-1 grid grid-cols-5 gap-4 text-sm font-semibold text-muted-foreground">
                     <div className="col-span-2">Product Details</div>
                     <div>Pricing</div>
                     <div>Inventory</div>
                     <div>Status</div>
                   </div>
-                  <div className="w-20 text-center text-sm font-semibold text-slate-700">
+                  <div className="w-20 text-center text-sm font-semibold text-muted-foreground">
                     Actions
                   </div>
                 </div>
@@ -422,21 +420,21 @@ export default function AdminProducts() {
                 {products.map((product: any, index: number) => (
                   <div
                     key={product.id}
-                    className={`flex items-center gap-4 px-6 py-4 hover:bg-slate-50/50 transition-all duration-200 group ${
-                      index % 2 === 0 ? "bg-white" : "bg-slate-50/30"
+                    className={`flex items-center gap-4 px-6 py-4 hover:bg-muted/30 transition-all duration-200 group ${
+                      index % 2 === 0 ? "bg-card" : "bg-muted/10"
                     }`}
                   >
                     <Checkbox
                       checked={selectedProducts.includes(product.id)}
                       onCheckedChange={() => handleSelect(product.id)}
-                      className="border-slate-300"
+                      className="border-input"
                     />
                     <div className="flex-1 grid grid-cols-5 gap-4 items-center">
                       {/* Product Info */}
                       <div className="col-span-2 flex items-center gap-4">
                         <div className="relative">
                           {product.images?.[0] ? (
-                            <div className="relative w-16 h-16 rounded-xl overflow-hidden shadow-sm border border-slate-200">
+                            <div className="relative w-16 h-16 rounded-xl overflow-hidden shadow-sm border border-border">
                               <Image
                                 src={product.images[0]}
                                 alt={product.name}
@@ -445,20 +443,20 @@ export default function AdminProducts() {
                               />
                             </div>
                           ) : (
-                            <div className="w-16 h-16 bg-gradient-to-br from-slate-100 to-slate-200 rounded-xl flex items-center justify-center border border-slate-200">
-                              <Package className="h-8 w-8 text-slate-400" />
+                            <div className="w-16 h-16 bg-muted/20 rounded-xl flex items-center justify-center border border-border">
+                              <Package className="h-8 w-8 text-muted-foreground" />
                             </div>
                           )}
                         </div>
                         <div className="min-w-0 flex-1">
-                          <h3 className="font-semibold text-slate-900 truncate group-hover:text-blue-600 transition-colors">
+                          <h3 className="font-semibold text-foreground truncate group-hover:text-primary transition-colors">
                             {product.name}
                           </h3>
-                          <p className="text-sm text-slate-500 font-mono">
+                          <p className="text-sm text-muted-foreground font-mono">
                             {product.sku}
                           </p>
                           {product.category && (
-                            <p className="text-xs text-slate-400 mt-1">
+                            <p className="text-xs text-muted-foreground/80 mt-1">
                               {product.category.name || product.category}
                             </p>
                           )}
@@ -467,12 +465,12 @@ export default function AdminProducts() {
 
                       {/* Price */}
                       <div>
-                        <p className="font-bold text-slate-900 text-lg">
+                        <p className="font-bold text-foreground text-lg">
                           {formatCurrency(product.price)}
                         </p>
                         {product.comparePrice &&
                           product.comparePrice > product.price && (
-                            <p className="text-sm text-slate-400 line-through">
+                            <p className="text-sm text-muted-foreground line-through">
                               {formatCurrency(product.comparePrice)}
                             </p>
                           )}
@@ -490,10 +488,10 @@ export default function AdminProducts() {
                           }
                           className={`font-medium ${
                             product.stock > 10
-                              ? "bg-green-100 text-green-800 hover:bg-green-200"
+                              ? "bg-success/10 text-success hover:bg-success/20"
                               : product.stock > 0
-                                ? "bg-orange-100 text-orange-800 hover:bg-orange-200"
-                                : "bg-red-100 text-red-800 hover:bg-red-200"
+                                ? "bg-warning/10 text-warning hover:bg-warning/20"
+                                : "bg-destructive/10 text-destructive hover:bg-destructive/20"
                           }`}
                         >
                           {product.stock}{" "}
@@ -507,8 +505,8 @@ export default function AdminProducts() {
                           variant={product.isActive ? "default" : "secondary"}
                           className={`font-medium ${
                             product.isActive
-                              ? "bg-blue-100 text-blue-800 hover:bg-blue-200"
-                              : "bg-slate-100 text-slate-600 hover:bg-slate-200"
+                              ? "bg-success/10 text-success hover:bg-success/20"
+                              : "bg-muted text-muted-foreground hover:bg-muted/80"
                           }`}
                         >
                           {product.isActive ? "Active" : "Inactive"}
@@ -523,7 +521,7 @@ export default function AdminProducts() {
                           <Button
                             variant="ghost"
                             size="icon"
-                            className="text-slate-500 hover:text-slate-700 hover:bg-slate-100"
+                            className="text-muted-foreground hover:text-foreground hover:bg-muted"
                           >
                             <MoreVertical className="h-4 w-4" />
                           </Button>
@@ -566,8 +564,8 @@ export default function AdminProducts() {
 
             {/* Enhanced Pagination */}
             {pagination && pagination.pages > 1 && (
-              <div className="flex flex-col sm:flex-row items-center justify-between gap-4 px-6 py-4 bg-slate-50/30 border-t border-slate-200">
-                <p className="text-sm text-slate-600">
+              <div className="flex flex-col sm:flex-row items-center justify-between gap-4 px-6 py-4 bg-muted/20 border-t border-border">
+                <p className="text-sm text-muted-foreground">
                   Showing{" "}
                   <span className="font-medium">{(page - 1) * 10 + 1}</span> to{" "}
                   <span className="font-medium">
@@ -582,7 +580,7 @@ export default function AdminProducts() {
                     size="sm"
                     onClick={() => setPage((p) => Math.max(1, p - 1))}
                     disabled={page === 1}
-                    className="border-slate-300 hover:bg-slate-50"
+                    className="border-input hover:bg-muted"
                   >
                     Previous
                   </Button>
@@ -599,8 +597,8 @@ export default function AdminProducts() {
                             onClick={() => setPage(pageNum)}
                             className={`w-8 h-8 p-0 ${
                               page === pageNum
-                                ? "bg-blue-600 hover:bg-blue-700"
-                                : "border-slate-300 hover:bg-slate-50"
+                                ? "bg-primary text-primary-foreground hover:bg-primary/90"
+                                : "border-input hover:bg-muted"
                             }`}
                           >
                             {pageNum}
@@ -614,7 +612,7 @@ export default function AdminProducts() {
                     size="sm"
                     onClick={() => setPage((p) => p + 1)}
                     disabled={page >= pagination.pages}
-                    className="border-slate-300 hover:bg-slate-50"
+                    className="border-input hover:bg-muted"
                   >
                     Next
                   </Button>

@@ -14,7 +14,7 @@ const InAction: React.FC = () => {
   } = useLightbox();
 
   return (
-    <section className="bg-brand-beige py-24 flex flex-col items-center">
+    <section className="bg-brand-beige py-24 xl:py-8 2xl:py-24 flex flex-col items-center">
       {/* Badge */}
       <div className="inline-flex items-center gap-2 bg-[#D4CEC4] px-4 py-2 rounded-lg mb-6 text-center">
         <Play className="w-3 h-3 brand-primary" />
@@ -24,19 +24,19 @@ const InAction: React.FC = () => {
       </div>
 
       {/* Heading */}
-      <h2 className="text-[clamp(2.5rem,7vw,5rem)] leading-[1.1] mb-4 tracking-tight text-center">
+      <h2 className="text-[clamp(2.5rem,5vw,5rem)] xl:text-[2.5rem] 2xl:text-[5rem] leading-[1.1] mb-4 tracking-tight text-center">
         <span className="heading-gradient font-bold">In Action.</span>
       </h2>
 
       {/* Description */}
-      <p className="light-text text-sm md:text-base max-w-2xl mx-auto leading-relaxed text-center mb-16 px-6">
+      <p className="light-text text-sm md:text-base max-w-2xl mx-auto leading-relaxed text-center mb-16 xl:mb-8 px-6">
         See how Kangpack transforms any space into a hands-free mobile
         workspace.
       </p>
 
       <div className="w-full max-w-7xl px-4 md:px-12">
         <div
-          className="relative aspect-video rounded-[50px] overflow-hidden shadow-2xl group cursor-pointer"
+          className="relative aspect-video xl:h-[520px] xl:w-auto xl:mx-auto rounded-[50px] overflow-hidden shadow-2xl group cursor-pointer"
           onClick={() =>
             openLightbox(
               ["https://picsum.photos/seed/action_video/1920/1080"],

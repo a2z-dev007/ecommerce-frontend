@@ -25,7 +25,7 @@ const TechSpecs: React.FC = () => {
   ];
 
   return (
-    <section className="bg-transparent py-20 px-6">
+    <section className="bg-transparent py-20 xl:py-10 2xl:py-20 px-6">
       <div className="max-w-7xl mx-auto flex flex-col lg:flex-row gap-16 items-start">
         {/* Left Column: Image & Intro */}
         <div className="flex-1 w-full lg:sticky lg:top-24">
@@ -33,7 +33,7 @@ const TechSpecs: React.FC = () => {
             initial={{ opacity: 0, scale: 0.95 }}
             whileInView={{ opacity: 1, scale: 1 }}
             viewport={{ once: false }}
-            className="rounded-[32px] overflow-hidden shadow-xl mb-10 h-[600px] group"
+            className="rounded-[32px] overflow-hidden shadow-xl mb-10 h-[600px] xl:h-[400px] 2xl:h-[600px] group"
           >
             <ParallaxImage
               src={ASSETS.TICKERS.FIRST}

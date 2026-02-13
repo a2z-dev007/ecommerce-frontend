@@ -1,8 +1,8 @@
-"use client"
-import { ASSETS } from '@/constants/assets';
-import React from 'react';
-import { Lightbox, useLightbox } from '@/components/ui/Lightbox';
-import { ParallaxImage } from '@/components/common/ScrollSection';
+"use client";
+import { ASSETS } from "@/constants/assets";
+import React from "react";
+import { Lightbox, useLightbox } from "@/components/ui/Lightbox";
+import { ParallaxImage } from "@/components/common/ScrollSection";
 
 const GalleryIntro: React.FC = () => {
   const images = [
@@ -11,13 +11,20 @@ const GalleryIntro: React.FC = () => {
     ASSETS.TICKERS.SIDE,
   ];
 
-  const { isOpen, images: lightboxImages, currentIndex, openLightbox, closeLightbox, setIndex } = useLightbox();
+  const {
+    isOpen,
+    images: lightboxImages,
+    currentIndex,
+    openLightbox,
+    closeLightbox,
+    setIndex,
+  } = useLightbox();
 
   return (
-    <section className="bg-brand-beige py-12 px-6 md:px-16 relative">
-      <div className="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-3 gap-6">
+    <section className="bg-brand-beige py-12 xl:py-8 px-6 md:px-16 relative">
+      <div className="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-3 gap-6 xl:gap-4">
         <div
-          className="aspect-[16/9] md:aspect-[4/3] rounded-2xl overflow-hidden cursor-pointer group shadow-lg"
+          className="aspect-[16/9] md:aspect-[4/3] xl:aspect-[16/10] 2xl:aspect-[4/3] rounded-2xl overflow-hidden cursor-pointer group shadow-lg"
           onClick={() => openLightbox(images, 0)}
         >
           <ParallaxImage
@@ -27,7 +34,7 @@ const GalleryIntro: React.FC = () => {
           />
         </div>
         <div
-          className="aspect-[16/9] md:aspect-[4/3] rounded-2xl overflow-hidden cursor-pointer group shadow-lg"
+          className="aspect-[16/9] md:aspect-[4/3] xl:aspect-[16/10] 2xl:aspect-[4/3] rounded-2xl overflow-hidden cursor-pointer group shadow-lg"
           onClick={() => openLightbox(images, 1)}
         >
           <ParallaxImage
@@ -37,7 +44,7 @@ const GalleryIntro: React.FC = () => {
           />
         </div>
         <div
-          className="aspect-[16/9] md:aspect-[4/3] rounded-2xl overflow-hidden cursor-pointer group shadow-lg"
+          className="aspect-[16/9] md:aspect-[4/3] xl:aspect-[16/10] 2xl:aspect-[4/3] rounded-2xl overflow-hidden cursor-pointer group shadow-lg"
           onClick={() => openLightbox(images, 2)}
         >
           <ParallaxImage

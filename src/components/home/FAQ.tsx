@@ -42,7 +42,7 @@ const FAQ: React.FC = () => {
   ];
 
   return (
-    <section className="bg-transparent py-24 md:py-32 px-6">
+    <section className="bg-transparent py-24 md:py-32 xl:py-8 2xl:py-32 px-6">
       <div className="max-w-7xl mx-auto flex flex-col lg:flex-row gap-16 lg:gap-24 items-start">
         {/* Left Header Section */}
         <div className="lg:w-[450px] lg:sticky lg:top-32 w-full">
@@ -54,7 +54,7 @@ const FAQ: React.FC = () => {
             </span>
           </div>
 
-          <h2 className="text-[clamp(2.5rem,8vw,5.5rem)] md:text-[clamp(3rem,8vw,6rem)] leading-[0.95] mb-6 md:mb-8 tracking-tighter">
+          <h2 className="text-[clamp(2.5rem,5vw,5.5rem)] xl:text-[3rem] 2xl:text-[5.5rem] md:text-[clamp(3rem,5vw,6rem)] leading-[0.95] mb-6 md:mb-8 tracking-tighter">
             <span className="heading-gradient font-bold">FAQ's</span>
             <br />
             <span className="text-[#B8AFA1] font-bold">Asked</span>
@@ -72,14 +72,14 @@ const FAQ: React.FC = () => {
               <div key={i} className="border-b border-[#6B4A2D]/10">
                 <button
                   onClick={() => setOpenIndex(openIndex === i ? null : i)}
-                  className="w-full flex items-center justify-between py-6 md:py-8 text-left group transition-all"
+                  className="w-full flex items-center justify-between py-6 md:py-8 xl:py-3 2xl:py-8 text-left group transition-all"
                 >
                   <div className="flex items-center gap-6 md:gap-24">
                     <span className="text-[12px] md:text-[16px] text-[#6B4A2D]/40 font-mono w-6 md:w-8">
                       {String(i + 1).padStart(2, "0")}
                     </span>
                     <span
-                      className={`text-[15px] md:text-[18px] font-bold md:font-medium tracking-tight transition-colors duration-300 ${openIndex === i ? "text-[#6B4A2D]" : "text-[#6B4A2D]/80 group-hover:text-[#6B4A2D]"}`}
+                      className={`text-[15px] md:text-[18px] xl:text-[16px] 2xl:text-[18px] font-bold md:font-medium tracking-tight transition-colors duration-300 ${openIndex === i ? "text-[#6B4A2D]" : "text-[#6B4A2D]/80 group-hover:text-[#6B4A2D]"}`}
                     >
                       {faq.q}
                     </span>
