@@ -113,7 +113,7 @@ const Hero: React.FC = () => {
           <p className="text-white/80 text-xs md:text-sm lg:text-[1vw] font-bold uppercase tracking-[0.4em]">
             Precision Crafted
           </p>
-          <p className="text-white text-base md:text-xl lg:text-[2.5vw] font-light tracking-tight italic">
+          <p className="text-white text-base md:text-lg lg:text-[2vw] font-light tracking-tight italic">
             A wearable workstation
           </p>
         </motion.div>
@@ -135,7 +135,7 @@ const Hero: React.FC = () => {
             delay: 0.1,
             ease: [0.22, 1, 0.36, 1],
           }}
-          className="text-[14vw] pb-[8rem] md:pb-[14rem] xl:pb-[2rem] 2xl:pb-[14rem] md:text-[20vw] lg:text-[16vw] xl:text-[10vw] 2xl:text-[16vw] font-black leading-none tracking-[-0.05em] select-none uppercase text-center relative pointer-events-auto flex items-center justify-center z-10"
+          className="text-[12vw] pb-[8rem] md:pb-[14rem] xl:pb-[2rem] 2xl:pb-[14rem] md:text-[18vw] lg:text-[14vw] xl:text-[8vw] 2xl:text-[14vw] font-black leading-none tracking-[-0.05em] select-none uppercase text-center relative pointer-events-auto flex items-center justify-center z-10"
         >
           <span className="absolute inset-0 text-white/10 blur-[1px] pointer-events-none flex items-center justify-center">
             ANYWHERE

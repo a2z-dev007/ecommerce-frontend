@@ -26,10 +26,10 @@ const Stats: React.FC = () => {
   ];
 
   return (
-    <section className="bg-[#F8F5F1] py-16 md:py-32 lg:py-6 xl:py-2 2xl:py-32 px-6 overflow-hidden">
+    <section className="bg-[#F8F5F1] py-24 md:py-32 xl:py-48 2xl:py-60 px-6 overflow-hidden">
       <div className="max-w-7xl mx-auto">
         {/* Header Section */}
-        <div className="flex flex-col lg:flex-row gap-8 lg:gap-20 xl:gap-8 2xl:gap-24 mb-16 md:mb-24 lg:mb-8 xl:mb-2 2xl:mb-32">
+        <div className="flex flex-col lg:flex-row gap-8 lg:gap-20 xl:gap-8 2xl:gap-24 mb-16 md:mb-24 xl:mb-32">
           {/* Badge Column */}
           <div className="w-full lg:w-1/4">
             <motion.div
@@ -52,7 +52,7 @@ const Stats: React.FC = () => {
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
               transition={{ duration: 0.8 }}
-              className="text-[clamp(1.6rem,4.5vw,3.2rem)] lg:text-[1.2rem] xl:text-[1.1rem] 2xl:text-[3.2rem] leading-[1.1] tracking-tight text-left max-w-4xl"
+              className="text-[clamp(1.8rem,5vw,3.5rem)] md:text-[3rem] xl:text-[3.5rem] 2xl:text-[4.5rem] leading-[1.1] tracking-tight text-left max-w-4xl"
             >
               <span className="heading-gradient font-bold underline decoration-primary/20 underline-offset-8">
                 We engineer freedom for modern professionals where mobility
@@ -78,7 +78,7 @@ const Stats: React.FC = () => {
               className={`group ${index === 2 ? "sm:col-span-2 lg:col-span-1" : ""}`}
             >
               {/* Number and Suffix */}
-              <div className="text-[clamp(3.5rem,12vw,8rem)] lg:text-[2.8rem] xl:text-[2.2rem] 2xl:text-[9.5rem] font-black text-[#6B4A2D] leading-[0.8] mb-4 md:mb-6 lg:mb-4 xl:mb-2 flex items-baseline">
+              <div className="text-[clamp(4rem,12vw,10rem)] md:text-[8rem] xl:text-[10rem] 2xl:text-[12rem] font-black text-[#6B4A2D] leading-[0.8] mb-8 md:mb-10 xl:mb-12 flex items-baseline">
                 <SlotCounter
                   value={stat.value}
                   duration={2}
@@ -94,10 +94,10 @@ const Stats: React.FC = () => {
               <div className="w-full h-[1px] bg-[#6B4A2D]/10 mb-6 lg:mb-4 xl:mb-2" />
 
               {/* Label and Description */}
-              <h4 className="text-[18px] md:text-[20px] lg:text-base xl:text-sm font-bold text-[#6B4A2D] mb-2 xl:mb-1 tracking-tight">
+              <h4 className="text-[20px] md:text-[24px] xl:text-[28px] font-bold text-[#6B4A2D] mb-4 xl:mb-6 tracking-tight">
                 {stat.label}
               </h4>
-              <p className="text-[14px] md:text-[15px] lg:text-sm xl:text-xs text-[#B8AFA1] font-medium leading-relaxed max-w-sm">
+              <p className="text-[16px] md:text-[18px] xl:text-[20px] text-[#B8AFA1] font-medium leading-relaxed max-w-sm">
                 {stat.description}
               </p>
             </motion.div>
